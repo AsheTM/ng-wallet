@@ -2,6 +2,11 @@
   "name": "@ashetm/ng-wallet",
   "version": "0.0.0",
   "license": "MIT",
+  "author": {
+    "email": "contact@ashetm.com",
+    "name": "DAWOUD Haitham",
+    "url": "http://ashetm.com"
+  },
   "scripts": {
     "build:ng-ether": "npm run lint:ng-ether && npm run test:ng-ether && nx build ng-ether",
     "lint:ng-ether": "nx lint ng-ether --format stylish",
