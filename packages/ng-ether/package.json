@@ -1,6 +1,11 @@
 {
   "name": "@ashetm/ng-ether",
   "version": "0.0.1",
+  "author": {
+    "email": "contact@ashetm.com",
+    "name": "DAWOUD Haitham",
+    "url": "http://ashetm.com"
+  },
   "private": false,
   "peerDependencies": {
     "@angular/common": "^14.1.0",
