@@ -1,6 +1,7 @@
 {
   "name": "@ashetm/ng-ether",
   "version": "0.0.1",
+  "private": false,
   "peerDependencies": {
     "@angular/common": "^14.1.0",
     "@angular/core": "^14.1.0",
