@@ -11,7 +11,7 @@
     "publish:ng-ether": "cd ./dist/packages/ng-ether && npm publish --access=public",
     "test:ng-ether": "nx test ng-ether --browsers ChromeHeadless --watch false"
   },
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@angular-devkit/build-angular": "~14.1.0",
     "@angular-eslint/eslint-plugin": "~14.0.0",
