@@ -13,6 +13,21 @@
     "name": "DAWOUD Haitham",
     "url": "http://ashetm.com"
   },
+  "keywords": [
+    "angular",
+    "blockchain",
+    "crypto",
+    "eth",
+    "ether",
+    "ethers",
+    "metamask",
+    "ng",
+    "ng-eth",
+    "ng-ether",
+    "ng-ethers",
+    "service",
+    "wallet"
+  ],
   "private": false,
   "peerDependencies": {
     "@angular/common": "^14.1.0",
