@@ -29,6 +29,9 @@
     "wallet"
   ],
   "private": false,
+  "repository": {
+    "url": "https://github.com/AsheTM/ng-wallet/tree/main/packages/ng-ether"
+  },
   "peerDependencies": {
     "@angular/common": "^14.1.0",
     "@angular/core": "^14.1.0",
