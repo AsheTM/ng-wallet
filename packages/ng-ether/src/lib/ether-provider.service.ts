@@ -7,6 +7,7 @@ import {
   Observable,
   OperatorFunction,
   race,
+  shareReplay,
   Subscriber,
   switchMap,
   switchMapTo,
@@ -27,6 +28,9 @@ export class EtherProviderService {
   accountChange$: Observable<string[]>
     = this._onAccountChange().pipe(filter((accounts: string[]) =>
       accounts.length !== 0));
+  connect$: Observable<boolean>
+    = this._onAccountChange()
+      .pipe(map((accounts: string[]) => accounts.length !== 0));
   disconnect$: Observable<void>
     = this._onAccountChange().pipe(
       filter((accounts: string[]) => accounts.length === 0),
@@ -87,7 +91,7 @@ export class EtherProviderService {
   private _onAccountChange(): Observable<string[]> {
     return new Observable<string[]>((subscriber: Subscriber<string[]>) => {
       this._ngZone.run(() => (this._aEtherProvider as any).on('accountsChanged', subscriber.next));
-    });
+    }).pipe(shareReplay(1));
   }
 
   private _onAccountOrNetworkChange(): Observable<string[] | TEtherNetworkChange> {
