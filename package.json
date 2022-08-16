@@ -2,10 +2,28 @@
   "name": "@ashetm/ng-wallet",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "ngcc --properties es2020 browser module main"
+  "contributors": [
+    {
+      "email": "contact@ashetm.com",
+      "name": "DAWOUD Haitham",
+      "url": "http://ashetm.com"
+    }
+  ],
+  "author": {
+    "email": "contact@ashetm.com",
+    "name": "DAWOUD Haitham",
+    "url": "http://ashetm.com"
   },
-  "private": true,
+  "scripts": {
+    "build:ng-ether": "npm run lint:ng-ether && npm run test:ng-ether && nx build ng-ether",
+    "lint:ng-ether": "nx lint ng-ether --format stylish",
+    "lint:ng-ether:fix": "npm run lint:ng-ether -- --fix",
+    "package:ng-ether": "npm run build:ng-ether && cd ./dist/packages/ng-ether && npm pack",
+    "postinstall": "ngcc --properties es2020 browser module main",
+    "publish:ng-ether": "cd ./dist/packages/ng-ether && npm publish --access=public",
+    "test:ng-ether": "nx test ng-ether --browsers ChromeHeadless --watch false"
+  },
+  "private": false,
   "devDependencies": {
     "@angular-devkit/build-angular": "~14.1.0",
     "@angular-eslint/eslint-plugin": "~14.0.0",
@@ -48,6 +66,7 @@
     "@angular/platform-browser": "~14.1.1",
     "@angular/platform-browser-dynamic": "~14.1.1",
     "@angular/router": "~14.1.1",
+    "ethers": "^5.6.9",
     "rxjs": "^7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,9 +1,39 @@
 {
   "name": "@ashetm/ng-ether",
   "version": "0.0.1",
+  "contributors": [
+    {
+      "email": "contact@ashetm.com",
+      "name": "DAWOUD Haitham",
+      "url": "http://ashetm.com"
+    }
+  ],
+  "author": {
+    "email": "contact@ashetm.com",
+    "name": "DAWOUD Haitham",
+    "url": "http://ashetm.com"
+  },
+  "keywords": [
+    "angular",
+    "blockchain",
+    "crypto",
+    "eth",
+    "ether",
+    "ethers",
+    "metamask",
+    "ng",
+    "ng-eth",
+    "ng-ether",
+    "ng-ethers",
+    "service",
+    "wallet"
+  ],
+  "private": false,
   "peerDependencies": {
     "@angular/common": "^14.1.0",
-    "@angular/core": "^14.1.0"
+    "@angular/core": "^14.1.0",
+    "ethers": "^5.6.9",
+    "rxjs": "^7.4.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
