@@ -2,7 +2,7 @@
   "extends": "@nrwl/workspace/presets/npm.json",
   "npmScope": "@ashetm/ng-wallet",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "cli": {
     "defaultCollection": "@nrwl/workspace"
