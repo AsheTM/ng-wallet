@@ -1,18 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
+import { from, Observable, OperatorFunction, Subscriber, race } from 'rxjs';
 import {
   filter,
-  from,
   map,
   mapTo,
-  Observable,
-  OperatorFunction,
-  race,
   shareReplay,
-  Subscriber,
   switchMap,
   switchMapTo,
   take
-} from 'rxjs';
+} from 'rxjs/operators';
 
 import { AEtherProvider } from './ether-provider.class';
 import {
