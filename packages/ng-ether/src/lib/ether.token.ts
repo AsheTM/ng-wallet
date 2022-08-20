@@ -1,13 +1,12 @@
 import { InjectionToken } from "@angular/core";
 
-import { EtherRootModule } from "./ether-root.module";
 import { EEtherInstance } from "./ether.enum";
 
 
 export const ETHER_TOKEN: InjectionToken<any>
   = new InjectionToken<any>('ETHER_TOKEN', {
     factory: () => (window as any).ether,
-    providedIn: EtherRootModule
+    providedIn: 'root'
   });
 
 export const ETHER_TOKEN_INSTANCE: InjectionToken<EEtherInstance>
