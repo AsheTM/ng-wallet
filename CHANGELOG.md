@@ -1,3 +1,7 @@
+# 1.1.0
+
+- [x] Release @ashetm/ng-ether@v1.0.0
+
 # 1.0.1
 
 - [x] Downgrade Angular version from 14 to 12
