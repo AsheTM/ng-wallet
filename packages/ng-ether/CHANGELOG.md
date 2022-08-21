@@ -1,3 +1,7 @@
+# 1.0.0
+
+- [x] Replace ``EtherProviderService`` with 3 independants services ``EtherNetworkService``, ``EtherTransactionService`` and ``EtherWalletService``
+
 # 0.1.5
 
 - [x] Modify README.md of @ashetm/ng-ether
