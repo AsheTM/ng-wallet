@@ -1,5 +1,9 @@
 # @ashetm/ng-wallet
 
+This mono repository contains multiple library/package, check README.md of each one of them: 
+
+* [README @ashetm/ng-ether](https://github.com/AsheTM/ng-wallet/blob/main/packages/ng-ether/README.md)
+
 <!-- ### LOOKING FOR MAINTAINER. PLEASE PING [@voronianski](https://twitter.com/voronianski)! -->
 
 <!-- [![build status](http://img.shields.io/travis/likeastore/ngDialog.svg)](https://travis-ci.org/likeastore/ngDialog) -->
@@ -9,7 +13,3 @@
 <!-- [![Code Climate](https://codeclimate.com/github/likeastore/ngDialog/badges/gpa.svg)](https://codeclimate.com/github/likeastore/ngDialog) -->
 
 <!-- ### [Demo](http://likeastore.github.io/ngDialog) -->
-
-This mono repository contains multiple library/package, check README.md of each one of them: 
-
-* [README @ashetm/ng-ether](https://github.com/AsheTM/ng-wallet/blob/main/packages/ng-ether/README.md)
