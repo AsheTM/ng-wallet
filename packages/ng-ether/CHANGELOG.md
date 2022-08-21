@@ -1,3 +1,7 @@
+# 0.1.5
+
+- [x] Modify README.md of @ashetm/ng-ether
+
 # 0.1.4
 
 - [x] Fix issue of ETHER_TOKEN throw error at the start of any app once we import EtherModule#forRoot
