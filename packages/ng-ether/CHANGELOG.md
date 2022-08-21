@@ -1,3 +1,7 @@
+# 0.1.4
+
+- [x] Fix issue of ETHER_TOKEN throw error at the start of any app once we import EtherModule#forRoot
+
 # 0.1.3
 
 - [x] Disable Ivy
