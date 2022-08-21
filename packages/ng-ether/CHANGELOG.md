@@ -1,3 +1,7 @@
+# 1.0.1
+
+- [x] Add v1.0.1 to CHANGELOG of ng-ether
+
 # 1.0.0
 
 - [x] Replace ``EtherProviderService`` with 3 independants services ``EtherNetworkService``, ``EtherTransactionService`` and ``EtherWalletService``
