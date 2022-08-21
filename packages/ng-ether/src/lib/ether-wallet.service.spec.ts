@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EtherProviderService } from './ether-provider.service';
+import { EtherWalletService } from './ether-wallet.service';
 
-describe('EtherProviderService', () => {
-  let service: EtherProviderService;
+describe('EtherWalletService', () => {
+  let service: EtherWalletService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EtherProviderService);
+    service = TestBed.inject(EtherWalletService);
   });
 
   it('should be created', () => {
