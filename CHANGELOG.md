@@ -1,3 +1,8 @@
+# 1.0.1
+
+- [x] Downgrade Angular version from 14 to 12
+- [x] Modify README.md of @ashetm/ng-ether
+
 # 1.0.0
 
 - [x] Implement `EtherProviderService` with RXJS logic that suits Angular
