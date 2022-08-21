@@ -1,3 +1,7 @@
+# 0.1.2
+
+- [x] Revert "Add some dependencies in package.json"
+
 # 0.1.1
 
 - [x] Add git repository url in package.json
