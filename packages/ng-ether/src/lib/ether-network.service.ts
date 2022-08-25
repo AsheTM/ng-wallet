@@ -1,8 +1,10 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { switchMapTo, takeUntil } from 'rxjs/operators';
 
 import { AEtherNetworkService } from './ether-network-service.class';
+import { AEtherProvider } from './ether-provider.class';
+import { AEtherSigner } from './ether-signer.class';
 import { TEtherBigNumber, TEtherNetwork, TEtherNetworkChange } from './ether.type';
 
 
@@ -23,6 +25,14 @@ export class EtherNetworkService extends AEtherNetworkService implements OnDestr
       .pipe(switchMapTo(this._aEtherProvider.getEtherPrice()));
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
+
+  constructor(
+    protected readonly _ngZone: NgZone,
+    protected readonly _aEtherProvider: AEtherProvider,
+    protected readonly _aEtherSigner: AEtherSigner
+  ) {
+    super(_ngZone, _aEtherProvider, _aEtherSigner);
+  }
 
   ngOnDestroy(): void {
     this._destroySubject.next();
