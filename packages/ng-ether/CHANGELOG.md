@@ -1,3 +1,8 @@
+# 1.0.4
+
+- [x] Write unit tests for ng-ether
+- [x] Create a ether test module
+
 # 1.0.3
 
 - [x] Fix issue of constructor for Angular services
