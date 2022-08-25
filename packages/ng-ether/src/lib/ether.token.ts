@@ -6,7 +6,7 @@ import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
 
 export const ETHER_TOKEN: InjectionToken<any>
   = new InjectionToken<any>('ETHER_TOKEN', {
-    factory: () => (window as any).ether,
+    factory: () => (window as any).ethereum,
     providedIn: 'root'
   });
 
