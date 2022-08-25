@@ -1,3 +1,7 @@
+# 1.0.3
+
+- [x] Fix issue of constructor for Angular services
+
 # 1.0.2
 
 - [x] Fix issue of ETHER_TOKEN that throw error
