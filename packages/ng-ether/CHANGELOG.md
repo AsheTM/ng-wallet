@@ -1,3 +1,7 @@
+# 1.0.2
+
+- [x] Fix issue of ETHER_TOKEN that throw error
+
 # 1.0.1
 
 - [x] Add v1.0.1 to CHANGELOG of ng-ether
