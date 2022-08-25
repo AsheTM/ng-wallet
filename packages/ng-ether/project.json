@@ -10,6 +10,13 @@
         "project": "packages/ng-ether",
         "tsConfig": "packages/ng-ether/tsconfig.lib.json"
       }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "packages/ng-ether/jest.config.ts",
+        "tsConfig": "packages/ng-ether/tsconfig.spec.json"
+      }
     }
   },
   "tags": []

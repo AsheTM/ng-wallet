@@ -32,6 +32,7 @@
     "@angular/cli": "~12.1.0",
     "@angular/compiler-cli": "^12.1.0",
     "@angular/language-service": "^12.1.0",
+    "@angular/platform-browser-dynamic": "^12.2.16",
     "@nrwl/angular": "^12.5.4",
     "@nrwl/cli": "13.1.4",
     "@nrwl/eslint-plugin-nx": "13.1.4",
@@ -55,10 +56,10 @@
   "dependencies": {
     "@angular/common": "^12.1.0",
     "@angular/compiler": "^12.1.0",
-    "@angular/core": "^12.1.0",
+    "@angular/core": "^12.2.16",
     "ethers": "^5.6.9",
     "rxjs": "^6.5.0",
     "tslib": "2.1",
-    "zone.js": "~0.10.3"
+    "zone.js": "^0.11.8"
   }
 }
