@@ -1,3 +1,7 @@
+# 1.0.7
+
+- [x] Update README.md doc ng-ether
+
 # 1.0.6
 
 - [x] Update README.md doc ng-ether
