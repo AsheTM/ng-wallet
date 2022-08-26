@@ -49,7 +49,7 @@ export class AppModule { }
 ### Modules
 
 1. ``EtherModule``, that contains ``forRoot`` static method to import in order to use the library
-1. ``EtherTestModule``, that provide a mock of window.ethereum or mock of ``ETHER_TOKEN`` (See below) for testing purpose
+1. ``EtherTestModule``, that provide a mock of ``window.ethereum`` or mock of ``ETHER_TOKEN`` (See below) for testing purpose
 
 ### Tokens
 
@@ -57,7 +57,7 @@ Tokens are ``InjectionToken<T>`` that needs to be injected in order to get its v
 
 1. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
 2. ``ETHER_TOKEN_IS_METAMASK_WALLET`` returns boolean, true if MetaMask wallet is installed in browser
-3. ``ETHER_TOKEN`` returns ``window.ether`` object, if you wish a direct manipulation
+3. ``ETHER_TOKEN`` returns ``window.ethereum`` object, if you wish a direct manipulation
 
 ### Services
 
