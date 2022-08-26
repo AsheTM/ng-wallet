@@ -11,6 +11,13 @@
         "tsConfig": "packages/ng-ether/tsconfig.lib.json"
       }
     },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/ng-ether/**/*.ts"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "options": {

@@ -15,7 +15,7 @@
     "url": "http://ashetm.com"
   },
   "scripts": {
-    "build:ng-ether": "nx test ng-ether && nx build ng-ether",
+    "build:ng-ether": "nx lint ng-ether && nx test ng-ether && nx build ng-ether",
     "lint:ng-ether": "nx lint ng-ether --format stylish",
     "lint:ng-ether:fix": "npm run lint:ng-ether -- --fix",
     "package:ng-ether": "npm run build:ng-ether && cd ./dist/packages/ng-ether && npm pack",
