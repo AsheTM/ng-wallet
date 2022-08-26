@@ -4,6 +4,7 @@ export * from './lib/ether-network.service';
 export * from './lib/ether-provider.class';
 export * from './lib/ether-root.module';
 export * from './lib/ether-service.class';
+export * from './lib/ether-test.module';
 export * from './lib/ether-transaction-ref.class';
 export * from './lib/ether-transaction.service';
 export * from './lib/ether-transaction.type';
