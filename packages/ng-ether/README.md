@@ -49,6 +49,7 @@ export class AppModule { }
 ### Modules
 
 1. ``EtherModule``, that contains ``forRoot`` static method to import in order to use the library
+1. ``EtherTestModule``, that provide a mock of window.ethereum or mock of ``ETHER_TOKEN`` (See below) for testing purpose
 
 ### Tokens
 
