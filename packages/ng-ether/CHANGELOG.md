@@ -1,3 +1,11 @@
+# 1.0.6
+
+- [x] Update README.md doc ng-ether
+
+# 1.0.5
+
+- [x] Update README.md doc ng-ether
+
 # 1.0.4
 
 - [x] Write unit tests for ng-ether
