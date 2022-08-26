@@ -1,9 +1,9 @@
 
 # @ashetm/ng-ether
 
-*It works with Angular 12 and above*
+``@ashetm/ng-ether`` is a library that simplify manipulation of library ``ethers``, and has a good interaction with Angular with its stream based with ``RXJS``. It provides also a test module that provide mock of ``window.ethereum`` in a token (see below) for testing purpose.
 
-``@ashetm/ng-ether`` is a library that simplify manipulation of library ``ethers``, and has a good interaction with Angular with its stream based with ``RXJS``.
+*It works with Angular 12 and above*
 
 <!-- [![build status](http://img.shields.io/travis/likeastore/ngDialog.svg)](https://travis-ci.org/likeastore/ngDialog) -->
 <!-- [![npm version](http://badge.fury.io/js/ng-dialog.svg)](http://badge.fury.io/js/ng-dialog) -->
@@ -49,7 +49,7 @@ export class AppModule { }
 ### Modules
 
 1. ``EtherModule``, that contains ``forRoot`` static method to import in order to use the library
-1. ``EtherTestModule``, that provide a mock of ``window.ethereum`` or mock of ``ETHER_TOKEN`` (See below) for testing purpose
+1. ``EtherTestModule``, that provide a mock of ``window.ethereum`` through ``ETHER_TOKEN`` (See below) for testing purpose
 
 ### Tokens
 
