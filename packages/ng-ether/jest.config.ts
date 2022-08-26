@@ -9,6 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
+  testEnvironment: 'jsdom',
   coverageDirectory: '../../coverage/packages/ng-ether',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
