@@ -1,3 +1,7 @@
+# 12.0.0
+
+- [x] Update version ng-ether to be compatible with @angular v12
+
 # 1.0.7
 
 - [x] Update README.md doc ng-ether
