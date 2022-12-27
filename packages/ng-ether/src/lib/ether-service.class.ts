@@ -1,6 +1,6 @@
 import { NgZone } from '@angular/core';
 import { Observable, OperatorFunction, race, Subscriber } from 'rxjs';
-import { filter, map, shareReplay, switchMapTo } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
@@ -15,7 +15,15 @@ export abstract class AEtherService {
     = new Observable<TEtherNetworkChange>((
       subscriber: Subscriber<TEtherNetworkChange>
     ) => {
-      this._ngZone.run(() => (this._aEtherProvider as any).on('network', (
+      type TObjectOnEventNetwork = Record<
+        'on',
+        (eventNetwork: 'network', fn: (
+          newNetwork: TEtherNetwork,
+          oldNetwork?: TEtherNetwork
+        ) => void) => void
+      >;
+
+      this._ngZone.run(() => (this._aEtherProvider as TObjectOnEventNetwork).on('network', (
         newNetwork: TEtherNetwork,
         oldNetwork?: TEtherNetwork
       ) => {
@@ -47,7 +55,7 @@ export abstract class AEtherService {
 
   protected _switchMapToAccount<T> (index: number): OperatorFunction<T, string> {
     return (source: Observable<T>) => source.pipe(
-      switchMapTo(this._accountChange$),
+      switchMap(() => this._accountChange$),
       map((accounts: string[]) => accounts[index])
     );
   }
