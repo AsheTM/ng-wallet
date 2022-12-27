@@ -1,10 +1,11 @@
-# \*.1.0
+# 13.1.0
 
 - [x] Implement contract service with also consuming possibility of 1 smart contract
 
-# 12.0.0
+# 13.0.0
 
-- [x] Update version ng-ether to be compatible with @angular v12
+- [x] Export ether-signer class file
+- [x] Update version ng-ether to be compatible with Angular v13
 
 # 1.0.7
 
