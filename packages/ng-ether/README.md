@@ -46,7 +46,7 @@ export class AppModule { }
 
 ### Modules
 
-1. ``EtherModule``, that contains ``forRoot`` static method to import in order to use the library
+1. ``EtherModule``, that contains ``forRoot`` static method to import in order to use the library with ```TEtherConfigurationRoot``` optional configuration with abi and contract address of a deployed smart contract
 1. ``EtherTestModule``, that provide a mock of ``window.ethereum`` through ``ETHER_TOKEN`` (See below) for testing purpose
 
 ### Tokens
@@ -56,6 +56,9 @@ Tokens are ``InjectionToken<T>`` that needs to be injected in order to get its v
 1. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
 2. ``ETHER_TOKEN_IS_METAMASK_WALLET`` returns boolean, true if MetaMask wallet is installed in browser
 3. ``ETHER_TOKEN`` returns ``window.ethereum`` object, if you wish a direct manipulation
+4. 
+5. 
+6. 
 
 ### Services
 
@@ -120,6 +123,57 @@ Or with second definition
 Or with second definition
 
 * ``onDisconnect(fn: () => void)`` returns ``void``, you need to provide a callback function without arguments; that emits a ``void`` value if wallet has disconnected
+
+### Classes
+
+#### AEtherContract
+
+``AEtherContract`` is an abstract class and a token to either to implement with 0 meethod to implement or to inject, the second case it will give you an instance of Contract.
+
+**Note**: This abstract class is available if ```TEtherConfigurationRoot``` is provided.
+
+#### AEtherProvider
+
+``AEtherProvider`` is an abstract class and a token to either to implement with 0 meethod to implement or to inject, the second case it will give you an instance of Web3Provider.
+
+#### AEtherSigner
+
+``AEtherSigner`` is an abstract class and a token to either to implement with 0 meethod to implement or to inject, the second case it will give you an instance of JsonRpcSigner.
+
+#### ACustomContract
+
+``ACustomContract`` is an abstract class to implement with your own custom smart contract call or transaction method, with ``Observable`` as return type. It has a super protected member calld ``contract`` that gives you access to the deployed smart contract provided in forRoot static method configuration.
+
+### Decorators
+
+#### ContractInjectable
+
+```ContractInjectable``` is a class decorator, it must annotates a class that extends ``ACustomContract``. It has a parameter just like ``Injectable`` a scope to provide it in, by default is ``root``.
+
+## Usage
+
+### Use own deployed smart contract
+
+You can interact with your custom deployed contract, like in the example below:
+
+```ts
+
+...
+import { ACustomContract, ContractInjectable } from '@ashetm/ng-ether';
+...
+
+@ContractInjectable({
+  provided: 'root'
+}) // Compulsory, to annotate it
+export class CustomContract extends ACustomContract { // Compulsory, extends ACustomContract
+
+  test(): Observable<any> {
+    return from(this.contract["decimals"]());
+  }
+
+}
+
+```
 
 ## Issue
 
