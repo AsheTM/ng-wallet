@@ -1,24 +1,24 @@
-# \*.1.3
+# 14.1.3
 
 - [x] Correct README.md's ng-ether
 - [x] Resolve issue of not able to type arguments properly of custom implemented custom contract service class
 
-# \*.1.2
+# 14.1.2
 
 - [x] Cover with unit test decorator and custom contract part/feature
 - [x] Resolve issue of not able to inject Custom Contract Service
 
-# \*.1.1
+# 14.1.1
 
 - [x] Resolve issue of export custom ether decorator, abstract class and type
 
-# \*.1.0
+# 14.1.0
 
 - [x] Implement contract service with also consuming possibility of 1 smart contract
 
-# 12.0.0
+# 14.0.0
 
-- [x] Update version ng-ether to be compatible with @angular v12
+- [x] Update version ng-ether to be compatible with Angular v14
 
 # 1.0.7
 
