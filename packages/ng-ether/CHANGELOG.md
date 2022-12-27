@@ -1,3 +1,8 @@
+# 1\*.3.0
+
+- [x] Add feature switch network
+- [x] Add feature add new network
+
 # 1\*.2.1
 
 - [x] Fix type of first value of pipe EtherContractFnAsyncPipe
