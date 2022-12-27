@@ -1,3 +1,8 @@
+# 1\*.2.1
+
+- [x] Fix type of first value of pipe EtherContractFnAsyncPipe
+- [x] Fix export issue of EtherContractFnAsyncPipe
+
 # 1\*.2.0
 
 - [x] Create async pipe for implemeted functions for custom contract
