@@ -1,3 +1,8 @@
+# 12.0.1
+
+- [x] Export ether-signer class file
+- [x] Solve issue of type in ether-wallet service file
+
 # 12.0.0
 
 - [x] Update version ng-ether to be compatible with @angular v12
