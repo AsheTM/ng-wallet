@@ -1,6 +1,6 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { from, Observable, Subject, Subscriber } from 'rxjs';
-import { filter, map, mapTo, pluck, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
@@ -12,7 +12,7 @@ import { TEtherBigNumber } from './ether.type';
 export class EtherWalletService extends AEtherWalletService implements OnDestroy {
 
   readonly account$: Observable<string>
-    = this._accountChange$.pipe(pluck('0'));
+    = this._accountChange$.pipe(map(([account,]: string[]) => account));
   readonly balance$: Observable<TEtherBigNumber>
     = this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),
@@ -99,7 +99,7 @@ export class EtherWalletService extends AEtherWalletService implements OnDestroy
   onDisconnect(fn?: () => void): Observable<void> | void {
     const onDisconnect$: Observable<void> = this._onAccountChange().pipe(
       filter((accounts: string[]) => accounts.length === 0),
-      mapTo(void 0)
+      map(() => void 0)
     );
 
     if(!fn) {
