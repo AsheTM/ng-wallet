@@ -1,4 +1,4 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { switchMapTo, takeUntil } from 'rxjs/operators';
 
@@ -26,12 +26,8 @@ export class EtherNetworkService extends AEtherNetworkService implements OnDestr
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
 
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {
-    super(_ngZone, _aEtherProvider, _aEtherSigner);
+  constructor() {
+    super(inject(NgZone), inject(AEtherProvider), inject(AEtherSigner));
   }
 
   ngOnDestroy(): void {

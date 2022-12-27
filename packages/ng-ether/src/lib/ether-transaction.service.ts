@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
@@ -9,12 +9,8 @@ import { AEtherTransactionService } from './ether-transaction-service.class';
 @Injectable()
 export class EtherTransactionService extends AEtherTransactionService {
 
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {
-    super(_ngZone, _aEtherProvider, _aEtherSigner);
+  constructor() {
+    super(inject(NgZone), inject(AEtherProvider), inject(AEtherSigner));
   }
 
   prepareTransaction(addressWallet: string): EtherTransactionRef {
