@@ -1,3 +1,7 @@
+# 1\*.3.1
+
+- [x] Fix issue of chainId type in add new network and switch to network
+
 # 1\*.3.0
 
 - [x] Add feature switch network
