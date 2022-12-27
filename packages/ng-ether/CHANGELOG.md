@@ -1,6 +1,11 @@
+# 13.0.0
+
+- [x] Export ether-signer class file
+- [x] Update version ng-ether to be compatible with Angular v13
+
 # 12.0.0
 
-- [x] Update version ng-ether to be compatible with @angular v12
+- [x] Update version ng-ether to be compatible with Angular v12
 
 # 1.0.7
 
