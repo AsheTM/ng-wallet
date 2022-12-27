@@ -12,7 +12,7 @@ import { TEtherBigNumber } from './ether.type';
 export class EtherWalletService extends AEtherWalletService implements OnDestroy {
 
   readonly account$: Observable<string>
-    = this._accountChange$.pipe(pluck('0'));
+    = this._accountChange$.pipe(pluck('0')) as Observable<string>;
   readonly balance$: Observable<TEtherBigNumber>
     = this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),
