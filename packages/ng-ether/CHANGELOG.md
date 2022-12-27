@@ -1,3 +1,8 @@
+# \*.1.3
+
+- [x] Correct README.md's ng-ether
+- [x] Resolve issue of not able to type arguments properly of custom implemented custom contract service class
+
 # \*.1.2
 
 - [x] Cover with unit test decorator and custom contract part/feature
