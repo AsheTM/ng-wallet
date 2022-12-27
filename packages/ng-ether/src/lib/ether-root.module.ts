@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ethers } from 'ethers';
-import { EtherNetworkService } from './ether-network.service';
 
+import { EtherNetworkService } from './ether-network.service';
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
 import { EtherTransactionService } from './ether-transaction.service';

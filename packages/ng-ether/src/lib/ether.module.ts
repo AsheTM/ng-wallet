@@ -31,7 +31,7 @@ export class EtherModule {
           useValue: EEtherInstance.FOR_ROOT
         }
       ]
-    }
+    };
   }
 
 }
