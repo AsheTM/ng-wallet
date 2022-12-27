@@ -1,3 +1,10 @@
+# 1\*.4.0
+
+- [x] Rework balance realtime tracking
+- [x] Rework gasFee realtime tracking
+- [x] Rework current account realtime tracking
+- [x] Create format crypto currency concerning eth
+
 # 1\*.3.1
 
 - [x] Fix issue of chainId type in add new network and switch to network
