@@ -1,6 +1,6 @@
 import { inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { switchMapTo, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { AEtherNetworkService } from './ether-network-service.class';
 import { AEtherProvider } from './ether-provider.class';
@@ -13,16 +13,16 @@ export class EtherNetworkService extends AEtherNetworkService implements OnDestr
 
   readonly blockNumber$: Observable<number>
     = this._onAccountOrNetworkChange()
-      .pipe(switchMapTo(this._aEtherProvider.getBlockNumber()));
+      .pipe(switchMap(() =>this._aEtherProvider.getBlockNumber()));
   readonly gasFee$: Observable<TEtherBigNumber>
     = this._onAccountOrNetworkChange()
-      .pipe(switchMapTo(this._aEtherProvider.getGasPrice()));
+      .pipe(switchMap(() => this._aEtherProvider.getGasPrice()));
   readonly network$: Observable<TEtherNetwork>
     = this.onNetworkChange()
-      .pipe(switchMapTo(this._aEtherProvider.getNetwork()));
+      .pipe(switchMap(() => this._aEtherProvider.getNetwork()));
   readonly price$: Observable<number>
     = this._onAccountOrNetworkChange()
-      .pipe(switchMapTo(this._aEtherProvider.getEtherPrice()));
+      .pipe(switchMap(() => this._aEtherProvider.getEtherPrice()));
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
 
