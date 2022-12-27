@@ -1,6 +1,10 @@
+# 14.0.0
+
+- [x] Update version ng-ether to be compatible with Angular v14
+
 # 12.0.0
 
-- [x] Update version ng-ether to be compatible with @angular v12
+- [x] Update version ng-ether to be compatible with Angular v12
 
 # 1.0.7
 
