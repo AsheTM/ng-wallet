@@ -1,3 +1,7 @@
+# \*.1.4
+
+- [x] Fix issue of getting null signer in contract instance
+
 # \*.1.3
 
 - [x] Correct README.md's ng-ether
