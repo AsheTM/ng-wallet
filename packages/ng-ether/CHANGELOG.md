@@ -1,3 +1,7 @@
+# \*.1.1
+
+- [x] Resolve issue of export custom ether decorator, abstract class and type
+
 # \*.1.0
 
 - [x] Implement contract service with also consuming possibility of 1 smart contract
