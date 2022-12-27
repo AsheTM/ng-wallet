@@ -41,13 +41,13 @@ describe('EtherWalletService', () => {
   it('should have onAccountChange', () => {
     expect(service.onAccountChange).toBeDefined();
     expect(service.onAccountChange()).toBeInstanceOf(Observable);
-    expect(service.onAccountChange((_: any) => null)).toBeUndefined();
+    expect(service.onAccountChange(() => null)).toBeUndefined();
   });
 
   it('should have onConnect', () => {
     expect(service.onConnect).toBeDefined();
     expect(service.onConnect()).toBeInstanceOf(Observable);
-    expect(service.onConnect((_: any) => null)).toBeUndefined();
+    expect(service.onConnect(() => null)).toBeUndefined();
   });
 
   it('should have onDisconnect', () => {
