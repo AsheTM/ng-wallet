@@ -1,3 +1,8 @@
+# \*.1.2
+
+- [x] Cover with unit test decorator and custom contract part/feature
+- [x] Resolve issue of not able to inject Custom Contract Service
+
 # \*.1.1
 
 - [x] Resolve issue of export custom ether decorator, abstract class and type
