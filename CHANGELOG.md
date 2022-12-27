@@ -1,3 +1,7 @@
+# 1.1.1
+
+- [x] Release @ashetm/ng-ether@v15.0.0
+
 # 1.1.0
 
 - [x] Release @ashetm/ng-ether@v1.0.0
