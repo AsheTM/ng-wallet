@@ -33,7 +33,15 @@ export abstract class AEtherService {
     = new Observable<TEtherNetworkChange>((
       subscriber: Subscriber<TEtherNetworkChange>
     ) => {
-      this._ngZone.run(() => (this._aEtherProvider as any).on('network', (
+      type TObjectOnEventNetwork = Record<
+        'on',
+        (eventNetwork: 'network', fn: (
+          newNetwork: TEtherNetwork,
+          oldNetwork?: TEtherNetwork
+        ) => void) => void
+      >;
+
+      this._ngZone.run(() => (this._aEtherProvider as TObjectOnEventNetwork).on('network', (
         newNetwork: TEtherNetwork,
         oldNetwork?: TEtherNetwork
       ) => {
