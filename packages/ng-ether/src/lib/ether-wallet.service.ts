@@ -1,4 +1,4 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { from, Observable, Subject, Subscriber } from 'rxjs';
 import { filter, map, mapTo, pluck, switchMap, take, takeUntil } from 'rxjs/operators';
 
@@ -27,12 +27,8 @@ export class EtherWalletService extends AEtherWalletService implements OnDestroy
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
 
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {
-    super(_ngZone, _aEtherProvider, _aEtherSigner);
+  constructor() {
+    super(inject(NgZone), inject(AEtherProvider), inject(AEtherSigner));
   }
 
   ngOnDestroy(): void {
