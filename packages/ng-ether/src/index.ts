@@ -1,4 +1,5 @@
 
+export * from './lib/ether-contract.class';
 export * from './lib/ether-network-service.class';
 export * from './lib/ether-network.service';
 export * from './lib/ether-provider.class';

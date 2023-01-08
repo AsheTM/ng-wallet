@@ -6,7 +6,10 @@ import { ETHER_TOKEN } from "./ether.token";
 
 @NgModule({
   exports: [EtherModule],
-  imports: [EtherModule.forRoot()],
+  imports: [EtherModule.forRoot({
+    abi: '',
+    addressContract: '0x0'
+  })],
   providers: [{
     provide: ETHER_TOKEN,
     useFactory: () => ({
