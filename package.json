@@ -15,6 +15,7 @@
     "url": "http://ashetm.com"
   },
   "scripts": {
+    "clean": "rmdir /s /q node_modules && del /q package-lock.json",
     "build:ng-ether": "npm run lint:ng-ether && npm run test:ng-ether && nx build ng-ether",
     "lint:ng-ether": "nx lint ng-ether --format stylish",
     "lint:ng-ether:fix": "npm run lint:ng-ether -- --fix",
