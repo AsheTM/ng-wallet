@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { EtherTestModule } from './ether-test.module';
 import { EtherWalletService } from './ether-wallet.service';
 
+
 describe('EtherWalletService', () => {
   let service: EtherWalletService;
 

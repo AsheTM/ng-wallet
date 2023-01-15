@@ -3,11 +3,13 @@ import { NgModule } from "@angular/core";
 import { EtherModule } from "./ether.module";
 import { ETHER_TOKEN } from "./ether.token";
 
+import * as abiMock from '../assets/abi.mock.json';
+
 
 @NgModule({
   exports: [EtherModule],
   imports: [EtherModule.forRoot({
-    abi: '',
+    abi: abiMock,
     addressContract: '0x0'
   })],
   providers: [{

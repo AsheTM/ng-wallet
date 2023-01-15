@@ -4,6 +4,7 @@ import { EtherTestModule } from './ether-test.module';
 import { EtherTransactionRef } from './ether-transaction-ref.class';
 import { EtherTransactionService } from './ether-transaction.service';
 
+
 describe('EtherTransactionService', () => {
   let service: EtherTransactionService;
 
