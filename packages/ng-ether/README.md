@@ -53,12 +53,12 @@ export class AppModule { }
 
 Tokens are ``InjectionToken<T>`` that needs to be injected in order to get its value
 
-1. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
-2. ``ETHER_TOKEN_IS_METAMASK_WALLET`` returns boolean, true if MetaMask wallet is installed in browser
-3. ``ETHER_TOKEN`` returns ``window.ethereum`` object, if you wish a direct manipulation
-4. 
-5. 
-6. 
+1. ``ETHER_TOKEN`` returns ``window.ethereum`` object, if you wish a direct manipulation
+2. ``ETHER_TOKEN_ABI`` returns string ``abi`` provided in configuration forRoot static method
+3. ``ETHER_TOKEN_ADDRESS_CONTRACT`` returns ``addressContract`` string provided in configuration forRoot static method
+4. ``ETHER_TOKEN_IS_METAMASK_WALLET`` returns boolean, true if MetaMask wallet is installed in browser
+5. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
+6. ``ETHER_TOKEN_NETWORK_ID`` returns ``networkId`` string provided in configuration forRoot static method, default value is ``any``
 
 ### Services
 
@@ -76,11 +76,15 @@ Those following are ``Observable`` and emits when account or network change
 
 And for methods, there is the following: 
 
+* ``addNetwork(newNetwork: TEtherNetwork)`` returns ``Observable<true | TEtherError>`` listen to if a new network is created successfully and emits a value, of type either ``true``if success or ``TEtherNetworkChange = { newNetwork: TEtherNetwork; oldNetwork?: TEtherNetwork; }`` for failure.
+
 * ``onNetworkChange()`` returns ``Observable<TEtherNetworkChange>`` listen to network change event and emits ``TEtherNetworkChange = { newNetwork: TEtherNetwork; oldNetwork?: TEtherNetwork; }`` value that contains informations of new network and old network.
 
 or the second definition
 
 * ``onNetworkChange(fn: (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => void)`` returns ``void`` nothing, you need to provide a function with 2 arguments; first arguments is informùation of new network and second is information of old network.
+
+* ``switchNetwork(chainId: EEtherNetworkChainId)`` returns ``Observable<true | TEtherError>`` listen to if the switch to a specified network is done successfully and emits a value, of type either ``true``if success or ``TEtherNetworkChange = { newNetwork: TEtherNetwork; oldNetwork?: TEtherNetwork; }`` for failure.
 
 #### EtherTransactionService
 
