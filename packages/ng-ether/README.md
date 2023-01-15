@@ -162,9 +162,7 @@ You can interact with your custom deployed contract, like in the example below:
 import { ACustomContract, ContractInjectable } from '@ashetm/ng-ether';
 ...
 
-@ContractInjectable({
-  provided: 'root'
-}) // Compulsory, to annotate it
+@ContractInjectable() // Compulsory, to annotate it
 export class CustomContract extends ACustomContract { // Compulsory, extends ACustomContract
 
   test(): Observable<any> {
