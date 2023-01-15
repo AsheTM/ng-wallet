@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
 
 
-export type TContractFunction = ((...args: unknown[]) => Observable<unknown>) | { _$?: null; };
-export type TCustomContractFunction = Record<string, (...args: unknown[]) => Promise<unknown>>;
+export type TContractFunction = ((...args: any[]) => Observable<any>) | { _$?: null; };
+export type TCustomContractFunction = Record<string, (...args: any[]) => Promise<any>>;
