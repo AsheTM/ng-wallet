@@ -22,6 +22,7 @@ import { TEtherConfigurationRoot } from './ether.type';
 
 @NgModule({
   declarations: [EtherContractFnAsyncPipe],
+  exports: [EtherContractFnAsyncPipe],
   imports: [CommonModule],
   providers: [
     {

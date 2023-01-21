@@ -1,6 +1,7 @@
 
 export * from './lib/ether-contract-custom.class';
 export * from './lib/ether-contract-custom.type';
+export * from './lib/ether-contract-fn-async.pipe';
 export * from './lib/ether-contract.class';
 export * from './lib/ether-contract.decorator';
 export * from './lib/ether-network-service.class';
