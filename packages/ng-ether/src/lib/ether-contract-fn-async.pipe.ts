@@ -1,7 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
-import { Observable } from 'rxjs';
-import { TContractFunction } from './ether-contract-custom.type';
+import { Observable, Subscribable } from 'rxjs';
 
 
 @Pipe({
@@ -11,8 +10,8 @@ export class EtherContractFnAsyncPipe implements PipeTransform {
 
   constructor(private readonly _changeDetectionRef: ChangeDetectorRef) { }
 
-  transform(fn: TContractFunction, ...args: any[]): any {
-    return new AsyncPipe(this._changeDetectionRef).transform((fn as ((...args: any[]) => Observable<any>))(args));
+  transform(fn: (...args: any[]) => Observable<any> | Subscribable<any> | Promise<any>, ...args: any[]): any {
+    return new AsyncPipe(this._changeDetectionRef).transform(fn(args));
   }
 
 }
