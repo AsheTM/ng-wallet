@@ -38,12 +38,12 @@ import { TEtherConfigurationRoot } from './ether.type';
       useFactory: (
         addressContract: TEtherConfigurationRoot['addressContract'],
         abi: TEtherConfigurationRoot['abi'],
-        provider: AEtherProvider
-      ) => new ethers.Contract(addressContract, abi, provider),
+        signer: AEtherSigner
+      ) => new ethers.Contract(addressContract, abi, signer),
       deps: [
         ETHER_TOKEN_ADDRESS_CONTRACT,
         ETHER_TOKEN_ABI,
-        AEtherProvider
+        AEtherSigner
       ]
     }, {
       provide: AEtherSigner,
