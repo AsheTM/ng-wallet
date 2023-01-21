@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ethers } from 'ethers';
+
+import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
 import { AEtherContract } from './ether-contract.class';
 import { EtherNetworkService } from './ether-network.service';
 
@@ -19,6 +21,7 @@ import { TEtherConfigurationRoot } from './ether.type';
 
 
 @NgModule({
+  declarations: [EtherContractFnAsyncPipe],
   imports: [CommonModule],
   providers: [
     {
