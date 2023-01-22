@@ -3,10 +3,9 @@ import { switchMapTo, takeUntil } from 'rxjs/operators';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 
 import { AEtherNetworkService } from './ether-network-service.class';
-import { EEtherNetworkChainId } from './ether-network.enum';
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
-import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
+import { TEtherNetwork, TEtherNetworkChange, TEtherNetworkInfoChainId } from './ether-network.type';
 import { EEtherEventWallet } from './ether.enum';
 import { ETHER_TOKEN } from './ether.token';
 import { TEtherBigNumber, TEtherError } from './ether.type';
@@ -74,12 +73,12 @@ export class EtherNetworkService extends AEtherNetworkService implements OnDestr
       });
   }
 
-  switchNetwork(chainId: EEtherNetworkChainId): Observable<true | TEtherError> {
+  switchNetwork(chainId: TEtherNetworkInfoChainId): Observable<true | TEtherError> {
     const subject: Subject<true | TEtherError> = new ReplaySubject<true | TEtherError>(1);
 
     this._ethereum.request({
       method: EEtherEventWallet.SWITCH_ETHEREUM_CHAIN,
-      params: [{ chainId: "" + chainId }]
+      params: [{ chainId: `${chainId}`.startsWith('0x') ? chainId : `0x${chainId}` }]
     }).then(() => {
       subject.next(true);
     }).catch(subject.error);

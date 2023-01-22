@@ -1,8 +1,7 @@
 import { Observable } from "rxjs";
 
-import { EEtherNetworkChainId } from "./ether-network.enum";
 import { AEtherService } from "./ether-service.class";
-import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
+import { TEtherNetwork, TEtherNetworkChange, TEtherNetworkInfoChainId } from './ether-network.type';
 import { TEtherBigNumber, TEtherError } from "./ether.type";
 
 
@@ -16,6 +15,6 @@ export abstract class AEtherNetworkService extends AEtherService {
   abstract addNetwork(newNetwork: TEtherNetwork): Observable<true | TEtherError>;
   abstract onNetworkChange(): Observable<TEtherNetworkChange>;
   abstract onNetworkChange(fn: (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => void): void;
-  abstract switchNetwork(chainId: EEtherNetworkChainId): Observable<true | TEtherError>;
+  abstract switchNetwork(chainId: TEtherNetworkInfoChainId): Observable<true | TEtherError>;
 
 }
