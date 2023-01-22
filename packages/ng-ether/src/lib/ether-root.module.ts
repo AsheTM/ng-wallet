@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 
 import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
 import { AEtherContract } from './ether-contract.class';
+import { EEtherNetworkChainId } from './ether-network.enum';
 import { EtherNetworkService } from './ether-network.service';
 
 import { AEtherProvider } from './ether-provider.class';
@@ -15,7 +16,8 @@ import {
   ETHER_TOKEN_ABI,
   ETHER_TOKEN_ADDRESS_CONTRACT,
   ETHER_TOKEN_IS_METAMASK_WALLET,
-  ETHER_TOKEN_IS_WALLET_INSTALLED
+  ETHER_TOKEN_IS_WALLET_INSTALLED,
+  ETHER_TOKEN_NETWORK_ID
 } from './ether.token';
 import { TEtherConfigurationRoot } from './ether.type';
 
@@ -35,8 +37,14 @@ import { TEtherConfigurationRoot } from './ether.type';
       deps: [ETHER_TOKEN]
     }, {
       provide: AEtherProvider,
-      useFactory: (ether: any) => new ethers.providers.Web3Provider(ether, 'any'),
-      deps: [ETHER_TOKEN]
+      useFactory: (
+        ether: any,
+        networkId: EEtherNetworkChainId | 'any'
+      ) => new ethers.providers.Web3Provider(ether, networkId),
+      deps: [
+        ETHER_TOKEN,
+        ETHER_TOKEN_NETWORK_ID
+      ]
     }, {
       provide: AEtherContract,
       useFactory: (

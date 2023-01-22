@@ -4,7 +4,7 @@ import { filter, map, shareReplay, switchMapTo } from 'rxjs/operators';
 
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
-import { TEtherNetwork, TEtherNetworkChange } from './ether.type';
+import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
 
 
 export abstract class AEtherService {

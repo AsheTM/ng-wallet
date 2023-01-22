@@ -1,20 +1,21 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Network } from '@ethersproject/networks';
+
+import { EEtherNetworkChainId } from './ether-network.enum';
 
 // import { EEtherNetwork } from './ether.enum';
 
 
 // export type TEtherSupportedNetwork = Readonly<Partial<Record<`0x${number}` | number, EEtherNetwork>>>;
+
+export type TEtherBigNumber = BigNumber;
+
 export type TEtherConfigurationRoot = {
   addressContract: `0x${string | number}`;
   abi: string | any;
+  networkId?: EEtherNetworkChainId | 'any';
 };
 
-export type TEtherNetwork = Network;
-
-export type TEtherNetworkChange = {
-  newNetwork: TEtherNetwork;
-  oldNetwork?: TEtherNetwork;
-};
-
-export type TEtherBigNumber = BigNumber;
+export type TEtherError = {
+  code: number;
+  message: string;
+} & Partial<Record<string, unknown>>;

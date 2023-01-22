@@ -2,7 +2,7 @@ import { Inject, ModuleWithProviders, NgModule, Provider } from '@angular/core';
 
 import { EtherRootModule } from './ether-root.module';
 import { EEtherInstance } from './ether.enum';
-import { ETHER_TOKEN_ABI, ETHER_TOKEN_ADDRESS_CONTRACT, ETHER_TOKEN_INSTANCE } from './ether.token';
+import { ETHER_TOKEN_ABI, ETHER_TOKEN_ADDRESS_CONTRACT, ETHER_TOKEN_INSTANCE, ETHER_TOKEN_NETWORK_ID } from './ether.token';
 import { TEtherConfigurationRoot } from './ether.type';
 
 
@@ -29,7 +29,8 @@ export class EtherModule {
     if(configuration) {
       const {
         addressContract,
-        abi
+        abi,
+        networkId
       }: TEtherConfigurationRoot = configuration;
 
       extraProviders = [
@@ -40,6 +41,9 @@ export class EtherModule {
         }, {
           provide: ETHER_TOKEN_ABI,
           useValue: abi
+        }, {
+          provide: ETHER_TOKEN_NETWORK_ID,
+          useValue: networkId || 'any'
         }
       ];
     }
