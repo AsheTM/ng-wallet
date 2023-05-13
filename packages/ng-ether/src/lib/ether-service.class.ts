@@ -1,16 +1,34 @@
 import { NgZone } from '@angular/core';
 import { Observable, OperatorFunction, race, Subscriber } from 'rxjs';
-import { filter, map, shareReplay, switchMapTo } from 'rxjs/operators';
+import { distinctUntilKeyChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 
+import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
-import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
 
 
 export abstract class AEtherService {
 
   protected readonly _accountChange$: Observable<string[]>
-    = this._onAccountChange().pipe(filter((accounts: string[]) => accounts.length !== 0));
+    = new Observable<string[]>((subscriber: Subscriber<string[]>) => {
+      type TObjectOnEventAccountsChanged = Record<
+        'on',
+        (eventNetwork: 'accountsChanged', fn: (accounts: string[]) => void) => void
+      >;
+
+      this._ngZone.run(async () => {
+        const firstListAccounts: string[] = await this._aEtherProvider.listAccounts();
+
+        subscriber.next(firstListAccounts);
+        (this._aEtherProvider as unknown as Record<'provider', TObjectOnEventAccountsChanged>).provider
+          .on('accountsChanged', (accounts: string[]) => {
+            subscriber.next(accounts);
+          });
+      });
+    }).pipe(
+      distinctUntilKeyChanged(0),
+      shareReplay(1),
+    );
   protected readonly _networkChange$: Observable<TEtherNetworkChange>
     = new Observable<TEtherNetworkChange>((
       subscriber: Subscriber<TEtherNetworkChange>
@@ -24,19 +42,13 @@ export abstract class AEtherService {
           oldNetwork
         })
       }));
-    });
+    }).pipe(shareReplay(1));
 
   constructor(
     protected readonly _ngZone: NgZone,
     protected readonly _aEtherProvider: AEtherProvider,
     protected readonly _aEtherSigner: AEtherSigner
   ) { }
-
-  protected _onAccountChange(): Observable<string[]> {
-    return new Observable<string[]>((subscriber: Subscriber<string[]>) => {
-      this._ngZone.run(() => (this._aEtherProvider as any).on('accountsChanged', subscriber.next));
-    }).pipe(shareReplay(1));
-  }
 
   protected _onAccountOrNetworkChange(): Observable<string[] | TEtherNetworkChange> {
     return race(
@@ -47,7 +59,7 @@ export abstract class AEtherService {
 
   protected _switchMapToAccount<T> (index: number): OperatorFunction<T, string> {
     return (source: Observable<T>) => source.pipe(
-      switchMapTo(this._accountChange$),
+      switchMap((_: T) => this._accountChange$),
       map((accounts: string[]) => accounts[index])
     );
   }
