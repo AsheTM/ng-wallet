@@ -1,22 +1,33 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { from, Observable, Subject, Subscriber } from 'rxjs';
-import { filter, map, mapTo, pluck, switchMap, take, takeUntil } from 'rxjs/operators';
+import { from, Observable, of, Subject, Subscriber, timer } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
 import { AEtherWalletService } from './ether-wallet-service.class';
 import { TEtherBigNumber } from './ether.type';
+import { formatWei } from './ether.util';
 
 
 @Injectable()
 export class EtherWalletService extends AEtherWalletService implements OnDestroy {
 
   readonly account$: Observable<string>
-    = this._accountChange$.pipe(pluck('0'));
+    = this._accountChange$.pipe(map(([account]: string[]) => account));
   readonly balance$: Observable<TEtherBigNumber>
     = this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),
-      switchMap((account: string) => this._aEtherProvider.getBalance(account))
+      switchMap((account: string) => timer(0, 500).pipe(
+        switchMap((_: number) => from(this._aEtherProvider.getBalance(account)))
+      )),
+      switchMap((balance: TEtherBigNumber) => of(balance).pipe(
+        map((balance: TEtherBigNumber): string => formatWei(balance)),
+        distinctUntilChanged((
+          previousBalance: string,
+          nextBalance: string
+        ): boolean => previousBalance === nextBalance),
+        map((_: string): TEtherBigNumber => balance)
+      ))
     );
   readonly transactionCount$: Observable<number>
     = this._onAccountOrNetworkChange().pipe(
@@ -82,7 +93,7 @@ export class EtherWalletService extends AEtherWalletService implements OnDestroy
   onConnect(): Observable<boolean>;
   onConnect(fn: (isConnected: boolean) => void): void;
   onConnect(fn?: (isConnected: boolean) => void): Observable<boolean> | void {
-    const onConnect$: Observable<boolean> = this._onAccountChange()
+    const onConnect$: Observable<boolean> = this._accountChange$
       .pipe(map((accounts: string[]) => accounts.length !== 0));
 
     if(!fn) {
@@ -97,9 +108,9 @@ export class EtherWalletService extends AEtherWalletService implements OnDestroy
   onDisconnect(): Observable<void>;
   onDisconnect(fn: () => void): void;
   onDisconnect(fn?: () => void): Observable<void> | void {
-    const onDisconnect$: Observable<void> = this._onAccountChange().pipe(
+    const onDisconnect$: Observable<void> = this._accountChange$.pipe(
       filter((accounts: string[]) => accounts.length === 0),
-      mapTo(void 0)
+      map((_: string[]) => void 0)
     );
 
     if(!fn) {
