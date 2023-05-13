@@ -22,3 +22,4 @@ export * from './lib/ether.enum';
 export * from './lib/ether.module';
 export * from './lib/ether.token';
 export * from './lib/ether.type';
+export * from './lib/ether.util';
