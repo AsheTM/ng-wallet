@@ -1,4 +1,4 @@
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers';
 
 import { TEtherBigNumber } from './ether.type';
 
@@ -25,4 +25,4 @@ export {
   formatMwei,
   formatWei
 };
-export { formatEther } from 'ethers/lib/utils';
+export { formatEther } from 'ethers';

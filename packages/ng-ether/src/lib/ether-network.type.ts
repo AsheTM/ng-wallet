@@ -1,4 +1,4 @@
-import { Network } from '@ethersproject/networks';
+import { Network } from 'ethers';
 
 import { EEtherNetworkChainId } from "./ether-network.enum";
 

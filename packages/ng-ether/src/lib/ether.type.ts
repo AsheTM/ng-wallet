@@ -1,12 +1,11 @@
-import { BigNumber } from '@ethersproject/bignumber';
-
 import { EEtherNetworkChainId } from './ether-network.enum';
 
 // import { EEtherNetwork } from './ether.enum';
 
 // export type TEtherSupportedNetwork = Readonly<Partial<Record<`0x${number}` | number, EEtherNetwork>>>;
 
-export type TEtherBigNumber = BigNumber;
+// ethers v6 uses native bigint instead of BigNumber
+export type TEtherBigNumber = bigint;
 
 export type TEtherConfigurationRoot = {
   addressContract: `0x${string | number}`;

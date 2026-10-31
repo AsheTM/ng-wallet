@@ -1,10 +1,6 @@
-import { TransactionRequest, TransactionResponse } from '@ethersproject/providers';
-import { Deferrable } from 'ethers/lib/utils';
+import { TransactionRequest, TransactionResponse } from 'ethers';
 
 
-export type TEtherTransactionRequest = Deferrable<
-  Pick<TransactionRequest, 'chainId' | 'from' | 'to' | 'value'>
-    & Partial<Record<'value', string>>
->;
+export type TEtherTransactionRequest = Pick<TransactionRequest, 'chainId' | 'from' | 'to' | 'value'>;
 
 export type TEtherTransactionResponse = TransactionResponse;
