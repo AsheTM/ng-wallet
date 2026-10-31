@@ -26,7 +26,7 @@ describe('EtherContractFnAsyncPipe', () => {
     });
     const changeDetectionRef: ChangeDetectorRef = TestBed.inject(ChangeDetectorRef);
 
-    pipe = new EtherContractFnAsyncPipe(changeDetectionRef);
+    pipe = TestBed.runInInjectionContext(() => new EtherContractFnAsyncPipe(changeDetectionRef));
     service = TestBed.inject(ContractServiceMock);
   });
 
