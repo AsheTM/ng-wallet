@@ -1,6 +1,7 @@
 import { InjectionToken } from "@angular/core";
 
 import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
+import { TEtherConfigurationRoot } from "./ether.type";
 // import { TEtherSupportedNetwork } from "./ether.type";
 
 
@@ -9,6 +10,11 @@ export const ETHER_TOKEN: InjectionToken<any>
     factory: () => (window as any).ethereum,
     providedIn: 'root'
   });
+export const ETHER_TOKEN_ABI: InjectionToken<TEtherConfigurationRoot['abi']>
+  = new InjectionToken<TEtherConfigurationRoot['abi']>('ETHER_TOKEN_ABI');
+
+export const ETHER_TOKEN_ADDRESS_CONTRACT: InjectionToken<TEtherConfigurationRoot['addressContract']>
+  = new InjectionToken<TEtherConfigurationRoot['addressContract']>('ETHER_TOKEN_ADDRESS_CONTRACT');
 
 export const ETHER_TOKEN_INSTANCE: InjectionToken<EEtherInstance>
   = new InjectionToken<EEtherInstance>('ETHER_TOKEN_INSTANCE');
@@ -18,6 +24,9 @@ export const ETHER_TOKEN_IS_METAMASK_WALLET: InjectionToken<boolean>
 
 export const ETHER_TOKEN_IS_WALLET_INSTALLED: InjectionToken<boolean>
   = new InjectionToken<boolean>('ETHER_TOKEN_IS_WALLET_INSTALLED');
+
+export const ETHER_TOKEN_NETWORK_ID: InjectionToken<TEtherConfigurationRoot['networkId']>
+  = new InjectionToken<TEtherConfigurationRoot['networkId']>('ETHER_TOKEN_NETWORK_ID');
 
 // export const ETHER_TOKEN_NETWORKS: InjectionToken<TEtherSupportedNetwork>
 //   = new InjectionToken<TEtherSupportedNetwork>('ETHER_TOKEN_SUPPORTED_NETWORKS', {
