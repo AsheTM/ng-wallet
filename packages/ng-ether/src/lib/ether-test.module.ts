@@ -10,7 +10,7 @@ import * as abiMock from '../assets/abi.mock.json';
   exports: [EtherModule],
   imports: [EtherModule.forRoot({
     abi: abiMock,
-    addressContract: '0x0'
+    addressContract: '0x0000000000000000000000000000000000000000'
   })],
   providers: [{
     provide: ETHER_TOKEN,
