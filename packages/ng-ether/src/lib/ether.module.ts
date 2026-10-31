@@ -1,13 +1,9 @@
-import { Inject, ModuleWithProviders, NgModule, Provider } from '@angular/core';
+import { Inject, ModuleWithProviders, NgModule } from '@angular/core';
 
 import { EtherRootModule } from './ether-root.module';
 import { EEtherInstance } from './ether.enum';
-import {
-  ETHER_TOKEN_ABI,
-  ETHER_TOKEN_ADDRESS_CONTRACT,
-  ETHER_TOKEN_INSTANCE,
-  ETHER_TOKEN_NETWORK_ID,
-} from './ether.token';
+import { provideEther } from './ether.providers';
+import { ETHER_TOKEN_INSTANCE } from './ether.token';
 import { TEtherConfigurationRoot } from './ether.type';
 
 @NgModule({
@@ -33,36 +29,6 @@ export class EtherModule {
   static forRoot(
     configuration?: TEtherConfigurationRoot
   ): ModuleWithProviders<EtherRootModule> {
-    const defaultNetworkId: TEtherConfigurationRoot['networkId'] = 'any';
-    let extraProviders: Provider[];
-
-    if (configuration) {
-      const { addressContract, abi, networkId }: TEtherConfigurationRoot =
-        configuration;
-
-      extraProviders = [
-        {
-          provide: ETHER_TOKEN_ADDRESS_CONTRACT,
-          useValue: addressContract,
-        },
-        {
-          provide: ETHER_TOKEN_ABI,
-          useValue: abi,
-        },
-        {
-          provide: ETHER_TOKEN_NETWORK_ID,
-          useValue: networkId || defaultNetworkId,
-        },
-      ];
-    } else {
-      extraProviders = [
-        {
-          provide: ETHER_TOKEN_NETWORK_ID,
-          useValue: defaultNetworkId,
-        },
-      ];
-    }
-
     return {
       ngModule: EtherRootModule,
       providers: [
@@ -71,7 +37,7 @@ export class EtherModule {
           useValue: EEtherInstance.FOR_ROOT,
         },
 
-        ...extraProviders,
+        provideEther(configuration),
       ],
     };
   }
