@@ -6,7 +6,6 @@ import { EtherRootModule } from "./ether-root.module";
 
 
 export function ContractInjectable(): TypeDecorator {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   return function<T extends { new (...args: any[]): { } & ACustomContract }>(target: T): T {
     @Injectable({
       providedIn: EtherRootModule,
