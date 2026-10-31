@@ -1,7 +1,9 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { FeeData } from 'ethers';
 import { from, interval, Observable, Subject } from 'rxjs';
 import {
   distinctUntilChanged,
+  filter,
   map,
   switchMap,
   takeUntil,
@@ -33,11 +35,12 @@ export class EtherNetworkService
     this._onAccountOrNetworkChange().pipe(
       switchMap(() =>
         interval(1000).pipe(
-          switchMap((_: number) => this._aEtherProvider.getGasPrice()),
-          distinctUntilChanged(
-            (previousValue: TEtherBigNumber, nextValue: TEtherBigNumber) =>
-              previousValue.toString() === nextValue.toString()
-          )
+          switchMap((_: number) => this._aEtherProvider.getFeeData()),
+          map(({ gasPrice }: FeeData) => gasPrice),
+          filter((gasPrice: TEtherBigNumber | null): gasPrice is TEtherBigNumber =>
+            gasPrice !== null
+          ),
+          distinctUntilChanged()
         )
       )
     );
