@@ -14,6 +14,9 @@ import { AEtherSigner } from './ether-signer.class';
 import { ETHER_TOKEN } from './ether.token';
 
 export abstract class AEtherService {
+  protected readonly _ngZone: NgZone = inject(NgZone);
+  protected readonly _aEtherProvider: AEtherProvider = inject(AEtherProvider);
+  protected readonly _aEtherSigner: AEtherSigner = inject(AEtherSigner);
   // ethers v6 no longer exposes the injected wallet, so its events are listened to directly
   protected readonly _ethereum: any = inject(ETHER_TOKEN);
 
@@ -53,12 +56,6 @@ export abstract class AEtherService {
           this._ethereum.removeListener('chainChanged', onChainChanged);
       }
     ).pipe(shareReplay(1));
-
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {}
 
   protected _onAccountOrNetworkChange(): Observable<
     string[] | TEtherNetworkChange

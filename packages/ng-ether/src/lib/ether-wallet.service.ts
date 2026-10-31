@@ -1,9 +1,7 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { from, Observable, of, Subject, Subscriber, timer } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
-import { AEtherProvider } from './ether-provider.class';
-import { AEtherSigner } from './ether-signer.class';
 import { AEtherWalletService } from './ether-wallet-service.class';
 import { TEtherBigNumber } from './ether.type';
 import { formatWei } from './ether.util';
@@ -37,14 +35,6 @@ export class EtherWalletService extends AEtherWalletService implements OnDestroy
     );
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
-
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {
-    super(_ngZone, _aEtherProvider, _aEtherSigner);
-  }
 
   ngOnDestroy(): void {
     this._destroySubject.next();

@@ -1,4 +1,4 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FeeData } from 'ethers';
 import { from, interval, Observable, Subject, throwError } from 'rxjs';
 import {
@@ -10,8 +10,6 @@ import {
 } from 'rxjs/operators';
 
 import { AEtherNetworkService } from './ether-network-service.class';
-import { AEtherProvider } from './ether-provider.class';
-import { AEtherSigner } from './ether-signer.class';
 import {
   TEtherNetwork,
   TEtherNetworkChange,
@@ -53,14 +51,6 @@ export class EtherNetworkService
   );
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
-
-  constructor(
-    protected readonly _ngZone: NgZone,
-    protected readonly _aEtherProvider: AEtherProvider,
-    protected readonly _aEtherSigner: AEtherSigner
-  ) {
-    super(_ngZone, _aEtherProvider, _aEtherSigner);
-  }
 
   ngOnDestroy(): void {
     this._destroySubject.next();
