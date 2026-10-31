@@ -23,9 +23,8 @@ import { TEtherConfigurationRoot } from './ether.type';
 
 
 @NgModule({
-  declarations: [EtherContractFnAsyncPipe],
   exports: [EtherContractFnAsyncPipe],
-  imports: [CommonModule],
+  imports: [CommonModule, EtherContractFnAsyncPipe],
   providers: [
     {
       provide: ETHER_TOKEN_IS_METAMASK_WALLET,
