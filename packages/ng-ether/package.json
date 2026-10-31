@@ -1,6 +1,6 @@
 {
   "name": "@ashetm/ng-ether",
-  "version": "1*.4.0",
+  "version": "16.4.0",
   "description": "Angular library wrapping ethers with RxJS streams and injectable services to interact with Ethereum wallets (MetaMask), networks, transactions and smart contracts",
   "license": "MIT",
   "contributors": [
