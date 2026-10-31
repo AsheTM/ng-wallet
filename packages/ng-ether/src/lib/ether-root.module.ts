@@ -8,7 +8,7 @@ import { EEtherNetworkChainId } from './ether-network.enum';
 import { EtherNetworkService } from './ether-network.service';
 
 import { AEtherProvider } from './ether-provider.class';
-import { AEtherSigner } from './ether-signer.class';
+import { AEtherSigner, EtherSigner } from './ether-signer.class';
 import { EtherTransactionService } from './ether-transaction.service';
 import { EtherWalletService } from './ether-wallet.service';
 import {
@@ -59,7 +59,7 @@ import { TEtherConfigurationRoot } from './ether.type';
       ]
     }, {
       provide: AEtherSigner,
-      useFactory: (etherProvider: AEtherProvider) => etherProvider?.getSigner(),
+      useFactory: (etherProvider: AEtherProvider) => etherProvider ? new EtherSigner(etherProvider) : null,
       deps: [AEtherProvider]
     },
     EtherNetworkService,
