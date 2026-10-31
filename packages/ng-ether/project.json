@@ -1,28 +1,33 @@
 {
+  "name": "ng-ether",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "root": "packages/ng-ether",
   "sourceRoot": "packages/ng-ether/src",
   "prefix": "wallet-ether",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "project": "packages/ng-ether",
         "tsConfig": "packages/ng-ether/tsconfig.lib.json"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/ng-ether/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/ng-ether/**/*.ts"
+        ]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "packages/ng-ether/jest.config.ts",
-        "tsConfig": "packages/ng-ether/tsconfig.spec.json"
+        "jestConfig": "packages/ng-ether/jest.config.ts"
       }
     }
   },
