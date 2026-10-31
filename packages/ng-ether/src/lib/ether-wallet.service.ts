@@ -13,7 +13,7 @@ import { formatWei } from './ether.util';
 export class EtherWalletService extends AEtherWalletService implements OnDestroy {
 
   readonly account$: Observable<string>
-    = this._accountChange$.pipe(map(([account]: string[]) => account));
+    = this._accountChange$.pipe(map(([account,]: string[]) => account));
   readonly balance$: Observable<TEtherBigNumber>
     = this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),

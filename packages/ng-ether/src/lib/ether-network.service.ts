@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { from, interval, Observable, ReplaySubject, Subject } from 'rxjs';
+import { interval, Observable, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AEtherNetworkService } from './ether-network-service.class';
