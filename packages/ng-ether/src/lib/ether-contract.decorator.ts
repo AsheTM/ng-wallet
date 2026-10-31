@@ -1,16 +1,15 @@
-import { Injectable, TypeDecorator } from "@angular/core";
+import { inject, Injectable, TypeDecorator } from "@angular/core";
 
 import { ACustomContract } from "./ether-contract-custom.class";
 import { AEtherContract } from "./ether-contract.class";
-import { EtherRootModule } from "./ether-root.module";
 
 
 export function ContractInjectable(): TypeDecorator {
   return function<T extends { new (...args: any[]): { } & ACustomContract }>(target: T): T {
+    // Provided in root so it works with both provideEther() and EtherModule.forRoot()
     @Injectable({
-      providedIn: EtherRootModule,
-      useFactory: (contract: AEtherContract) => new CustomSmartContract(contract),
-      deps: [AEtherContract]
+      providedIn: 'root',
+      useFactory: () => new CustomSmartContract(inject(AEtherContract))
     })
     class CustomSmartContract extends target {
 
