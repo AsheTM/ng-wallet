@@ -40,7 +40,7 @@ import { TEtherConfigurationRoot } from './ether.type';
       useFactory: (
         ether: any,
         networkId: EEtherNetworkChainId | 'any'
-      ) => ether ? new ethers.providers.Web3Provider(ether, networkId) : null,
+      ) => ether ? new ethers.BrowserProvider(ether, networkId) : null,
       deps: [
         ETHER_TOKEN,
         ETHER_TOKEN_NETWORK_ID
