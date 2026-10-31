@@ -4,7 +4,6 @@ import { EEtherNetworkChainId } from './ether-network.enum';
 
 // import { EEtherNetwork } from './ether.enum';
 
-
 // export type TEtherSupportedNetwork = Readonly<Partial<Record<`0x${number}` | number, EEtherNetwork>>>;
 
 export type TEtherBigNumber = BigNumber;
@@ -15,6 +14,10 @@ export type TEtherConfigurationRoot = {
   networkId?: EEtherNetworkChainId | 'any';
 };
 
+/**
+ * @deprecated
+ * @unused
+ */
 export type TEtherError = {
   code: number;
   message: string;

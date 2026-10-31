@@ -40,7 +40,7 @@ import { TEtherConfigurationRoot } from './ether.type';
       useFactory: (
         ether: any,
         networkId: EEtherNetworkChainId | 'any'
-      ) => new ethers.providers.Web3Provider(ether, networkId),
+      ) => ether ? new ethers.providers.Web3Provider(ether, networkId) : null,
       deps: [
         ETHER_TOKEN,
         ETHER_TOKEN_NETWORK_ID
@@ -59,7 +59,7 @@ import { TEtherConfigurationRoot } from './ether.type';
       ]
     }, {
       provide: AEtherSigner,
-      useFactory: (etherProvider: AEtherProvider) => etherProvider.getSigner(),
+      useFactory: (etherProvider: AEtherProvider) => etherProvider?.getSigner(),
       deps: [AEtherProvider]
     },
     EtherNetworkService,
