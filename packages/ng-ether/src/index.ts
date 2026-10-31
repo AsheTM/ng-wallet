@@ -1,9 +1,17 @@
 
+export * from './lib/ether-contract-custom.class';
+export * from './lib/ether-contract-custom.type';
+export * from './lib/ether-contract-fn-async.pipe';
+export * from './lib/ether-contract.class';
+export * from './lib/ether-contract.decorator';
+export * from './lib/ether-network.enum';
 export * from './lib/ether-network-service.class';
 export * from './lib/ether-network.service';
+export * from './lib/ether-network.type';
 export * from './lib/ether-provider.class';
 export * from './lib/ether-root.module';
 export * from './lib/ether-service.class';
+export * from './lib/ether-signer.class'
 export * from './lib/ether-test.module';
 export * from './lib/ether-transaction-ref.class';
 export * from './lib/ether-transaction.service';
@@ -14,3 +22,4 @@ export * from './lib/ether.enum';
 export * from './lib/ether.module';
 export * from './lib/ether.token';
 export * from './lib/ether.type';
+export * from './lib/ether.util';

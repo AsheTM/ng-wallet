@@ -42,3 +42,6 @@ Thumbs.db
 
 # Git Credentials
 *.git-credentials
+
+# Ignore version installed in package-lock
+package-lock.json
