@@ -1,6 +1,6 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { FeeData } from 'ethers';
-import { from, interval, Observable, Subject } from 'rxjs';
+import { from, interval, Observable, Subject, throwError } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -47,10 +47,9 @@ export class EtherNetworkService
   readonly network$: Observable<TEtherNetwork> = this.onNetworkChange().pipe(
     map(({ newNetwork }: TEtherNetworkChange) => newNetwork)
   );
-  readonly price$: Observable<number> = this._onAccountOrNetworkChange().pipe(
-    switchMap((_: string[] | TEtherNetworkChange) =>
-      this._aEtherProvider.getEtherPrice()
-    )
+  // TODO: read the price from a Chainlink price feed, ethers v6 has no ether price lookup
+  readonly price$: Observable<number> = throwError(
+    () => new Error(`'price$' is not supported since ethers v6`)
   );
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();
