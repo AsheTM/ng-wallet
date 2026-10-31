@@ -1,4 +1,4 @@
-import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { from, interval, Observable, Subject } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -16,7 +16,6 @@ import {
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
 import { EEtherEventWallet } from './ether.enum';
-import { ETHER_TOKEN } from './ether.token';
 import { TEtherBigNumber } from './ether.type';
 
 @Injectable()
@@ -43,7 +42,7 @@ export class EtherNetworkService
       )
     );
   readonly network$: Observable<TEtherNetwork> = this.onNetworkChange().pipe(
-    switchMap((_: TEtherNetworkChange) => this._aEtherProvider.getNetwork())
+    map(({ newNetwork }: TEtherNetworkChange) => newNetwork)
   );
   readonly price$: Observable<number> = this._onAccountOrNetworkChange().pipe(
     switchMap((_: string[] | TEtherNetworkChange) =>
@@ -54,8 +53,6 @@ export class EtherNetworkService
   private readonly _destroySubject: Subject<void> = new Subject<void>();
 
   constructor(
-    @Inject(ETHER_TOKEN)
-    private readonly _ethereum: any,
     protected readonly _ngZone: NgZone,
     protected readonly _aEtherProvider: AEtherProvider,
     protected readonly _aEtherSigner: AEtherSigner

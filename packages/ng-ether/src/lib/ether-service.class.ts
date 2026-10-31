@@ -1,4 +1,5 @@
-import { NgZone } from '@angular/core';
+import { inject, NgZone } from '@angular/core';
+import { Network } from 'ethers';
 import { Observable, OperatorFunction, merge, Subscriber } from 'rxjs';
 import {
   distinctUntilKeyChanged,
@@ -10,56 +11,46 @@ import {
 import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
+import { ETHER_TOKEN } from './ether.token';
 
 export abstract class AEtherService {
+  // ethers v6 no longer exposes the injected wallet, so its events are listened to directly
+  protected readonly _ethereum: any = inject(ETHER_TOKEN);
+
   protected readonly _accountChange$: Observable<string[]> = new Observable<
     string[]
   >((subscriber: Subscriber<string[]>) => {
-    type TObjectOnEventAccountsChanged = Record<
-      'on',
-      (
-        eventNetwork: 'accountsChanged',
-        fn: (accounts: string[]) => void
-      ) => void
-    >;
+    const onAccountsChanged = (accounts: string[]) => {
+      this._ngZone.run(() => subscriber.next(accounts));
+    };
 
-    this._ngZone.run(async () => {
-      const firstListAccounts: string[] =
-        await this._aEtherProvider.listAccounts();
+    this._aEtherProvider
+      .send('eth_accounts', [])
+      .then(onAccountsChanged, (error: unknown) => subscriber.error(error));
+    this._ethereum.on('accountsChanged', onAccountsChanged);
 
-      subscriber.next(firstListAccounts);
-      (
-        this._aEtherProvider as unknown as Record<
-          'provider',
-          TObjectOnEventAccountsChanged
-        >
-      ).provider.on('accountsChanged', (accounts: string[]) => {
-        subscriber.next(accounts);
-      });
-    });
+    return () =>
+      this._ethereum.removeListener('accountsChanged', onAccountsChanged);
   }).pipe(distinctUntilKeyChanged(0), shareReplay(1));
   protected readonly _networkChange$: Observable<TEtherNetworkChange> =
     new Observable<TEtherNetworkChange>(
       (subscriber: Subscriber<TEtherNetworkChange>) => {
-        type TObjectOnEventNetwork = Record<
-          'on',
-          (
-            eventNetwork: 'network',
-            fn: (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => void
-          ) => void
-        >;
+        let oldNetwork: TEtherNetwork | undefined;
+        const onNetwork = (newNetwork: TEtherNetwork) => {
+          this._ngZone.run(() => subscriber.next({ newNetwork, oldNetwork }));
+          oldNetwork = newNetwork;
+        };
+        const onChainChanged = (chainId: string) => {
+          onNetwork(Network.from(BigInt(chainId)));
+        };
 
-        this._ngZone.run(() =>
-          (this._aEtherProvider as TObjectOnEventNetwork).on(
-            'network',
-            (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => {
-              subscriber.next({
-                newNetwork,
-                oldNetwork,
-              });
-            }
-          )
-        );
+        this._aEtherProvider
+          .getNetwork()
+          .then(onNetwork, (error: unknown) => subscriber.error(error));
+        this._ethereum.on('chainChanged', onChainChanged);
+
+        return () =>
+          this._ethereum.removeListener('chainChanged', onChainChanged);
       }
     ).pipe(shareReplay(1));
 
