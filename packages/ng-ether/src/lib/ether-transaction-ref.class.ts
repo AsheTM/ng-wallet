@@ -33,12 +33,10 @@ export class EtherTransactionRef {
     amount: number,
     unit: 'wei' | 'kwei' | 'gwei' | 'ether'
   ): Observable<TEtherTransactionResponse> {
-    const value: string = ethers.utils.parseUnits(amount + '', unit).toString();
+    // The signer fills in the sender and the chain ID
     const transaction: TEtherTransactionRequest = {
-      chainId: this._aEtherSigner.getChainId(),
-      from: this._aEtherSigner.getAddress(),
       to: this._accountAddress,
-      value,
+      value: ethers.parseUnits(amount + '', unit),
     };
 
     return from(this._aEtherSigner.sendTransaction(transaction));
