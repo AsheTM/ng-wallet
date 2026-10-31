@@ -11,13 +11,7 @@ export function ContractInjectable(): TypeDecorator {
       providedIn: 'root',
       useFactory: () => new CustomSmartContract(inject(AEtherContract))
     })
-    class CustomSmartContract extends target {
-
-      constructor(...args: any[]) {
-        super(args[0]);
-      }
-
-    }
+    class CustomSmartContract extends target { }
 
     return CustomSmartContract;
   };

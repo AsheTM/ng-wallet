@@ -9,9 +9,6 @@ export default [
   {
     files: ['**/*.ts'],
     rules: {
-      // TODO: back to error once services use inject() and standalone APIs
-      '@angular-eslint/prefer-inject': 'warn',
-      '@angular-eslint/prefer-standalone': 'warn',
       '@angular-eslint/directive-selector': [
         'error',
         {
