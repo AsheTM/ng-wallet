@@ -1,3 +1,7 @@
+# 1.5.0
+
+- [x] Release @ashetm/ng-ether@v20.2.0, with signal and hook functions
+
 # 1.4.0
 
 - [x] Release @ashetm/ng-ether@v20.1.0, compatible with Angular v20 and later
