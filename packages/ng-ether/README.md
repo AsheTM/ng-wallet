@@ -54,7 +54,8 @@ import { EtherModule } from '@ashetm/ng-ether';
     EtherModule.forRoot({
       abi: [...], // ABI of your deployed smart contract
       addressContract: '0x...', // Address of your deployed smart contract
-      networkId: 'any' // Optional, default value is 'any'
+      networkId: 'any', // Optional, default value is 'any'
+      priceFeed: { 137: '0x...' } // Optional, Chainlink price feed address per chain ID, used by price$
     }),
     ...
   ]
@@ -97,7 +98,7 @@ Those following are ``Observable`` and emits when account or network change
 
 * ``blockNumber$`` is ``Observable<number>`` that emits a ``number`` value of number of block
 * ``gasFee$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns gas price of the current network
-* ``price$`` is ``Observable<number>``, it emits ``number`` value of price of ETH
+* ``price$`` is ``Observable<number>``, it emits ``number`` value of price of ETH in USD, read from the [Chainlink price feed](https://docs.chain.link/data-feeds/price-feeds/addresses) of the current network. It is refreshed every minute and when the network changes. Ethereum mainnet and Sepolia feeds are provided by default (``ETHER_DEFAULT_PRICE_FEED``); add or override feeds per chain ID with the ``priceFeed`` configuration. On a network without a feed, it emits an error ``No price feed configured for chain <chainId>``, and the stream completes: resubscribe (for example with ``retry``) to follow the next network
 
 And for methods, there is the following: 
 

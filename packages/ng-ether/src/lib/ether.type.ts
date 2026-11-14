@@ -7,10 +7,15 @@ import { EEtherNetworkChainId } from './ether-network.enum';
 // ethers v6 uses native bigint instead of BigNumber
 export type TEtherBigNumber = bigint;
 
+// Address of a Chainlink price feed (native currency / USD) per chain ID
+export type TEtherPriceFeed = Partial<Record<number, `0x${string}`>>;
+
 export type TEtherConfigurationRoot = {
   addressContract: `0x${string | number}`;
   abi: string | any;
   networkId?: EEtherNetworkChainId | 'any';
+  // Added to the default feeds (Ethereum mainnet and Sepolia), and overrides them for the same chain
+  priceFeed?: TEtherPriceFeed;
 };
 
 /**

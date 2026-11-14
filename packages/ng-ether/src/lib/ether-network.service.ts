@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { FeeData } from 'ethers';
-import { from, interval, Observable, Subject, throwError } from 'rxjs';
+import { inject, Injectable, OnDestroy } from '@angular/core';
+import { Contract, FeeData, formatUnits } from 'ethers';
+import { from, interval, Observable, Subject, throwError, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -15,14 +15,18 @@ import {
   TEtherNetworkChange,
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
+import { ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
 import { EEtherEventWallet } from './ether.enum';
-import { TEtherBigNumber } from './ether.type';
+import { ETHER_TOKEN_PRICE_FEED } from './ether.token';
+import { TEtherBigNumber, TEtherPriceFeed } from './ether.type';
 
 @Injectable()
 export class EtherNetworkService
   extends AEtherNetworkService
   implements OnDestroy
 {
+  private readonly _priceFeed: Readonly<TEtherPriceFeed> = inject(ETHER_TOKEN_PRICE_FEED);
+
   readonly blockNumber$: Observable<number> =
     this._onAccountOrNetworkChange().pipe(
       switchMap((_: string[] | TEtherNetworkChange) =>
@@ -45,9 +49,38 @@ export class EtherNetworkService
   readonly network$: Observable<TEtherNetwork> = this.onNetworkChange().pipe(
     map(({ newNetwork }: TEtherNetworkChange) => newNetwork)
   );
-  // TODO: read the price from a Chainlink price feed, ethers v6 has no ether price lookup
-  readonly price$: Observable<number> = throwError(
-    () => new Error(`'price$' is not supported since ethers v6`)
+  // Price in USD read from the Chainlink price feed of the current chain, refreshed every minute
+  // (Chainlink updates its feeds on a 0.5% deviation or every hour, so polling faster is wasted calls)
+  readonly price$: Observable<number> = this.onNetworkChange().pipe(
+    switchMap(({ newNetwork }: TEtherNetworkChange) => {
+      const chainId = Number(newNetwork.chainId);
+      const address: `0x${string}` | undefined = this._priceFeed[chainId];
+
+      if (!address) {
+        return throwError(
+          () => new Error(`No price feed configured for chain ${chainId}`)
+        );
+      }
+
+      const priceFeed: Contract = new Contract(
+        address,
+        ETHER_PRICE_FEED_ABI,
+        this._aEtherProvider
+      );
+
+      return timer(0, 60_000).pipe(
+        switchMap((_: number) =>
+          Promise.all([
+            priceFeed['decimals']() as Promise<bigint>,
+            priceFeed['latestRoundData']() as Promise<[bigint, bigint]>,
+          ])
+        ),
+        map(([decimals, [, answer]]: [bigint, [bigint, bigint]]) =>
+          Number(formatUnits(answer, decimals))
+        ),
+        distinctUntilChanged()
+      );
+    })
   );
 
   private readonly _destroySubject: Subject<void> = new Subject<void>();

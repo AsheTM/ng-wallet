@@ -8,6 +8,7 @@ export * from './lib/ether-network.enum';
 export * from './lib/ether-network-service.class';
 export * from './lib/ether-network.service';
 export * from './lib/ether-network.type';
+export * from './lib/ether-price-feed.constant';
 export * from './lib/ether-provider.class';
 export * from './lib/ether-root.module';
 export * from './lib/ether-service.class';

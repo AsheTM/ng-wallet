@@ -1,7 +1,8 @@
 import { InjectionToken } from "@angular/core";
 
 import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
-import { TEtherConfigurationRoot } from "./ether.type";
+import { ETHER_DEFAULT_PRICE_FEED } from "./ether-price-feed.constant";
+import { TEtherConfigurationRoot, TEtherPriceFeed } from "./ether.type";
 // import { TEtherSupportedNetwork } from "./ether.type";
 
 
@@ -27,6 +28,12 @@ export const ETHER_TOKEN_IS_WALLET_INSTALLED: InjectionToken<boolean>
 
 export const ETHER_TOKEN_NETWORK_ID: InjectionToken<TEtherConfigurationRoot['networkId']>
   = new InjectionToken<TEtherConfigurationRoot['networkId']>('ETHER_TOKEN_NETWORK_ID');
+
+export const ETHER_TOKEN_PRICE_FEED: InjectionToken<Readonly<TEtherPriceFeed>>
+  = new InjectionToken<Readonly<TEtherPriceFeed>>('ETHER_TOKEN_PRICE_FEED', {
+    factory: () => ETHER_DEFAULT_PRICE_FEED,
+    providedIn: 'root'
+  });
 
 // export const ETHER_TOKEN_NETWORKS: InjectionToken<TEtherSupportedNetwork>
 //   = new InjectionToken<TEtherSupportedNetwork>('ETHER_TOKEN_SUPPORTED_NETWORKS', {

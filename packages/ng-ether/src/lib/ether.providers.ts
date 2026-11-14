@@ -13,8 +13,10 @@ import {
   ETHER_TOKEN_ADDRESS_CONTRACT,
   ETHER_TOKEN_IS_METAMASK_WALLET,
   ETHER_TOKEN_IS_WALLET_INSTALLED,
-  ETHER_TOKEN_NETWORK_ID
+  ETHER_TOKEN_NETWORK_ID,
+  ETHER_TOKEN_PRICE_FEED
 } from './ether.token';
+import { ETHER_DEFAULT_PRICE_FEED } from './ether-price-feed.constant';
 import { TEtherConfigurationRoot } from './ether.type';
 
 
@@ -35,6 +37,9 @@ export function provideEther(configuration?: TEtherConfigurationRoot): Environme
     {
       provide: ETHER_TOKEN_NETWORK_ID,
       useValue: configuration?.networkId || defaultNetworkId
+    }, {
+      provide: ETHER_TOKEN_PRICE_FEED,
+      useValue: Object.freeze({ ...ETHER_DEFAULT_PRICE_FEED, ...configuration?.priceFeed })
     }, {
       provide: ETHER_TOKEN_IS_METAMASK_WALLET,
       useFactory: () => !!inject(ETHER_TOKEN)?.isMetaMask
