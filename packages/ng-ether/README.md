@@ -193,7 +193,7 @@ Or with second definition
 
 * ``onDisconnect(fn: () => void)`` returns ``void``, you need to provide a callback function without arguments; that emits a ``void`` value if wallet has disconnected
 
-**Note**: the callback definitions stay subscribed until the service is destroyed, so with the application. Prefer the ``Observable`` definitions in components, and unsubscribe (for example with ``takeUntilDestroyed()``).
+**Note**: the callback definitions stay subscribed until the service is destroyed, so with the application. In components, prefer the hooks (see below), or the ``Observable`` definitions and unsubscribe (for example with ``takeUntilDestroyed()``).
 
 ### Signals
 
@@ -231,6 +231,29 @@ export class WalletComponent {
 
   ngOnInit(): void {
     const price = injectPrice({ injector: this._injector });
+  }
+}
+```
+
+### Hooks
+
+Hook functions call a callback on wallet and network events. Like the signals, call them in an injection context, or pass an ``injector``. They stop when their injection context is destroyed (for example the component), and return a function to stop earlier. Without wallet, or on the server, they are never called.
+
+* ``onWalletConnect(fn: (accounts: string[]) => void)`` calls ``fn`` when the wallet connects, and right away if it is already connected. It is not called again on account changes
+* ``onWalletDisconnect(fn: () => void)`` calls ``fn`` when a connected wallet disconnects. It is not called if the wallet is disconnected from the start
+* ``onAccountChange(fn: (accounts: string[]) => void)`` calls ``fn`` on each account change, and right away with the current accounts
+* ``onNetworkChange(fn: (change: TEtherNetworkChange) => void)`` calls ``fn`` on each network change with ``newNetwork`` and ``oldNetwork``, and right away with the current network
+
+```ts
+@Component({ ... })
+export class WalletComponent {
+  constructor() {
+    onWalletConnect((accounts: string[]) => console.log('Connected', accounts));
+    onWalletDisconnect(() => console.log('Disconnected'));
+    onNetworkChange(({ newNetwork }: TEtherNetworkChange) => console.log('Chain', newNetwork.chainId));
+
+    const stop = onAccountChange((accounts: string[]) => console.log('Accounts', accounts));
+    // stop() to stop listening before the component is destroyed
   }
 }
 ```

@@ -1,6 +1,7 @@
 # 20.2.0
 
 - [x] Add signal functions `injectAccount`, `injectAccounts`, `injectIsConnected`, `injectBalance`, `injectNetwork`, `injectChainId`, `injectGasFee` and `injectPrice`
+- [x] Add hook functions `onWalletConnect`, `onWalletDisconnect`, `onAccountChange` and `onNetworkChange`, removed with their component
 
 # 20.1.0
 
