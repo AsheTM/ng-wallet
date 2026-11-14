@@ -1,4 +1,5 @@
 import { EnvironmentProviders, inject, makeEnvironmentProviders, Provider } from '@angular/core';
+import type { Nullable } from '@ashetm/types';
 import { ethers } from 'ethers';
 
 import { AEtherContract } from './contract/ether-contract.class';
@@ -68,14 +69,14 @@ export function provideEther(configuration?: TEtherConfigurationRoot): Environme
     }, {
       provide: AEtherSigner,
       useFactory: () => {
-        const etherProvider: AEtherProvider | null = inject(AEtherProvider);
+        const etherProvider: Nullable<AEtherProvider> = inject(AEtherProvider);
 
         return etherProvider ? new EtherSigner(etherProvider) : null;
       }
     }, {
       provide: AEtherContract,
       useFactory: () => {
-        const signer: AEtherSigner | null = inject(AEtherSigner);
+        const signer: Nullable<AEtherSigner> = inject(AEtherSigner);
         const contract: ethers.Contract = new ethers.Contract(
           inject(ETHER_TOKEN_ADDRESS_CONTRACT),
           inject(ETHER_TOKEN_ABI),

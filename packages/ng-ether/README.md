@@ -43,7 +43,7 @@ Or for a specific version of Angular, by using the matching version from the com
 npm install @ashetm/ng-ether@16
 ```
 
-``ethers`` is installed with the library. ``@angular/router`` is only needed for the route guards (see below).
+``ethers``, ``@ashetm/platform`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards (see below).
 
 ## Import
 
@@ -98,7 +98,7 @@ export class AppModule { }
 
 Tokens are ``InjectionToken<T>`` that need to be injected in order to get their value
 
-1. ``ETHER_TOKEN`` returns the ``window.ethereum`` object, if you wish a direct manipulation. It is ``undefined`` without wallet, and on the server with server-side rendering
+1. ``ETHER_TOKEN`` returns the ``window.ethereum`` object, if you wish a direct manipulation. It is ``undefined`` without wallet, on the server with server-side rendering, and wherever ``window`` does not exist (a web worker, a test without DOM), checked with ``isBrowser()`` from ``@ashetm/platform``
 2. ``ETHER_TOKEN_ABI`` returns the ``abi`` provided in the configuration
 3. ``ETHER_TOKEN_ADDRESS_CONTRACT`` returns the ``addressContract`` provided in the configuration
 4. ``ETHER_TOKEN_IS_METAMASK_WALLET`` returns boolean, true if MetaMask wallet is installed in browser
