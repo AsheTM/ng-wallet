@@ -1,3 +1,27 @@
+# 20.0.0
+
+- [x] Update ng-ether to be compatible with Angular v20, see [MIGRATION.md](./MIGRATION.md) to upgrade from 16.x
+- [x] Update ethers to v6, `TEtherBigNumber` is now `bigint`
+- [x] Add `provideEther()` for standalone applications, and deprecate `EtherModule.forRoot()`
+- [x] Use `inject()` in services and pipe, make `etherContractFnAsync` pipe standalone
+- [x] Support zoneless change detection and server-side rendering
+- [x] Add route guards `requireWallet`, `requireConnection`, `requireChain` and `requireAccount` in the `@ashetm/ng-ether/router` entry point
+- [x] Read `price$` from Chainlink price feeds, with the `priceFeed` configuration
+- [x] Call `etherContractFnAsync` methods on their contract (`contract | etherContractFnAsync: 'method'`), with typed arguments, and display their values once resolved
+- [x] Emit `EtherWalletNotInstalledError` when no wallet is installed, from the services and the smart contract functions
+- [x] Send valid chain requests from `addNetwork` (EIP-3085) and `switchNetwork`
+- [x] Add `sendKWei` and `toHexChainId`
+- [x] Add Sepolia and Hoodi to `EEtherNetworkChainId`, and deprecate the shut down testnets
+- [x] Fix account and network refresh using `race` instead of `merge`
+- [x] Fix `sendGWei` sending a wrong amount
+- [x] Fix `forRoot()` without configuration throwing `NullInjectorError`
+- [x] Fix `addNetwork`, `switchNetwork`, `connectWallet` and `getBalanceOf` errors not emitted
+- [x] Fix wallet event listeners never removed
+- [x] Fix `balance$` emitting unchanged balances
+- [x] Fix peer dependencies still accepting Angular v16 to v19
+- [x] Group library files by feature
+- [x] Migrate workspace to Nx 24, Jest 30 and ESLint 9 flat configuration
+
 # 16.4.0
 
 - [x] Rework balance realtime tracking

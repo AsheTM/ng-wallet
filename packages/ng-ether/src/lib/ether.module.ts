@@ -1,64 +1,47 @@
-import { Inject, ModuleWithProviders, NgModule, Provider } from '@angular/core';
+import { inject, ModuleWithProviders, NgModule } from '@angular/core';
 
 import { EtherRootModule } from './ether-root.module';
-import { EEtherInstance } from './ether.enum';
-import { ETHER_TOKEN_ABI, ETHER_TOKEN_ADDRESS_CONTRACT, ETHER_TOKEN_INSTANCE, ETHER_TOKEN_NETWORK_ID } from './ether.token';
-import { TEtherConfigurationRoot } from './ether.type';
+import { EEtherInstance } from './core/ether.enum';
+import { provideEther } from './ether.providers';
+import { ETHER_TOKEN_INSTANCE } from './core/ether.token';
+import { TEtherConfigurationRoot } from './core/ether.type';
 
-
+/**
+ * @deprecated Use `provideEther()` in the application providers and import `EtherContractFnAsyncPipe` where needed
+ */
 @NgModule({
-  providers: [{
-    provide:  ETHER_TOKEN_INSTANCE,
-    useValue: EEtherInstance.NO_STATIC_FOR_ROOT_METHOD_INVOKED
-  }]
+  providers: [
+    {
+      provide: ETHER_TOKEN_INSTANCE,
+      useValue: EEtherInstance.NO_STATIC_FOR_ROOT_METHOD_INVOKED,
+    },
+  ],
 })
 export class EtherModule {
-
-  constructor(
-    @Inject(ETHER_TOKEN_INSTANCE)
-      private readonly _etherInstance: EEtherInstance
-  ) {
-    if(_etherInstance === EEtherInstance.NO_STATIC_FOR_ROOT_METHOD_INVOKED) {
-      throw new Error(`'${this.constructor.name}.forRoot' static method must be called`);
+  constructor() {
+    if (inject(ETHER_TOKEN_INSTANCE) === EEtherInstance.NO_STATIC_FOR_ROOT_METHOD_INVOKED) {
+      throw new Error(
+        `'${this.constructor.name}.forRoot' static method must be called`
+      );
     }
   }
 
-  static forRoot(configuration?: TEtherConfigurationRoot): ModuleWithProviders<EtherRootModule> {
-    let extraProviders: Provider[] = [];
-
-    if(configuration) {
-      const {
-        addressContract,
-        abi,
-        networkId
-      }: TEtherConfigurationRoot = configuration;
-
-      extraProviders = [
-        ...extraProviders,
-        {
-          provide: ETHER_TOKEN_ADDRESS_CONTRACT,
-          useValue: addressContract
-        }, {
-          provide: ETHER_TOKEN_ABI,
-          useValue: abi
-        }, {
-          provide: ETHER_TOKEN_NETWORK_ID,
-          useValue: networkId || 'any'
-        }
-      ];
-    }
-
+  /**
+   * @deprecated Use `provideEther()` in the application providers instead
+   */
+  static forRoot(
+    configuration?: TEtherConfigurationRoot
+  ): ModuleWithProviders<EtherRootModule> {
     return {
       ngModule: EtherRootModule,
       providers: [
         {
           provide: ETHER_TOKEN_INSTANCE,
-          useValue: EEtherInstance.FOR_ROOT
+          useValue: EEtherInstance.FOR_ROOT,
         },
 
-        ...extraProviders
-      ]
+        provideEther(configuration),
+      ],
     };
   }
-
 }
