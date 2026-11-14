@@ -1,5 +1,6 @@
 import { formatUnits } from 'ethers';
 
+import { TEtherNetworkInfoChainId } from './ether-network.type';
 import { TEtherBigNumber } from './ether.type';
 
 
@@ -26,3 +27,8 @@ export {
   formatWei
 };
 export { formatEther } from 'ethers';
+
+// Converts a chain ID (number, decimal string or hexadecimal string) to the hexadecimal string expected by wallets
+export function toHexChainId(chainId: TEtherNetworkInfoChainId): `0x${string}` {
+  return `0x${BigInt(chainId).toString(16)}`;
+}

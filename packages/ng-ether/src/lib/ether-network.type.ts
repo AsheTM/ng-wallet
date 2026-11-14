@@ -10,10 +10,12 @@ export type TEtherNetworkChange = {
   oldNetwork?: TEtherNetwork;
 };
 
+// Network to add to the wallet, as described by EIP-3085 (wallet_addEthereumChain)
 export type TEtherNetworkInfo = {
-  blockExplorerUrls: string[],
+  blockExplorerUrls?: string[],
   chainId: TEtherNetworkInfoChainId,
   chainName: string,
+  iconUrls?: string[],
   nativeCurrency: TEtherNetworkNativeCurrency,
   rpcUrls: string[]
 };
@@ -22,7 +24,8 @@ export type TEtherNetworkInfoChainId
   = `0x${string | number}`
     | string
     | `${EEtherNetworkChainId}`
-    | EEtherNetworkChainId;
+    | EEtherNetworkChainId
+    | number;
 
 export type TEtherNetworkNativeCurrency = {
   decimals: number,

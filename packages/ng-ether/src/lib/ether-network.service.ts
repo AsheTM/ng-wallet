@@ -13,12 +13,14 @@ import { AEtherNetworkService } from './ether-network-service.class';
 import {
   TEtherNetwork,
   TEtherNetworkChange,
+  TEtherNetworkInfo,
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
 import { ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
 import { EEtherEventWallet } from './ether.enum';
 import { ETHER_TOKEN_PRICE_FEED } from './ether.token';
 import { TEtherBigNumber, TEtherPriceFeed } from './ether.type';
+import { toHexChainId } from './ether.util';
 
 @Injectable()
 export class EtherNetworkService
@@ -90,11 +92,12 @@ export class EtherNetworkService
     this._destroySubject.complete();
   }
 
-  addNetwork(newNetwork: TEtherNetwork): Observable<true> {
+  // Sends an EIP-3085 request, the wallet expects the chain ID as a hexadecimal string
+  addNetwork(newNetwork: TEtherNetworkInfo): Observable<true> {
     return this._requireWallet(() => from(
       this._ethereum.request({
         method: EEtherEventWallet.ADD_ETHEREUM_CHAIN,
-        params: [newNetwork],
+        params: [{ ...newNetwork, chainId: toHexChainId(newNetwork.chainId) }],
       })
     ).pipe(map((): true => true)));
   }
@@ -121,7 +124,7 @@ export class EtherNetworkService
       this._ethereum.request({
         method: EEtherEventWallet.SWITCH_ETHEREUM_CHAIN,
         params: [
-          { chainId: `${chainId}`.startsWith('0x') ? chainId : `0x${chainId}` },
+          { chainId: toHexChainId(chainId) },
         ],
       })
     ).pipe(map((): true => true)));

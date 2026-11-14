@@ -4,6 +4,7 @@ import { AEtherService } from './ether-service.class';
 import {
   TEtherNetwork,
   TEtherNetworkChange,
+  TEtherNetworkInfo,
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
 import { TEtherBigNumber } from './ether.type';
@@ -14,7 +15,7 @@ export abstract class AEtherNetworkService extends AEtherService {
   abstract readonly network$: Observable<TEtherNetwork>;
   abstract readonly price$: Observable<number>;
 
-  abstract addNetwork(newNetwork: TEtherNetwork): Observable<true>;
+  abstract addNetwork(newNetwork: TEtherNetworkInfo): Observable<true>;
   abstract onNetworkChange(): Observable<TEtherNetworkChange>;
   abstract onNetworkChange(
     fn: (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => void

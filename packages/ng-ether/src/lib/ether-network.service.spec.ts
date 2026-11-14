@@ -4,6 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 
 import { EEtherNetworkChainId } from './ether-network.enum';
 import { EtherNetworkService } from './ether-network.service';
+import { TEtherNetworkInfo, TEtherNetworkInfoChainId } from './ether-network.type';
 import { ETHER_DEFAULT_PRICE_FEED, ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
 import { AEtherProvider } from './ether-provider.class';
 import { EtherTestModule } from './ether-test.module';
@@ -106,5 +107,52 @@ describe('EtherNetworkService price$', () => {
     await expect(firstValueFrom(service.price$)).rejects.toThrow(
       'No price feed configured for chain 1337'
     );
+  });
+});
+
+describe('EtherNetworkService wallet requests', () => {
+  const request = jest.fn<Promise<null>, [{ method: string; params?: unknown[] }]>(
+    () => Promise.resolve(null)
+  );
+  let service: EtherNetworkService;
+
+  beforeEach(() => {
+    request.mockClear();
+    TestBed.configureTestingModule({
+      imports: [EtherTestModule],
+      providers: [{
+        provide: ETHER_TOKEN,
+        useValue: { on: () => void 0, removeListener: () => void 0, request }
+      }]
+    });
+    service = TestBed.inject(EtherNetworkService);
+  });
+
+  it('adds a network with an EIP-3085 request and a hexadecimal chain ID', async () => {
+    const polygon: TEtherNetworkInfo = {
+      chainId: 137,
+      chainName: 'Polygon',
+      nativeCurrency: { decimals: 18, name: 'POL', symbol: 'POL' },
+      rpcUrls: ['https://polygon-rpc.com']
+    };
+
+    expect(await firstValueFrom(service.addNetwork(polygon))).toBe(true);
+    expect(request).toHaveBeenCalledWith({
+      method: 'wallet_addEthereumChain',
+      params: [{ ...polygon, chainId: '0x89' }]
+    });
+  });
+
+  it.each([
+    [137, '0x89'],
+    ['137', '0x89'],
+    ['0x89', '0x89'],
+    [EEtherNetworkChainId.MAIN, '0x1'],
+  ])('switches to chain %p with chain ID %s', async (chainId: TEtherNetworkInfoChainId, hexChainId: string) => {
+    expect(await firstValueFrom(service.switchNetwork(chainId))).toBe(true);
+    expect(request).toHaveBeenCalledWith({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: hexChainId }]
+    });
   });
 });

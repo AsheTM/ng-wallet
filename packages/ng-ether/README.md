@@ -102,7 +102,7 @@ Those following are ``Observable`` and emits when account or network change
 
 And for methods, there is the following: 
 
-* ``addNetwork(newNetwork: TEtherNetwork)`` returns ``Observable<true | TEtherError>`` listen to if a new network is added successfully to the wallet and emits ``true`` if success.
+* ``addNetwork(newNetwork: TEtherNetworkInfo)`` returns ``Observable<true>`` listen to if a new network is added successfully to the wallet and emits ``true`` if success. ``TEtherNetworkInfo`` describes the network as expected by the wallet ([EIP-3085](https://eips.ethereum.org/EIPS/eip-3085)): ``chainId``, ``chainName``, ``nativeCurrency``, ``rpcUrls``, and optionally ``blockExplorerUrls`` and ``iconUrls``. ``chainId`` can be a number, a decimal string or a hexadecimal string, it is sent as a hexadecimal string.
 
 * ``onNetworkChange()`` returns ``Observable<TEtherNetworkChange>`` listen to network change event and emits ``TEtherNetworkChange = { newNetwork: TEtherNetwork; oldNetwork?: TEtherNetwork; }`` value that contains informations of new network and old network.
 
@@ -110,7 +110,7 @@ or the second definition
 
 * ``onNetworkChange(fn: (newNetwork: TEtherNetwork, oldNetwork?: TEtherNetwork) => void)`` returns ``void`` nothing, you need to provide a function with 2 arguments; first argument is information of new network and second is information of old network.
 
-* ``switchNetwork(chainId: TEtherNetworkInfoChainId)`` returns ``Observable<true | TEtherError>`` listen to if the switch to a specified network is done successfully and emits ``true`` if success. ``chainId`` can be a number, a decimal string or a hexadecimal string, like ``EEtherNetworkChainId.MAIN``, ``'1'`` or ``'0x1'``.
+* ``switchNetwork(chainId: TEtherNetworkInfoChainId)`` returns ``Observable<true>`` listen to if the switch to a specified network is done successfully and emits ``true`` if success. ``chainId`` can be a number, a decimal string or a hexadecimal string, like ``EEtherNetworkChainId.MAIN``, ``'1'`` or ``'0x1'``.
 
 #### EtherTransactionService
 

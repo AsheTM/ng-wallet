@@ -41,6 +41,7 @@ describe('ng-ether without an installed wallet', () => {
     ['gasFee$', () => networkService.gasFee$],
     ['network$', () => networkService.network$],
     ['price$', () => networkService.price$],
+    ['addNetwork()', () => networkService.addNetwork({ chainId: 137, chainName: 'Polygon', nativeCurrency: { decimals: 18, name: 'POL', symbol: 'POL' }, rpcUrls: [] })],
     ['onNetworkChange()', () => networkService.onNetworkChange()],
     ['switchNetwork()', () => networkService.switchNetwork(1)],
     ['sendEth()', () => transactionService.prepareTransaction('0x0').sendEth(1)],
