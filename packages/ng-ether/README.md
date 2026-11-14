@@ -43,7 +43,7 @@ Or for a specific version of Angular, by using the matching version from the com
 npm install @ashetm/ng-ether@16
 ```
 
-``ethers`` is installed with the library. ``@angular/router`` is only needed for the route guards (see below).
+``ethers`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards (see below).
 
 ## Import
 

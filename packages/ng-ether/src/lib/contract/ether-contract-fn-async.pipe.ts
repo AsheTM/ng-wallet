@@ -6,6 +6,7 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
+import type { Nullable } from '@ashetm/types';
 import {
   catchError,
   from,
@@ -55,12 +56,12 @@ export class EtherContractFnAsyncPipe implements OnDestroy, PipeTransform {
   );
 
   // The last call, so the method is only called again when the contract, method or arguments change
-  private _lastCall: {
+  private _lastCall: Nullable<{
     contract: ACustomContract;
     method: PropertyKey;
     args: unknown[];
     result: TEtherContractFnResult;
-  } | null = null;
+  }> = null;
 
   ngOnDestroy(): void {
     this._asyncPipe.ngOnDestroy();
@@ -71,7 +72,7 @@ export class EtherContractFnAsyncPipe implements OnDestroy, PipeTransform {
     contract: T,
     method: K,
     ...args: TEtherContractFnArgs<T[K]>
-  ): TEtherContractFnValue<T[K]> | null {
+  ): Nullable<TEtherContractFnValue<T[K]>> {
     if (!this._isLastCall(contract, method, args)) {
       const fn = contract[method] as unknown as (
         args: TEtherContractFnArgs<T[K]>

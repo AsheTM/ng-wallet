@@ -19,6 +19,7 @@
 - [x] Fix wallet event listeners never removed
 - [x] Fix `balance$` emitting unchanged balances
 - [x] Fix peer dependencies still accepting Angular v16 to v19
+- [x] Use `Nullable` from `@ashetm/types` for nullable types
 - [x] Group library files by feature
 - [x] Migrate workspace to Nx 24, Jest 30 and ESLint 9 flat configuration
 

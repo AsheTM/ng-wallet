@@ -1,4 +1,5 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
+import type { Nullable } from '@ashetm/types';
 import { Contract, FeeData, formatUnits } from 'ethers';
 import { from, interval, Observable, Subject, throwError, timer } from 'rxjs';
 import {
@@ -41,7 +42,7 @@ export class EtherNetworkService
         interval(1000).pipe(
           switchMap((_: number) => this._aEtherProvider.getFeeData()),
           map(({ gasPrice }: FeeData) => gasPrice),
-          filter((gasPrice: TEtherBigNumber | null): gasPrice is TEtherBigNumber =>
+          filter((gasPrice: Nullable<TEtherBigNumber>): gasPrice is TEtherBigNumber =>
             gasPrice !== null
           ),
           distinctUntilChanged()
