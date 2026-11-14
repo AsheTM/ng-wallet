@@ -198,6 +198,8 @@ balanceOf(args: any[]): Observable<bigint> {
 }
 ```
 
+The method is called again only when the contract, the method name or one of the arguments changes. Arguments are compared by reference, so pass component fields rather than object or array literals written in the template, which would call the method on every change detection.
+
 ### Utils
 
 Functions to format a ``TEtherBigNumber`` value to a string in the specified unit:
