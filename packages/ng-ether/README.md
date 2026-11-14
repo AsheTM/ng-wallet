@@ -18,6 +18,7 @@ Since ``16.x``, one version of ``@ashetm/ng-ether`` supports a range of Angular 
 
 | @ashetm/ng-ether | Angular        | ethers |
 | ---------------- | -------------- | ------ |
+| ``20.x``         | 20             | 6.x    |
 | ``16.x``         | 16, 17, 18, 19 | 5.x    |
 | ``15.x``         | 15             | 5.x    |
 | ``14.x``         | 14             | 5.x    |
