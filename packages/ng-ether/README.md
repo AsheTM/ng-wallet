@@ -185,8 +185,17 @@ Or with second definition
 
 ``etherContractFnAsync`` is a pipe that calls a method of your custom contract (class extending ``ACustomContract``) and subscribes to its result, like ``async`` pipe.
 
+Pass the custom contract, then the method name. Any extra pipe arguments are passed to the method as one array:
+
 ```html
-<p>{{ customContract.test | etherContractFnAsync }}</p>
+<p>{{ customContract | etherContractFnAsync: 'test' }}</p>
+<p>{{ customContract | etherContractFnAsync: 'balanceOf' : address }}</p>
+```
+
+```ts
+balanceOf(args: any[]): Observable<bigint> {
+  return from(this.contract['balanceOf'](...args));
+}
 ```
 
 ### Utils

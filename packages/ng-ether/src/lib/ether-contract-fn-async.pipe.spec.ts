@@ -8,21 +8,19 @@ import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
 import { ContractServiceMock } from './ether-contract.service.mock';
 import { EtherTestModule } from './ether-test.module';
 
-
 describe('EtherContractFnAsyncPipe', () => {
   let pipe: EtherContractFnAsyncPipe;
   let service: ContractServiceMock;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        EtherTestModule
+      imports: [CommonModule, EtherTestModule],
+      providers: [
+        {
+          provide: ChangeDetectorRef,
+          useClass: ChangeDetectorRefMock,
+        },
       ],
-      providers: [{
-        provide: ChangeDetectorRef,
-        useClass: ChangeDetectorRefMock
-      }]
     });
     pipe = TestBed.runInInjectionContext(() => new EtherContractFnAsyncPipe());
     service = TestBed.inject(ContractServiceMock);
@@ -37,8 +35,8 @@ describe('EtherContractFnAsyncPipe', () => {
 
     jest.spyOn(service, 'name').mockReturnValue(of(name));
 
-    const result: 'name' = pipe.transform(service.name);
+    const result: string | null = pipe.transform(service, 'name');
 
     expect(result).toEqual(name);
-  })
+  });
 });
