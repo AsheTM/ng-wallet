@@ -25,6 +25,8 @@ Since ``16.x``, one version of ``@ashetm/ng-ether`` supports a range of Angular 
 | ``13.x``         | 13             | 5.x    |
 | ``12.x``         | 12             | 5.x    |
 
+Since ``20.x``, the services and the pipe also work with zoneless change detection (``provideZonelessChangeDetection()``), and with server-side rendering.
+
 ## Install
 
 You can install it with npm:
