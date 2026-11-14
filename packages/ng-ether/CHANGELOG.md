@@ -1,3 +1,8 @@
+# 20.1.0
+
+- [x] Support Angular 20 and later (peer dependencies `>=20.0.0`), verified with Angular 20, 21 and 22
+- [x] Add the MIT `LICENSE` file, also shipped in the npm package
+
 # 20.0.0
 
 - [x] Update ng-ether to be compatible with Angular v20, see [MIGRATION.md](./MIGRATION.md) to upgrade from 16.x

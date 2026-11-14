@@ -1,3 +1,8 @@
+# 1.4.0
+
+- [x] Release @ashetm/ng-ether@v20.1.0, compatible with Angular v20 and later
+- [x] Add MIT LICENSE
+
 # 1.3.0
 
 - [x] Release @ashetm/ng-ether@v20.0.0, compatible with Angular v20 and ethers v6
