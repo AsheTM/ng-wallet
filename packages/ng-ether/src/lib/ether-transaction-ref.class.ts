@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
-import { from, Observable } from 'rxjs';
+import { defer, from, Observable, throwError } from 'rxjs';
 
 import { AEtherSigner } from './ether-signer.class';
+import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
 import {
   TEtherTransactionRequest,
   TEtherTransactionResponse,
@@ -39,6 +40,10 @@ export class EtherTransactionRef {
       value: ethers.parseUnits(amount + '', unit),
     };
 
-    return from(this._aEtherSigner.sendTransaction(transaction));
+    return defer(() =>
+      this._aEtherSigner
+        ? from(this._aEtherSigner.sendTransaction(transaction))
+        : throwError(() => new EtherWalletNotInstalledError())
+    );
   }
 }

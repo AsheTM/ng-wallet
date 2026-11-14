@@ -49,17 +49,17 @@ export class EtherWalletService
   }
 
   connectWallet(): Observable<string[]> {
-    return new Observable<string[]>((subscriber: Subscriber<string[]>) => {
+    return this._requireWallet(() => new Observable<string[]>((subscriber: Subscriber<string[]>) => {
       return from(this._aEtherProvider.send('eth_requestAccounts', []))
         .pipe(take(1))
         .subscribe({
           next: (accounts: string[]) => subscriber.next(accounts),
         });
-    });
+    }));
   }
 
   getBalanceOf(addressWallet: string): Observable<TEtherBigNumber> {
-    return new Observable<TEtherBigNumber>(
+    return this._requireWallet(() => new Observable<TEtherBigNumber>(
       (subscriber: Subscriber<TEtherBigNumber>) => {
         return from(this._aEtherProvider.getBalance(addressWallet))
           .pipe(take(1))
@@ -67,12 +67,12 @@ export class EtherWalletService
             next: (balance: TEtherBigNumber) => subscriber.next(balance),
           });
       }
-    );
+    ));
   }
 
   getTransactionCountOf(addressWallet: string): Observable<number> {
-    return from(this._aEtherProvider.getTransactionCount(addressWallet)).pipe(
-      take(1)
+    return this._requireWallet(() =>
+      from(this._aEtherProvider.getTransactionCount(addressWallet)).pipe(take(1))
     );
   }
 

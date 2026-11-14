@@ -234,6 +234,22 @@ export class CustomContract extends ACustomContract { // Compulsory, extends ACu
 
 ```
 
+### Handle a browser without wallet
+
+Without an installed wallet (no ``window.ethereum``), the application starts normally, but every stream and method of ``EtherNetworkService``, ``EtherTransactionService`` and ``EtherWalletService`` emits an ``EtherWalletNotInstalledError`` (``No wallet installed``). Check ``ETHER_TOKEN_IS_WALLET_INSTALLED`` before using them, or catch the error:
+
+```ts
+import { inject } from '@angular/core';
+import { catchError, EMPTY, throwError } from 'rxjs';
+import { ETHER_TOKEN_IS_WALLET_INSTALLED, EtherWalletNotInstalledError, EtherWalletService } from '@ashetm/ng-ether';
+
+readonly isWalletInstalled = inject(ETHER_TOKEN_IS_WALLET_INSTALLED); // Show an "Install a wallet" message when false
+
+readonly account$ = inject(EtherWalletService).account$.pipe(
+  catchError((error: unknown) => error instanceof EtherWalletNotInstalledError ? EMPTY : throwError(() => error))
+);
+```
+
 ## Issue
 
 LOOKING FOR MAINTAINER OR IF THERE IS AN ISSUE OR ANY IDEA TO ADD. PLEASE CREATE ISSUE IN GITHUB REPOSITORY.

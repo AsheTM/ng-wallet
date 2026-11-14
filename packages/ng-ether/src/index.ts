@@ -17,6 +17,7 @@ export * from './lib/ether-test.module';
 export * from './lib/ether-transaction-ref.class';
 export * from './lib/ether-transaction.service';
 export * from './lib/ether-transaction.type';
+export * from './lib/ether-wallet-not-installed.error';
 export * from './lib/ether-wallet-service.class';
 export * from './lib/ether-wallet.service';
 export * from './lib/ether.enum';

@@ -91,12 +91,12 @@ export class EtherNetworkService
   }
 
   addNetwork(newNetwork: TEtherNetwork): Observable<true> {
-    return from(
+    return this._requireWallet(() => from(
       this._ethereum.request({
         method: EEtherEventWallet.ADD_ETHEREUM_CHAIN,
         params: [newNetwork],
       })
-    ).pipe(map(() => true));
+    ).pipe(map((): true => true)));
   }
 
   onNetworkChange(): Observable<TEtherNetworkChange>;
@@ -117,13 +117,13 @@ export class EtherNetworkService
   }
 
   switchNetwork(chainId: TEtherNetworkInfoChainId): Observable<true> {
-    return from(
+    return this._requireWallet(() => from(
       this._ethereum.request({
         method: EEtherEventWallet.SWITCH_ETHEREUM_CHAIN,
         params: [
           { chainId: `${chainId}`.startsWith('0x') ? chainId : `0x${chainId}` },
         ],
       })
-    ).pipe(map(() => true));
+    ).pipe(map((): true => true)));
   }
 }
