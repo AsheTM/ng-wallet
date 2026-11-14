@@ -12,23 +12,6 @@
         "project": "packages/ng-ether",
         "tsConfig": "packages/ng-ether/tsconfig.lib.json"
       }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "packages/ng-ether/**/*.ts"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "options": {
-        "jestConfig": "packages/ng-ether/jest.config.ts"
-      }
     }
   },
   "tags": []

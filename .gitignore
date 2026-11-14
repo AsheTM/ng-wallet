@@ -40,8 +40,9 @@ Thumbs.db
 
 .angular
 
+# Nx
+.nx/cache
+.nx/workspace-data
+
 # Git Credentials
 *.git-credentials
-
-# Ignore version installed in package-lock
-package-lock.json

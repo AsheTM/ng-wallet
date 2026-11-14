@@ -1,3 +1,9 @@
+# 1.3.0
+
+- [x] Release @ashetm/ng-ether@v20.0.0, compatible with Angular v20 and ethers v6
+- [x] Upgrade workspace to Angular 20, Nx 24, Jest 30 and ESLint 9 flat configuration
+- [x] Add `@ashetm/ng-ether/router` secondary entry point
+
 # 1.2.0
 
 - [x] Release @ashetm/ng-ether@v16.4.0, compatible with Angular v16, v17, v18 and v19

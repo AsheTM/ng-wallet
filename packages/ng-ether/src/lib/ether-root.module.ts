@@ -1,70 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ethers } from 'ethers';
 
-import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
-import { AEtherContract } from './ether-contract.class';
-import { EEtherNetworkChainId } from './ether-network.enum';
-import { EtherNetworkService } from './ether-network.service';
-
-import { AEtherProvider } from './ether-provider.class';
-import { AEtherSigner } from './ether-signer.class';
-import { EtherTransactionService } from './ether-transaction.service';
-import { EtherWalletService } from './ether-wallet.service';
-import {
-  ETHER_TOKEN,
-  ETHER_TOKEN_ABI,
-  ETHER_TOKEN_ADDRESS_CONTRACT,
-  ETHER_TOKEN_IS_METAMASK_WALLET,
-  ETHER_TOKEN_IS_WALLET_INSTALLED,
-  ETHER_TOKEN_NETWORK_ID
-} from './ether.token';
-import { TEtherConfigurationRoot } from './ether.type';
+import { EtherContractFnAsyncPipe } from './contract/ether-contract-fn-async.pipe';
 
 
+// Services and tokens are registered by provideEther(), which EtherModule.forRoot() adds
 @NgModule({
-  declarations: [EtherContractFnAsyncPipe],
   exports: [EtherContractFnAsyncPipe],
-  imports: [CommonModule],
-  providers: [
-    {
-      provide: ETHER_TOKEN_IS_METAMASK_WALLET,
-      useFactory: ({ isMetaMask }: Partial<Record<'isMetaMask', boolean>>) => !!isMetaMask,
-      deps: [ETHER_TOKEN]
-    }, {
-      provide: ETHER_TOKEN_IS_WALLET_INSTALLED,
-      useFactory: (ether: unknown) => !!ether,
-      deps: [ETHER_TOKEN]
-    }, {
-      provide: AEtherProvider,
-      useFactory: (
-        ether: any,
-        networkId: EEtherNetworkChainId | 'any'
-      ) => new ethers.providers.Web3Provider(ether, networkId),
-      deps: [
-        ETHER_TOKEN,
-        ETHER_TOKEN_NETWORK_ID
-      ]
-    }, {
-      provide: AEtherContract,
-      useFactory: (
-        addressContract: TEtherConfigurationRoot['addressContract'],
-        abi: TEtherConfigurationRoot['abi'],
-        signer: AEtherSigner
-      ) => new ethers.Contract(addressContract, abi, signer),
-      deps: [
-        ETHER_TOKEN_ADDRESS_CONTRACT,
-        ETHER_TOKEN_ABI,
-        AEtherSigner
-      ]
-    }, {
-      provide: AEtherSigner,
-      useFactory: (etherProvider: AEtherProvider) => etherProvider.getSigner(),
-      deps: [AEtherProvider]
-    },
-    EtherNetworkService,
-    EtherTransactionService,
-    EtherWalletService
-  ]
+  imports: [CommonModule, EtherContractFnAsyncPipe]
 })
 export class EtherRootModule { }
