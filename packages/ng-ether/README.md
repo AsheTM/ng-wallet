@@ -146,8 +146,8 @@ For methods, there is the following:
 
 And for methods, there is the following: 
 
-* ``connectWallet()`` returns ``Observable<string[]>`` tries to connect the current wallet and returns the current connected wallet in array
-* ``getBalanceOf(addressWallet: string)`` is ``Observable<TEtherBigNumber>`` that emits balance information of the provided address wallet
+* ``connectWallet()`` returns ``Observable<string[]>`` tries to connect the current wallet and returns the current connected wallet in array, then completes. It emits an ethers error when the connection fails, for example with code ``ACTION_REJECTED`` when the user rejects it (check it with ``isError(error, 'ACTION_REJECTED')`` from ``ethers``)
+* ``getBalanceOf(addressWallet: string)`` is ``Observable<TEtherBigNumber>`` that emits balance information of the provided address wallet, then completes. It emits an error when the request fails
 * ``getTransactionCountOf(addressWallet: string)`` is ``Observable<number>`` that emits transaction count of the provided address wallet
 
 And listeners event, there is the following with 2 definitions each: 

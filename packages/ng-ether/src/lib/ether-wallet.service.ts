@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { from, Observable, Subject, Subscriber, timer } from 'rxjs';
+import { from, Observable, Subject, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -48,26 +48,17 @@ export class EtherWalletService
     this._destroySubject.complete();
   }
 
+  // Emits the accounts and completes, or emits the wallet error (for example when the user rejects the connection)
   connectWallet(): Observable<string[]> {
-    return this._requireWallet(() => new Observable<string[]>((subscriber: Subscriber<string[]>) => {
-      return from(this._aEtherProvider.send('eth_requestAccounts', []))
-        .pipe(take(1))
-        .subscribe({
-          next: (accounts: string[]) => subscriber.next(accounts),
-        });
-    }));
+    return this._requireWallet(() =>
+      from(this._aEtherProvider.send('eth_requestAccounts', []) as Promise<string[]>)
+    );
   }
 
   getBalanceOf(addressWallet: string): Observable<TEtherBigNumber> {
-    return this._requireWallet(() => new Observable<TEtherBigNumber>(
-      (subscriber: Subscriber<TEtherBigNumber>) => {
-        return from(this._aEtherProvider.getBalance(addressWallet))
-          .pipe(take(1))
-          .subscribe({
-            next: (balance: TEtherBigNumber) => subscriber.next(balance),
-          });
-      }
-    ));
+    return this._requireWallet(() =>
+      from(this._aEtherProvider.getBalance(addressWallet))
+    );
   }
 
   getTransactionCountOf(addressWallet: string): Observable<number> {
