@@ -86,6 +86,22 @@ Tokens are ``InjectionToken<T>`` that needs to be injected in order to get its v
 5. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
 6. ``ETHER_TOKEN_NETWORK_ID`` returns ``networkId`` string provided in configuration forRoot static method, default value is ``any``
 
+### Enums
+
+``EEtherNetworkChainId`` lists the chain IDs of common networks:
+
+* ``MAIN`` (``1``): Ethereum mainnet
+* ``SEPOLIA`` (``11155111``): testnet for applications and tooling
+* ``HOODI`` (``560048``): testnet for validators and staking providers, replacing Holesky
+* ``LOCALHOST`` (``1337``): local development network
+
+Deprecated, as these testnets are shut down, and to be removed in the next major version:
+
+* ``ROPSTAN`` (``3``): shut down in 2022, after The Merge. Use ``SEPOLIA``
+* ``RINKEBY`` (``4``): stopped working after The Merge in 2022, shut down in 2023. Use ``SEPOLIA``
+* ``GOERLI`` (``5``): deprecated in 2023, shut down in 2024. Use ``SEPOLIA`` or ``HOODI``
+* ``KOVAN`` (``42``): stopped working after The Merge in 2022. Use ``SEPOLIA``
+
 ### Services
 
 #### EtherNetworkService
