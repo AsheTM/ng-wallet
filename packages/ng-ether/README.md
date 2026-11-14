@@ -17,7 +17,7 @@ Since ``16.x``, one version of ``@ashetm/ng-ether`` supports a range of Angular 
 
 | @ashetm/ng-ether | Angular        | ethers |
 | ---------------- | -------------- | ------ |
-| ``20.x``         | 20             | 6.x    |
+| ``20.x``         | 20 and later   | 6.x    |
 | ``16.x``         | 16, 17, 18, 19 | 5.x    |
 | ``15.x``         | 15             | 5.x    |
 | ``14.x``         | 14             | 5.x    |
@@ -39,6 +39,9 @@ npm install @ashetm/ng-ether
 Or for a specific version of Angular, by using the matching version from the compatibility table above:
 
 ```bash
+# Angular 20 and later
+npm install @ashetm/ng-ether@20
+
 # Angular 16, 17, 18 or 19
 npm install @ashetm/ng-ether@16
 ```

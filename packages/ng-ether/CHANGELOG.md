@@ -1,5 +1,6 @@
 # 20.1.0
 
+- [x] Support Angular 20 and later (peer dependencies `>=20.0.0`), verified with Angular 20, 21 and 22
 - [x] Add the MIT `LICENSE` file, also shipped in the npm package
 
 # 20.0.0
