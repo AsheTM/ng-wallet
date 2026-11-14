@@ -195,6 +195,46 @@ Or with second definition
 
 **Note**: the callback definitions stay subscribed until the service is destroyed, so with the application. Prefer the ``Observable`` definitions in components, and unsubscribe (for example with ``takeUntilDestroyed()``).
 
+### Signals
+
+Signal functions read the wallet and the network as signals. Call them in an injection context (a field initializer or a constructor), or pass an ``injector`` (for example in ``ngOnInit``).
+
+| Function | Signal | Default value |
+| -------- | ------ | ------------- |
+| ``injectAccount()`` | Selected account | ``undefined`` |
+| ``injectAccounts()`` | Connected accounts | ``[]`` |
+| ``injectIsConnected()`` | ``true`` if an account is connected | ``false`` |
+| ``injectBalance()`` | Balance of the selected account, in wei | ``undefined`` |
+| ``injectNetwork()`` | Current network | ``undefined`` |
+| ``injectChainId()`` | Chain ID of the current network | ``undefined`` |
+| ``injectGasFee()`` | Gas price, in wei | ``undefined`` |
+| ``injectPrice()`` | Price of the native currency in USD (see ``price$``) | ``undefined`` |
+
+A signal can not hold an error: without wallet, on the server, or on error, it keeps its default value. ``injectPrice()`` is ``undefined`` on a chain without price feed, and is read again on each network change.
+
+```ts
+@Component({
+  template: `
+    @if (isConnected()) {
+      <p>{{ account() }}: {{ balance() }} wei on chain {{ chainId() }}</p>
+    }
+  `
+})
+export class WalletComponent {
+  readonly account = injectAccount();
+  readonly balance = injectBalance();
+  readonly chainId = injectChainId();
+  readonly isConnected = injectIsConnected();
+
+  // Outside an injection context
+  private readonly _injector = inject(Injector);
+
+  ngOnInit(): void {
+    const price = injectPrice({ injector: this._injector });
+  }
+}
+```
+
 ### Classes
 
 #### AEtherContract

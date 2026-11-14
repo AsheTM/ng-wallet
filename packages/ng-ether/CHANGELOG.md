@@ -1,3 +1,7 @@
+# 20.2.0
+
+- [x] Add signal functions `injectAccount`, `injectAccounts`, `injectIsConnected`, `injectBalance`, `injectNetwork`, `injectChainId`, `injectGasFee` and `injectPrice`
+
 # 20.1.0
 
 - [x] Support Angular 20 and later (peer dependencies `>=20.0.0`), verified with Angular 20, 21 and 22
