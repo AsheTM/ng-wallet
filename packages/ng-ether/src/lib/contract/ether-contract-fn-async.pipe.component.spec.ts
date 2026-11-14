@@ -4,6 +4,7 @@ import { from, Observable } from 'rxjs';
 
 import { ACustomContract } from './ether-contract-custom.class';
 import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
+import { EtherWalletNotInstalledError } from '../wallet/ether-wallet-not-installed.error';
 import { AEtherContract } from './ether-contract.class';
 import { ContractInjectable } from './ether-contract.decorator';
 
@@ -101,6 +102,14 @@ describe('EtherContractFnAsyncPipe in a component', () => {
 
     expect(balanceOf.mock.calls).toEqual([['0xFirst'], ['0xSecond']]);
     expect(fixture.nativeElement.textContent.trim()).toBe('balance of "0xSecond"');
+  });
+
+  it('displays nothing, without throwing, when no wallet is installed', async () => {
+    jest.spyOn(contractFake, 'decimals').mockRejectedValue(new EtherWalletNotInstalledError());
+
+    const fixture = await render(`{{ customContract | etherContractFnAsync: 'decimals' }}`);
+
+    expect(fixture.nativeElement.textContent.trim()).toBe('');
   });
 
   it('passes the pipe arguments as one array', async () => {

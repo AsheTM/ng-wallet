@@ -323,7 +323,7 @@ export class BalanceComponent {
 
 ### Handle a browser without wallet
 
-Without an installed wallet (no ``window.ethereum``), the application starts normally, but every stream and method of ``EtherNetworkService``, ``EtherTransactionService`` and ``EtherWalletService`` emits an ``EtherWalletNotInstalledError`` (``No wallet installed``). With server-side rendering (Angular SSR), the server behaves the same way, as it has no ``window``: the wallet is only available once the application runs in the browser.
+Without an installed wallet (no ``window.ethereum``), the application starts normally, but every stream and method of ``EtherNetworkService``, ``EtherTransactionService`` and ``EtherWalletService`` emits an ``EtherWalletNotInstalledError`` (``No wallet installed``). The functions of the smart contract (``AEtherContract``, and so ``this.contract`` in your custom contracts) reject with the same error, and the ``etherContractFnAsync`` pipe displays nothing in that case, instead of throwing. With server-side rendering (Angular SSR), the server behaves the same way, as it has no ``window``: the wallet is only available once the application runs in the browser.
 
 Check ``ETHER_TOKEN_IS_WALLET_INSTALLED`` before using them, or catch the error:
 

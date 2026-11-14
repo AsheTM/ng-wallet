@@ -8,7 +8,7 @@
 - [x] Add route guards `requireWallet`, `requireConnection`, `requireChain` and `requireAccount` in the `@ashetm/ng-ether/router` entry point
 - [x] Read `price$` from Chainlink price feeds, with the `priceFeed` configuration
 - [x] Call `etherContractFnAsync` methods on their contract (`contract | etherContractFnAsync: 'method'`), with typed arguments, and display their values once resolved
-- [x] Emit `EtherWalletNotInstalledError` when no wallet is installed
+- [x] Emit `EtherWalletNotInstalledError` when no wallet is installed, from the services and the smart contract functions
 - [x] Send valid chain requests from `addNetwork` (EIP-3085) and `switchNetwork`
 - [x] Add `sendKWei` and `toHexChainId`
 - [x] Add Sepolia and Hoodi to `EEtherNetworkChainId`, and deprecate the shut down testnets

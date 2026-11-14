@@ -19,6 +19,7 @@ import { EEtherNetworkChainId } from './network/ether-network.enum';
 import { EtherNetworkService } from './network/ether-network.service';
 import { ETHER_DEFAULT_PRICE_FEED } from './network/ether-price-feed.constant';
 import { EtherTransactionService } from './transaction/ether-transaction.service';
+import { EtherWalletNotInstalledError } from './wallet/ether-wallet-not-installed.error';
 import { EtherWalletService } from './wallet/ether-wallet.service';
 
 import * as abiMock from './testing/abi.mock.json';
@@ -91,6 +92,17 @@ describe('provideEther', () => {
       [EEtherNetworkChainId.SEPOLIA]: ETHER_DEFAULT_PRICE_FEED[EEtherNetworkChainId.SEPOLIA],
       137: polygonFeed,
     });
+  });
+
+  it('provides a contract whose functions reject with EtherWalletNotInstalledError without wallet', async () => {
+    const addressContract = '0x0000000000000000000000000000000000000001' as const;
+
+    configure({ abi: abiMock, addressContract }, false);
+    const contract: Contract = TestBed.inject(AEtherContract) as unknown as Contract;
+
+    await expect(contract['name']()).rejects.toBeInstanceOf(EtherWalletNotInstalledError);
+    // The other members of the contract stay available
+    expect(contract.target).toBe(addressContract);
   });
 
   it('provides no provider nor signer without wallet', () => {

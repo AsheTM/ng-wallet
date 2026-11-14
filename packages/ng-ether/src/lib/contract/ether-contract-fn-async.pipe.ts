@@ -6,8 +6,17 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
-import { Observable, ObservableInput, ObservedValueOf } from 'rxjs';
+import {
+  catchError,
+  from,
+  Observable,
+  ObservableInput,
+  ObservedValueOf,
+  of,
+  throwError,
+} from 'rxjs';
 
+import { EtherWalletNotInstalledError } from '../wallet/ether-wallet-not-installed.error';
 import { ACustomContract } from './ether-contract-custom.class';
 
 type TEtherContractFnResult = ObservableInput<unknown>;
@@ -68,7 +77,16 @@ export class EtherContractFnAsyncPipe implements OnDestroy, PipeTransform {
         args: TEtherContractFnArgs<T[K]>
       ) => TEtherContractFnResult;
 
-      this._lastCall = { contract, method, args, result: fn.call(contract, args) };
+      // Without wallet there is nothing to display yet: the pipe returns null instead of throwing
+      const result: Observable<unknown> = from(fn.call(contract, args)).pipe(
+        catchError((error: unknown) =>
+          error instanceof EtherWalletNotInstalledError
+            ? of(null)
+            : throwError(() => error)
+        )
+      );
+
+      this._lastCall = { contract, method, args, result };
     }
 
     return this._asyncPipe.transform(

@@ -84,6 +84,7 @@ networkService.addNetwork({
 Several streams and methods now emit errors that were lost, or that crashed the application, in ``16.x``:
 
 * Without wallet (or on the server with server-side rendering), every stream and method of the services emits an ``EtherWalletNotInstalledError``, instead of throwing a ``TypeError``. See "Handle a browser without wallet" in the README
+* Without wallet, the functions of the smart contract reject with an ``EtherWalletNotInstalledError``, instead of the generic ethers error ``contract runner does not support calling``, and the ``etherContractFnAsync`` pipe displays nothing
 * ``connectWallet()`` emits an error when the user rejects the connection, with the ethers code ``ACTION_REJECTED``, and completes after emitting the accounts
 * ``getBalanceOf()`` emits an error when the request fails, and completes after emitting the balance
 * ``price$`` now emits the price of ETH in USD from a Chainlink price feed. In ``16.x``, it always failed. On a network without a feed, it emits an error ``No price feed configured for chain <chainId>``
