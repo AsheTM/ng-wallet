@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ashetm/ng-ether": ["packages/ng-ether/src/index.ts"]
+      "@ashetm/ng-ether": ["packages/ng-ether/src/index.ts"],
+      "@ashetm/ng-ether/router": ["packages/ng-ether/router/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

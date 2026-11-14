@@ -218,6 +218,34 @@ balanceOf(args: any[]): Observable<bigint> {
 
 The method is called again only when the contract, the method name or one of the arguments changes. Arguments are compared by reference, so pass component fields rather than object or array literals written in the template, which would call the method on every change detection.
 
+### Route guards
+
+The guards are in the ``@ashetm/ng-ether/router`` entry point, which needs ``@angular/router``. It is an optional peer dependency: applications that do not import ``@ashetm/ng-ether/router`` do not need it.
+
+Each guard can be used in ``canActivate``, ``canActivateChild`` or ``canMatch``. When it blocks the route, the navigation is cancelled, or redirected with the ``redirectTo`` option. Any error, like a browser without wallet, blocks the route.
+
+* ``requireWallet(options?)`` allows the route when a wallet is installed in the browser
+* ``requireConnection(options?)`` allows the route when the wallet is connected
+* ``requireChain(chainId, options?)`` allows the route when the wallet is on the given chain. With ``switchNetwork: true``, it asks the wallet to switch to that chain first, and blocks the route if the user rejects it. It throws on an invalid chain ID
+* ``requireAccount(addresses, options?)`` allows the route when the connected account is one of the given addresses, whatever their letter case. It throws on an invalid address. Like every check in the browser, it only improves the user experience: protect the data on the server or in the contract
+
+```ts
+import { Routes } from '@angular/router';
+import { EEtherNetworkChainId } from '@ashetm/ng-ether';
+import { requireChain, requireConnection } from '@ashetm/ng-ether/router';
+
+export const routes: Routes = [
+  {
+    path: 'dashboard',
+    canActivate: [
+      requireConnection({ redirectTo: '/connect' }),
+      requireChain(EEtherNetworkChainId.MAIN, { switchNetwork: true, redirectTo: '/wrong-network' })
+    ],
+    loadComponent: () => import('./dashboard.component')
+  }
+];
+```
+
 ### Utils
 
 Functions to format a ``TEtherBigNumber`` value to a string in the specified unit:

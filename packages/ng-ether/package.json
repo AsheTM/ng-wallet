@@ -47,7 +47,13 @@
   "peerDependencies": {
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
+    "@angular/router": "^20.0.0",
     "rxjs": "^7.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@angular/router": {
+      "optional": true
+    }
   },
   "dependencies": {
     "ethers": "^6.17.0",
