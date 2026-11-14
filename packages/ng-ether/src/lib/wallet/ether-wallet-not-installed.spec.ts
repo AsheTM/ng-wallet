@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, Observable } from 'rxjs';
 
-import { EtherNetworkService } from './ether-network.service';
-import { EtherTestModule } from './ether-test.module';
-import { EtherTransactionService } from './ether-transaction.service';
+import { EtherNetworkService } from '../network/ether-network.service';
+import { EtherTestModule } from '../testing/ether-test.module';
+import { EtherTransactionService } from '../transaction/ether-transaction.service';
 import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
 import { EtherWalletService } from './ether-wallet.service';
-import { ETHER_TOKEN, ETHER_TOKEN_IS_WALLET_INSTALLED } from './ether.token';
+import { ETHER_TOKEN, ETHER_TOKEN_IS_WALLET_INSTALLED } from '../core/ether.token';
 
 describe('ng-ether without an installed wallet', () => {
   let networkService: EtherNetworkService;

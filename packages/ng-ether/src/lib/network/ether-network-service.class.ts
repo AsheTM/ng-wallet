@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs';
 
-import { AEtherService } from './ether-service.class';
+import { AEtherService } from '../core/ether-service.class';
 import {
   TEtherNetwork,
   TEtherNetworkChange,
   TEtherNetworkInfo,
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
-import { TEtherBigNumber } from './ether.type';
+import { TEtherBigNumber } from '../core/ether.type';
 
 export abstract class AEtherNetworkService extends AEtherService {
   abstract readonly blockNumber$: Observable<number>;

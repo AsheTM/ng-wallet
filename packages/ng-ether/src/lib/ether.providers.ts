@@ -1,12 +1,12 @@
 import { EnvironmentProviders, inject, makeEnvironmentProviders, Provider } from '@angular/core';
 import { ethers } from 'ethers';
 
-import { AEtherContract } from './ether-contract.class';
-import { EtherNetworkService } from './ether-network.service';
-import { AEtherProvider } from './ether-provider.class';
-import { AEtherSigner, EtherSigner } from './ether-signer.class';
-import { EtherTransactionService } from './ether-transaction.service';
-import { EtherWalletService } from './ether-wallet.service';
+import { AEtherContract } from './contract/ether-contract.class';
+import { EtherNetworkService } from './network/ether-network.service';
+import { AEtherProvider } from './core/ether-provider.class';
+import { AEtherSigner, EtherSigner } from './core/ether-signer.class';
+import { EtherTransactionService } from './transaction/ether-transaction.service';
+import { EtherWalletService } from './wallet/ether-wallet.service';
 import {
   ETHER_TOKEN,
   ETHER_TOKEN_ABI,
@@ -15,9 +15,9 @@ import {
   ETHER_TOKEN_IS_WALLET_INSTALLED,
   ETHER_TOKEN_NETWORK_ID,
   ETHER_TOKEN_PRICE_FEED
-} from './ether.token';
-import { ETHER_DEFAULT_PRICE_FEED } from './ether-price-feed.constant';
-import { TEtherConfigurationRoot } from './ether.type';
+} from './core/ether.token';
+import { ETHER_DEFAULT_PRICE_FEED } from './network/ether-price-feed.constant';
+import { TEtherConfigurationRoot } from './core/ether.type';
 
 
 export function provideEther(configuration?: TEtherConfigurationRoot): EnvironmentProviders {

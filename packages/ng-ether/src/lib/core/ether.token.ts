@@ -2,7 +2,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
 
 import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
-import { ETHER_DEFAULT_PRICE_FEED } from "./ether-price-feed.constant";
+import { ETHER_DEFAULT_PRICE_FEED } from "../network/ether-price-feed.constant";
 import { TEtherConfigurationRoot, TEtherPriceFeed } from "./ether.type";
 // import { TEtherSupportedNetwork } from "./ether.type";
 

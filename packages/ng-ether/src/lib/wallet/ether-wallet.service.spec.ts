@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, lastValueFrom, Observable, Subscription } from 'rxjs';
 
-import { AEtherProvider } from './ether-provider.class';
-import { EtherTestModule } from './ether-test.module';
+import { AEtherProvider } from '../core/ether-provider.class';
+import { EtherTestModule } from '../testing/ether-test.module';
 import { EtherWalletService } from './ether-wallet.service';
-import { ETHER_TOKEN } from './ether.token';
-import { TEtherBigNumber } from './ether.type';
+import { ETHER_TOKEN } from '../core/ether.token';
+import { TEtherBigNumber } from '../core/ether.type';
 
 
 describe('EtherWalletService', () => {

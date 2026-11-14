@@ -2,10 +2,10 @@ import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
-import { EtherWalletService } from './ether-wallet.service';
+import { EtherWalletNotInstalledError } from '../wallet/ether-wallet-not-installed.error';
+import { EtherWalletService } from '../wallet/ether-wallet.service';
 import { ETHER_TOKEN, ETHER_TOKEN_IS_WALLET_INSTALLED } from './ether.token';
-import { provideEther } from './ether.providers';
+import { provideEther } from '../ether.providers';
 
 describe('ng-ether with server-side rendering', () => {
   beforeEach(() => {

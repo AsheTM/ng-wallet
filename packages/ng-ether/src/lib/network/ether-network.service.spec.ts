@@ -6,10 +6,10 @@ import { EEtherNetworkChainId } from './ether-network.enum';
 import { EtherNetworkService } from './ether-network.service';
 import { TEtherNetworkInfo, TEtherNetworkInfoChainId } from './ether-network.type';
 import { ETHER_DEFAULT_PRICE_FEED, ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
-import { AEtherProvider } from './ether-provider.class';
-import { EtherTestModule } from './ether-test.module';
-import { ETHER_TOKEN, ETHER_TOKEN_PRICE_FEED } from './ether.token';
-import { TEtherPriceFeed } from './ether.type';
+import { AEtherProvider } from '../core/ether-provider.class';
+import { EtherTestModule } from '../testing/ether-test.module';
+import { ETHER_TOKEN, ETHER_TOKEN_PRICE_FEED } from '../core/ether.token';
+import { TEtherPriceFeed } from '../core/ether.type';
 
 
 describe('EtherNetworkService', () => {

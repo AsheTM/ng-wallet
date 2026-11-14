@@ -1,6 +1,6 @@
 import { formatUnits } from 'ethers';
 
-import { TEtherNetworkInfoChainId } from './ether-network.type';
+import { TEtherNetworkInfoChainId } from '../network/ether-network.type';
 import { TEtherBigNumber } from './ether.type';
 
 

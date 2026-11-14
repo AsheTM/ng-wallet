@@ -10,7 +10,7 @@ import {
 } from 'rxjs/operators';
 
 import { AEtherWalletService } from './ether-wallet-service.class';
-import { TEtherBigNumber } from './ether.type';
+import { TEtherBigNumber } from '../core/ether.type';
 
 @Injectable()
 export class EtherWalletService

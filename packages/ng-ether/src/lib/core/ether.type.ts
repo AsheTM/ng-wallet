@@ -1,4 +1,4 @@
-import { EEtherNetworkChainId } from './ether-network.enum';
+import { EEtherNetworkChainId } from '../network/ether-network.enum';
 
 // import { EEtherNetwork } from './ether.enum';
 

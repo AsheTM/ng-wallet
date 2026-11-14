@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { defer, from, Observable, throwError } from 'rxjs';
 
-import { AEtherSigner } from './ether-signer.class';
-import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
+import { AEtherSigner } from '../core/ether-signer.class';
+import { EtherWalletNotInstalledError } from '../wallet/ether-wallet-not-installed.error';
 import {
   TEtherTransactionRequest,
   TEtherTransactionResponse,

@@ -3,10 +3,10 @@ import { ChangeDetectorRef, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { ChangeDetectorRefMock } from './ether-contract-fn-async.mock';
+import { ChangeDetectorRefMock } from '../testing/ether-contract-fn-async.mock';
 import { EtherContractFnAsyncPipe } from './ether-contract-fn-async.pipe';
-import { ContractServiceMock } from './ether-contract.service.mock';
-import { EtherTestModule } from './ether-test.module';
+import { ContractServiceMock } from '../testing/ether-contract.service.mock';
+import { EtherTestModule } from '../testing/ether-test.module';
 
 describe('EtherContractFnAsyncPipe', () => {
   let pipe: EtherContractFnAsyncPipe;

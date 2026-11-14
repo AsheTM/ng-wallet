@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 
-import { AEtherService } from "./ether-service.class";
-import { TEtherBigNumber } from "./ether.type";
+import { AEtherService } from "../core/ether-service.class";
+import { TEtherBigNumber } from "../core/ether.type";
 
 
 export abstract class AEtherWalletService extends AEtherService {

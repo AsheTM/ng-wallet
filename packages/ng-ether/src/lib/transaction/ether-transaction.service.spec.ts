@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EtherTestModule } from './ether-test.module';
+import { EtherTestModule } from '../testing/ether-test.module';
 import { EtherTransactionRef } from './ether-transaction-ref.class';
 import { EtherTransactionService } from './ether-transaction.service';
 

@@ -8,10 +8,10 @@ import {
   switchMap,
 } from 'rxjs/operators';
 
-import { TEtherNetwork, TEtherNetworkChange } from './ether-network.type';
+import { TEtherNetwork, TEtherNetworkChange } from '../network/ether-network.type';
 import { AEtherProvider } from './ether-provider.class';
 import { AEtherSigner } from './ether-signer.class';
-import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
+import { EtherWalletNotInstalledError } from '../wallet/ether-wallet-not-installed.error';
 import { ETHER_TOKEN } from './ether.token';
 
 export abstract class AEtherService {

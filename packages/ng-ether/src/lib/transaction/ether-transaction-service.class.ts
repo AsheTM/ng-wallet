@@ -1,4 +1,4 @@
-import { AEtherService } from "./ether-service.class";
+import { AEtherService } from "../core/ether-service.class";
 import { EtherTransactionRef } from "./ether-transaction-ref.class";
 
 

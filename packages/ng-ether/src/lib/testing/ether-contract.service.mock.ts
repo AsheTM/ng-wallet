@@ -1,7 +1,7 @@
 import { from, Observable } from 'rxjs';
 
-import { ACustomContract } from './ether-contract-custom.class';
-import { ContractInjectable } from './ether-contract.decorator';
+import { ACustomContract } from '../contract/ether-contract-custom.class';
+import { ContractInjectable } from '../contract/ether-contract.decorator';
 
 
 @ContractInjectable()

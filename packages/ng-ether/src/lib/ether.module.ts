@@ -1,10 +1,10 @@
 import { inject, ModuleWithProviders, NgModule } from '@angular/core';
 
 import { EtherRootModule } from './ether-root.module';
-import { EEtherInstance } from './ether.enum';
+import { EEtherInstance } from './core/ether.enum';
 import { provideEther } from './ether.providers';
-import { ETHER_TOKEN_INSTANCE } from './ether.token';
-import { TEtherConfigurationRoot } from './ether.type';
+import { ETHER_TOKEN_INSTANCE } from './core/ether.token';
+import { TEtherConfigurationRoot } from './core/ether.type';
 
 /**
  * @deprecated Use `provideEther()` in the application providers and import `EtherContractFnAsyncPipe` where needed

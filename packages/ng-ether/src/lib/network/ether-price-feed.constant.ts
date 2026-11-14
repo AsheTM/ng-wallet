@@ -1,5 +1,5 @@
 import { EEtherNetworkChainId } from './ether-network.enum';
-import { TEtherPriceFeed } from './ether.type';
+import { TEtherPriceFeed } from '../core/ether.type';
 
 // Chainlink ETH / USD price feeds, see https://docs.chain.link/data-feeds/price-feeds/addresses
 export const ETHER_DEFAULT_PRICE_FEED: Readonly<TEtherPriceFeed> = Object.freeze({

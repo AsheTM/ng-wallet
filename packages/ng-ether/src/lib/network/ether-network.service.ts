@@ -17,10 +17,10 @@ import {
   TEtherNetworkInfoChainId,
 } from './ether-network.type';
 import { ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
-import { EEtherEventWallet } from './ether.enum';
-import { ETHER_TOKEN_PRICE_FEED } from './ether.token';
-import { TEtherBigNumber, TEtherPriceFeed } from './ether.type';
-import { toHexChainId } from './ether.util';
+import { EEtherEventWallet } from '../core/ether.enum';
+import { ETHER_TOKEN_PRICE_FEED } from '../core/ether.token';
+import { TEtherBigNumber, TEtherPriceFeed } from '../core/ether.type';
+import { toHexChainId } from '../core/ether.util';
 
 @Injectable()
 export class EtherNetworkService

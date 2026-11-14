@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 
-import { EtherModule } from "./ether.module";
-import { ETHER_TOKEN } from "./ether.token";
+import { EtherModule } from "../ether.module";
+import { ETHER_TOKEN } from "../core/ether.token";
 
-import * as abiMock from '../assets/abi.mock.json';
+import * as abiMock from './abi.mock.json';
 
 
 @NgModule({
