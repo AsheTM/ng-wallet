@@ -193,7 +193,70 @@ Or with second definition
 
 * ``onDisconnect(fn: () => void)`` returns ``void``, you need to provide a callback function without arguments; that emits a ``void`` value if wallet has disconnected
 
-**Note**: the callback definitions stay subscribed until the service is destroyed, so with the application. Prefer the ``Observable`` definitions in components, and unsubscribe (for example with ``takeUntilDestroyed()``).
+**Note**: the callback definitions stay subscribed until the service is destroyed, so with the application. In components, prefer the hooks (see below), or the ``Observable`` definitions and unsubscribe (for example with ``takeUntilDestroyed()``).
+
+### Signals
+
+Signal functions read the wallet and the network as signals. Call them in an injection context (a field initializer or a constructor), or pass an ``injector`` (for example in ``ngOnInit``).
+
+| Function | Signal | Default value |
+| -------- | ------ | ------------- |
+| ``injectAccount()`` | Selected account | ``undefined`` |
+| ``injectAccounts()`` | Connected accounts | ``[]`` |
+| ``injectIsConnected()`` | ``true`` if an account is connected | ``false`` |
+| ``injectBalance()`` | Balance of the selected account, in wei | ``undefined`` |
+| ``injectNetwork()`` | Current network | ``undefined`` |
+| ``injectChainId()`` | Chain ID of the current network | ``undefined`` |
+| ``injectGasFee()`` | Gas price, in wei | ``undefined`` |
+| ``injectPrice()`` | Price of the native currency in USD (see ``price$``) | ``undefined`` |
+
+A signal can not hold an error: without wallet, on the server, or on error, it keeps its default value. ``injectPrice()`` is ``undefined`` on a chain without price feed, and is read again on each network change.
+
+```ts
+@Component({
+  template: `
+    @if (isConnected()) {
+      <p>{{ account() }}: {{ balance() }} wei on chain {{ chainId() }}</p>
+    }
+  `
+})
+export class WalletComponent {
+  readonly account = injectAccount();
+  readonly balance = injectBalance();
+  readonly chainId = injectChainId();
+  readonly isConnected = injectIsConnected();
+
+  // Outside an injection context
+  private readonly _injector = inject(Injector);
+
+  ngOnInit(): void {
+    const price = injectPrice({ injector: this._injector });
+  }
+}
+```
+
+### Hooks
+
+Hook functions call a callback on wallet and network events. Like the signals, call them in an injection context, or pass an ``injector``. They stop when their injection context is destroyed (for example the component), and return a function to stop earlier. Without wallet, or on the server, they are never called.
+
+* ``onWalletConnect(fn: (accounts: string[]) => void)`` calls ``fn`` when the wallet connects, and right away if it is already connected. It is not called again on account changes
+* ``onWalletDisconnect(fn: () => void)`` calls ``fn`` when a connected wallet disconnects. It is not called if the wallet is disconnected from the start
+* ``onAccountChange(fn: (accounts: string[]) => void)`` calls ``fn`` on each account change, and right away with the current accounts
+* ``onNetworkChange(fn: (change: TEtherNetworkChange) => void)`` calls ``fn`` on each network change with ``newNetwork`` and ``oldNetwork``, and right away with the current network
+
+```ts
+@Component({ ... })
+export class WalletComponent {
+  constructor() {
+    onWalletConnect((accounts: string[]) => console.log('Connected', accounts));
+    onWalletDisconnect(() => console.log('Disconnected'));
+    onNetworkChange(({ newNetwork }: TEtherNetworkChange) => console.log('Chain', newNetwork.chainId));
+
+    const stop = onAccountChange((accounts: string[]) => console.log('Accounts', accounts));
+    // stop() to stop listening before the component is destroyed
+  }
+}
+```
 
 ### Classes
 
