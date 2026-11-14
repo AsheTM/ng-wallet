@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from "@angular/common";
 import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
+import { isBrowser } from "@ashetm/platform";
 
 import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
 import { ETHER_DEFAULT_PRICE_FEED } from "../network/ether-price-feed.constant";
@@ -9,8 +10,9 @@ import { TEtherConfigurationRoot, TEtherPriceFeed } from "./ether.type";
 
 export const ETHER_TOKEN: InjectionToken<any>
   = new InjectionToken<any>('ETHER_TOKEN', {
-    // window does not exist with server-side rendering, the server then behaves as a browser without wallet
-    factory: () => isPlatformBrowser(inject(PLATFORM_ID)) ? (window as any).ethereum : undefined,
+    // window does not exist with server-side rendering, the server then behaves as a browser without wallet.
+    // isBrowser() also checks window, for a browser platform running without it (web worker, test without DOM)
+    factory: () => isPlatformBrowser(inject(PLATFORM_ID)) && isBrowser() ? (window as any).ethereum : undefined,
     providedIn: 'root'
   });
 export const ETHER_TOKEN_ABI: InjectionToken<TEtherConfigurationRoot['abi']>

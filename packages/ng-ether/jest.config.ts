@@ -14,7 +14,8 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\.mjs$)'],
+  // @ashetm/platform is published as ESM only (.js), so it is transformed too
+  transformIgnorePatterns: ['node_modules/(?!(.*\.mjs$|@ashetm/platform/))'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
