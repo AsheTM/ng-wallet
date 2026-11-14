@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
+import { AEtherProvider } from './ether-provider.class';
 import { EtherTestModule } from './ether-test.module';
 import { EtherWalletService } from './ether-wallet.service';
+import { ETHER_TOKEN } from './ether.token';
+import { TEtherBigNumber } from './ether.type';
 
 
 describe('EtherWalletService', () => {
@@ -55,5 +58,42 @@ describe('EtherWalletService', () => {
     expect(service.onDisconnect).toBeDefined();
     expect(service.onDisconnect()).toBeInstanceOf(Observable);
     expect(service.onDisconnect(() => null)).toBeUndefined();
+  });
+});
+
+describe('EtherWalletService balance$', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  it('only emits when the balance changes', async () => {
+    jest.useFakeTimers();
+    TestBed.configureTestingModule({
+      imports: [EtherTestModule],
+      providers: [{
+        provide: ETHER_TOKEN,
+        useValue: {
+          on: () => void 0,
+          removeListener: () => void 0,
+          request: ({ method }: { method: string }) =>
+            Promise.resolve(method === 'eth_accounts' ? ['0x0000000000000000000000000000000000000001'] : '0x1')
+        }
+      }]
+    });
+    const provider: AEtherProvider = TestBed.inject(AEtherProvider);
+    const balances: TEtherBigNumber[] = [1n, 1n, 2n, 2n, 1n];
+    const emitted: TEtherBigNumber[] = [];
+
+    jest.spyOn(provider, 'getBalance').mockImplementation(() => Promise.resolve(balances.shift() ?? 1n));
+
+    const subscription: Subscription = TestBed.inject(EtherWalletService).balance$
+      .subscribe((balance: TEtherBigNumber) => emitted.push(balance));
+
+    // 5 polls, every 500 ms
+    await jest.advanceTimersByTimeAsync(2100);
+    subscription.unsubscribe();
+
+    expect(emitted).toEqual([1n, 2n, 1n]);
   });
 });

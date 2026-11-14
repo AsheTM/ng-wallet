@@ -124,7 +124,7 @@ For methods, there is the following:
 ``EtherWalletService`` is a service concern all about wallet.
 
 * ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account
-* ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet
+* ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet. The balance is checked every 500 ms and only emitted when it changes, or when the account or network changes
 * ``transactionCount$`` is ``Observable<number>``, it emits ``number`` value of transaction count
 
 And for methods, there is the following: 
