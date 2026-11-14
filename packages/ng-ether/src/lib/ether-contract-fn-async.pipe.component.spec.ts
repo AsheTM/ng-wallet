@@ -35,6 +35,7 @@ class CustomContract extends ACustomContract {
 })
 class HostComponent {
   readonly customContract: CustomContract = inject(CustomContract);
+  owner = '';
 }
 
 describe('EtherContractFnAsyncPipe in a component', () => {
@@ -64,6 +65,42 @@ describe('EtherContractFnAsyncPipe in a component', () => {
     await render(`{{ customContract | etherContractFnAsync: 'decimals' }}`);
 
     expect(decimals).toHaveBeenCalled();
+  });
+
+  it('displays the value once the call resolves', async () => {
+    const fixture = await render(`{{ customContract | etherContractFnAsync: 'decimals' }}`);
+
+    expect(fixture.nativeElement.textContent.trim()).toBe('18');
+  });
+
+  it('calls the method once while its arguments do not change', async () => {
+    const balanceOf = jest.spyOn(contractFake, 'balanceOf');
+    const fixture = await render(`{{ customContract | etherContractFnAsync: 'balanceOf' : '0xOwner' }}`);
+
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    expect(balanceOf).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls the method again when an argument changes', async () => {
+    const balanceOf = jest.spyOn(contractFake, 'balanceOf');
+
+    TestBed.overrideComponent(HostComponent, {
+      set: { template: `{{ customContract | etherContractFnAsync: 'balanceOf' : owner }}` }
+    });
+    const fixture: ComponentFixture<HostComponent> = TestBed.createComponent(HostComponent);
+
+    fixture.componentInstance.owner = '0xFirst';
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.owner = '0xSecond';
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(balanceOf.mock.calls).toEqual([['0xFirst'], ['0xSecond']]);
+    expect(fixture.nativeElement.textContent.trim()).toBe('balance of "0xSecond"');
   });
 
   it('passes the pipe arguments as one array', async () => {

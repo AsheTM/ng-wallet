@@ -34,14 +34,24 @@ type TEtherContractFnValue<F> = F extends (...args: never[]) => infer R
   ? ObservedValueOf<R>
   : never;
 
+// Impure like AsyncPipe, so the values emitted after the first change detection are displayed
 @Pipe({
   name: 'etherContractFnAsync',
+  pure: false,
 })
 export class EtherContractFnAsyncPipe implements OnDestroy, PipeTransform {
   // AsyncPipe injects internally since Angular 20, it must be created in an injection context
   private readonly _asyncPipe: AsyncPipe = new AsyncPipe(
     inject(ChangeDetectorRef)
   );
+
+  // The last call, so the method is only called again when the contract, method or arguments change
+  private _lastCall: {
+    contract: ACustomContract;
+    method: PropertyKey;
+    args: unknown[];
+    result: TEtherContractFnResult;
+  } | null = null;
 
   ngOnDestroy(): void {
     this._asyncPipe.ngOnDestroy();
@@ -53,12 +63,30 @@ export class EtherContractFnAsyncPipe implements OnDestroy, PipeTransform {
     method: K,
     ...args: TEtherContractFnArgs<T[K]>
   ): TEtherContractFnValue<T[K]> | null {
-    const fn = contract[method] as unknown as (
-      args: TEtherContractFnArgs<T[K]>
-    ) => TEtherContractFnResult;
+    if (!this._isLastCall(contract, method, args)) {
+      const fn = contract[method] as unknown as (
+        args: TEtherContractFnArgs<T[K]>
+      ) => TEtherContractFnResult;
+
+      this._lastCall = { contract, method, args, result: fn.call(contract, args) };
+    }
 
     return this._asyncPipe.transform(
-      fn.call(contract, args) as Observable<TEtherContractFnValue<T[K]>>
+      this._lastCall?.result as Observable<TEtherContractFnValue<T[K]>>
+    );
+  }
+
+  private _isLastCall(
+    contract: ACustomContract,
+    method: PropertyKey,
+    args: unknown[]
+  ): boolean {
+    return (
+      !!this._lastCall &&
+      this._lastCall.contract === contract &&
+      this._lastCall.method === method &&
+      this._lastCall.args.length === args.length &&
+      this._lastCall.args.every((arg: unknown, index: number) => arg === args[index])
     );
   }
 }
