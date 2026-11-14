@@ -4,6 +4,10 @@ This mono repository contains multiple library/package, check README.md of each 
 
 * [README @ashetm/ng-ether](https://github.com/AsheTM/ng-wallet/blob/main/packages/ng-ether/README.md)
 
+## License
+
+[MIT](./LICENSE)
+
 <!-- ### LOOKING FOR MAINTAINER. PLEASE PING [@voronianski](https://twitter.com/voronianski)! -->
 
 <!-- [![build status](http://img.shields.io/travis/likeastore/ngDialog.svg)](https://travis-ci.org/likeastore/ngDialog) -->

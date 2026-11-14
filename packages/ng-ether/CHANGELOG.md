@@ -1,3 +1,7 @@
+# 20.1.0
+
+- [x] Add the MIT `LICENSE` file, also shipped in the npm package
+
 # 20.0.0
 
 - [x] Update ng-ether to be compatible with Angular v20, see [MIGRATION.md](./MIGRATION.md) to upgrade from 16.x

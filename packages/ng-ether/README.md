@@ -343,6 +343,10 @@ readonly account$ = inject(EtherWalletService).account$.pipe(
 
 Import ``EtherTestModule`` in your tests: it provides the library with a mock of ``window.ethereum`` through ``ETHER_TOKEN``. Override ``ETHER_TOKEN`` to return the accounts, chain or errors your test needs.
 
+## License
+
+[MIT](./LICENSE)
+
 ## Issue
 
 LOOKING FOR MAINTAINER OR IF THERE IS AN ISSUE OR ANY IDEA TO ADD. PLEASE CREATE ISSUE IN GITHUB REPOSITORY.
