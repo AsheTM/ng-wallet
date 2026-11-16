@@ -62,7 +62,8 @@ export const appConfig: ApplicationConfig = {
       abi: [...], // ABI of your deployed smart contract
       addressContract: '0x...', // Address of your deployed smart contract
       networkId: 'any', // Optional, default value is 'any'
-      priceFeed: { 137: '0x...' } // Optional, Chainlink price feed address per chain ID, used by price$
+      priceFeed: { 137: '0x...' }, // Optional, Chainlink price feed address per chain ID, used by price$
+      explorers: { 137: 'https://polygonscan.com' } // Optional, block explorer per chain ID, used by etherExplorerLink
     })
   ]
 };
@@ -108,6 +109,7 @@ Tokens are ``InjectionToken<T>`` that need to be injected in order to get their 
 5. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
 6. ``ETHER_TOKEN_NETWORK_ID`` returns the ``networkId`` provided in the configuration, default value is ``any``
 7. ``ETHER_TOKEN_PRICE_FEED`` returns the Chainlink price feed address per chain ID used by ``price$``: the default ones (``ETHER_DEFAULT_PRICE_FEED``, Ethereum mainnet and Sepolia) with the ``priceFeed`` of the configuration
+8. ``ETHER_TOKEN_EXPLORER`` returns the block explorer per chain ID used by ``etherExplorerLink``: the default ones (``ETHER_DEFAULT_EXPLORER``, Etherscan for Ethereum mainnet, Sepolia and Hoodi) with the ``explorers`` of the configuration
 
 ### Enums
 
@@ -362,6 +364,45 @@ balanceOf(args: any[]): Observable<bigint> {
 The method name, the arguments and the result are typed from your custom contract: type the array parameter as a tuple, like ``args: [owner: string]``, to have the arguments checked in the template.
 
 The method is called again only when the contract, the method name or one of the arguments changes. Arguments are compared by reference, so pass component fields rather than object or array literals written in the template, which would call the method on every change detection.
+
+#### etherShortAddress
+
+``address | etherShortAddress : start? : end?`` shortens an address, keeping ``start`` characters at the start (``0x`` included, 6 by default) and ``end`` at the end (4 by default).
+
+```html
+{{ account() | etherShortAddress }}        <!-- 0x1234…abcd -->
+{{ account() | etherShortAddress: 4 : 2 }} <!-- 0x12…cd -->
+```
+
+#### etherUnits
+
+``value | etherUnits : unit? : maxDecimals?`` formats a wei amount in a unit (``'ether'`` by default, ``'gwei'``, ``'wei'``…) or a number of decimals (for example ``6`` for USDC). ``maxDecimals`` truncates, so a balance is never rounded up, and the trailing zeros are removed.
+
+```html
+{{ balance() | etherUnits }}            <!-- 1.5 -->
+{{ gasFee() | etherUnits: 'gwei' : 2 }} <!-- 12.34 -->
+{{ usdcBalance | etherUnits: 6 }}       <!-- 2.5 -->
+```
+
+#### etherExplorerLink
+
+``value | etherExplorerLink : chainId : type?`` returns the URL of an address, a transaction or a block on the block explorer of the chain. The type is detected from the value: an address (42 characters), a transaction hash (66 characters) or a block number. Pass ``'token'`` (or ``'address'``, ``'tx'``, ``'block'``) as ``type`` to choose it.
+
+Etherscan is used by default for Ethereum mainnet, Sepolia and Hoodi (``ETHER_DEFAULT_EXPLORER``). Add or override explorers per chain ID with the ``explorers`` configuration. On a chain without explorer, it returns ``null``, and an ``[href]`` bound to ``null`` renders no link.
+
+```html
+<a [href]="account() | etherExplorerLink: chainId()">Account</a>
+<a [href]="hash | etherExplorerLink: chainId()">Transaction</a>
+<a [href]="tokenAddress | etherExplorerLink: chainId() : 'token'">Token</a>
+```
+
+#### etherChainName
+
+``chainId | etherChainName`` returns the name of a chain from its ID (number, ``bigint`` or hexadecimal string): Ethereum, Sepolia, Hoodi, Polygon, Base, Arbitrum One… An unknown chain is named ``Chain <chainId>``.
+
+```html
+{{ chainId() | etherChainName }} <!-- Sepolia -->
+```
 
 ### Route guards
 
