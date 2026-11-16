@@ -1,3 +1,8 @@
+# 20.5.0
+
+- [x] Add `fromContractEvent`, `queryContractEvents` and `onContractEvent` to follow and query contract events
+- [x] Add `injectErc20Token` to read and send ERC-20 tokens
+
 # 20.4.0
 
 - [x] Add pipes `etherShortAddress`, `etherUnits`, `etherExplorerLink` and `etherChainName`, and the `explorers` configuration
