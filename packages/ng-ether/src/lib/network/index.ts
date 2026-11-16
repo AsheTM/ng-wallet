@@ -1,3 +1,7 @@
+export * from './ether-chain-name.pipe';
+export * from './ether-chain.directive';
+export * from './ether-explorer-link.pipe';
+export * from './ether-explorer.constant';
 export * from './ether-network-service.class';
 export * from './ether-network.enum';
 export * from './ether-network.hook';
