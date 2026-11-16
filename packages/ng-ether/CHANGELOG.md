@@ -1,6 +1,7 @@
 # 20.3.0
 
 - [x] Add `trackTransaction` to follow a transfer or a contract call: `pending`, `submitted`, `confirmed` or `failed`
+- [x] Add `injectTransaction` to track a transaction as a signal, stopped with its component
 
 # 20.2.0
 

@@ -281,6 +281,35 @@ trackTransaction(transactionService.prepareTransaction(to).sendEth(0.1)).subscri
 trackTransaction(() => contract['transfer'](to, amount), { confirmations: 2 });
 ```
 
+In a component, ``injectTransaction()`` tracks a transaction as a signal. Call it in an injection context, or pass an ``injector``. It returns:
+
+* ``state``, a ``Signal<TEtherTransactionState | undefined>``, ``undefined`` before the first ``track()``
+* ``track(source, options?)``, that tracks a transaction like ``trackTransaction()``, and stops tracking the previous one
+* ``reset()``, that stops tracking and sets ``state`` back to ``undefined``
+
+The tracking also stops when the injection context is destroyed (for example the component). Stopping the tracking does not cancel a transaction already sent.
+
+```ts
+@Component({
+  template: `
+    <button (click)="send()" [disabled]="transaction.state()?.status === 'pending'">Send</button>
+    @switch (transaction.state()?.status) {
+      @case ('submitted') { <p>Waiting for the confirmation…</p> }
+      @case ('confirmed') { <p>Confirmed</p> }
+      @case ('failed') { <p>Failed</p> }
+    }
+  `
+})
+export class SendComponent {
+  readonly transaction = injectTransaction();
+  private readonly _contract = inject(AEtherContract);
+
+  send(): void {
+    this.transaction.track(() => this._contract['transfer'](to, amount));
+  }
+}
+```
+
 ### Classes
 
 #### AEtherContract
