@@ -314,6 +314,61 @@ export class SendComponent {
 }
 ```
 
+### Contract events
+
+These functions follow the events of a smart contract, from an ethers ``Contract`` (for example ``AEtherContract``, or the ``contract`` of a custom contract). Each event is a ``TEtherContractEvent``: ``name``, ``args`` (by index and by name, ``event.args['from']``), ``blockNumber``, ``transactionHash`` and the ethers ``log``.
+
+* ``fromContractEvent(contract, eventName, { args? })`` returns an ``Observable<TEtherContractEvent>`` of the new events. The listener is removed on unsubscription
+* ``queryContractEvents(contract, eventName, { fromBlock?, toBlock?, args? })`` returns an ``Observable<TEtherContractEvent[]>`` of the past events. ``fromBlock`` can be negative to count back from the latest block
+* ``onContractEvent(contract, eventName, fn, { args? })`` calls ``fn`` on each new event, like the hooks: in an injection context, stopped when it is destroyed, and returns a function to stop earlier
+
+``args`` filters on the values of the indexed arguments, ``null`` to match any value: ``{ args: [null, me] }`` for the ``Transfer(from, to, value)`` events received by ``me``.
+
+Without wallet, ``fromContractEvent`` and ``queryContractEvents`` emit an ``EtherWalletNotInstalledError``, and the ``fn`` of ``onContractEvent`` is never called.
+
+```ts
+private readonly _contract = inject(AEtherContract);
+
+constructor() {
+  // Transfers received by an address
+  onContractEvent(this._contract, 'Transfer', (event: TEtherContractEvent) => console.log(event.args['value']), {
+    args: [null, address]
+  });
+}
+
+readonly lastTransfers$ = queryContractEvents(this._contract, 'Transfer', { fromBlock: -1000 });
+```
+
+### ERC-20 tokens
+
+``injectErc20Token(address)`` returns an ``EtherErc20Token``, to read and send an ERC-20 token with the wallet. Call it in an injection context, or pass an ``injector``.
+
+* ``name$``, ``symbol$`` and ``decimals$`` are read once
+* ``balance$`` is the raw balance of the connected account, ``0n`` when disconnected. It is refreshed on account and network change, and on the ``Transfer`` events from or to the account
+* ``balanceOf(owner)`` and ``allowance(owner, spender)`` return a raw amount (``bigint``)
+* ``transfer(to, amount)`` and ``approve(spender, amount)`` take an amount in tokens (``'1.5'``, converted with the decimals of the token) or a raw ``bigint``. They return an ``Observable<TransactionResponse>``, sent on subscription: use them with ``trackTransaction()`` or ``injectTransaction().track()``
+* ``contract`` is the ethers ``Contract`` of the token (``ETHER_ERC20_ABI``), for example for ``fromContractEvent()``
+
+Without wallet, they emit an ``EtherWalletNotInstalledError``.
+
+```ts
+@Component({
+  imports: [AsyncPipe, EtherUnitsPipe],
+  template: `
+    <p>{{ usdc.balance$ | async | etherUnits: 6 }} {{ usdc.symbol$ | async }}</p>
+    <button (click)="send()">Send 1.5 USDC</button>
+  `
+})
+export class UsdcComponent {
+  readonly usdc = injectErc20Token('0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48');
+  readonly transaction = injectTransaction();
+
+  send(): void {
+    this.transaction.track(this.usdc.transfer(to, '1.5'));
+  }
+}
+```
+
 ### Classes
 
 #### AEtherContract
