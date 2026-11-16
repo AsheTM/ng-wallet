@@ -13,7 +13,7 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'walletEther',
+          prefix: 'ether',
           style: 'camelCase',
         },
       ],
@@ -21,7 +21,7 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: 'wallet-ether',
+          prefix: 'ether',
           style: 'kebab-case',
         },
       ],

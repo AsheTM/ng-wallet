@@ -211,6 +211,8 @@ Signal functions read the wallet and the network as signals. Call them in an inj
 | ``injectChainId()`` | Chain ID of the current network | ``undefined`` |
 | ``injectGasFee()`` | Gas price, in wei | ``undefined`` |
 | ``injectPrice()`` | Price of the native currency in USD (see ``price$``) | ``undefined`` |
+| ``injectWalletInstalled()`` | ``true`` if a wallet is installed in the browser | ``false`` on the server |
+| ``injectWalletInfo()`` | ``TEtherWalletInfo`` of the installed wallet: ``name`` (MetaMask, Rabby, Coinbase Wallet…) and ``isMetaMask`` | ``null`` |
 
 A signal can not hold an error: without wallet, on the server, or on error, it keeps its default value. ``injectPrice()`` is ``undefined`` on a chain without price feed, and is read again on each network change.
 
@@ -402,6 +404,25 @@ Etherscan is used by default for Ethereum mainnet, Sepolia and Hoodi (``ETHER_DE
 
 ```html
 {{ chainId() | etherChainName }} <!-- Sepolia -->
+```
+
+### Directives
+
+Structural directives show their template on a condition, or the ``else`` template otherwise. They follow the wallet and the network, also with zoneless change detection, and show the ``else`` template on the server.
+
+* ``*etherWallet="let wallet; else noWallet"`` shows its template when a wallet is installed, with its ``TEtherWalletInfo`` (``name``, ``isMetaMask``)
+* ``*etherConnected="let account; else connect"`` shows its template when an account is connected, with the selected account. Changing account updates the template, it is only created again on connection or disconnection
+* ``*etherChain="chainId; else wrongChain"`` shows its template on a chain, or on one of an array of chains, with the current chain ID
+
+```html
+<div *etherWallet="let wallet; else noWallet">
+  <p *etherConnected="let account; else connect">{{ account | etherShortAddress }} with {{ wallet.name }}</p>
+</div>
+<p *etherChain="[1, 11155111]; else wrongChain">Ready</p>
+
+<ng-template #noWallet><a href="https://metamask.io">Install a wallet</a></ng-template>
+<ng-template #connect><button>Connect</button></ng-template>
+<ng-template #wrongChain><p>Switch to Ethereum or Sepolia</p></ng-template>
 ```
 
 ### Route guards
