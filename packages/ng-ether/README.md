@@ -314,6 +314,31 @@ export class SendComponent {
 }
 ```
 
+### Contract events
+
+These functions follow the events of a smart contract, from an ethers ``Contract`` (for example ``AEtherContract``, or the ``contract`` of a custom contract). Each event is a ``TEtherContractEvent``: ``name``, ``args`` (by index and by name, ``event.args['from']``), ``blockNumber``, ``transactionHash`` and the ethers ``log``.
+
+* ``fromContractEvent(contract, eventName, { args? })`` returns an ``Observable<TEtherContractEvent>`` of the new events. The listener is removed on unsubscription
+* ``queryContractEvents(contract, eventName, { fromBlock?, toBlock?, args? })`` returns an ``Observable<TEtherContractEvent[]>`` of the past events. ``fromBlock`` can be negative to count back from the latest block
+* ``onContractEvent(contract, eventName, fn, { args? })`` calls ``fn`` on each new event, like the hooks: in an injection context, stopped when it is destroyed, and returns a function to stop earlier
+
+``args`` filters on the values of the indexed arguments, ``null`` to match any value: ``{ args: [null, me] }`` for the ``Transfer(from, to, value)`` events received by ``me``.
+
+Without wallet, ``fromContractEvent`` and ``queryContractEvents`` emit an ``EtherWalletNotInstalledError``, and the ``fn`` of ``onContractEvent`` is never called.
+
+```ts
+private readonly _contract = inject(AEtherContract);
+
+constructor() {
+  // Transfers received by an address
+  onContractEvent(this._contract, 'Transfer', (event: TEtherContractEvent) => console.log(event.args['value']), {
+    args: [null, address]
+  });
+}
+
+readonly lastTransfers$ = queryContractEvents(this._contract, 'Transfer', { fromBlock: -1000 });
+```
+
 ### Classes
 
 #### AEtherContract
