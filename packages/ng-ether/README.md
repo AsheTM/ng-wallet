@@ -339,6 +339,36 @@ constructor() {
 readonly lastTransfers$ = queryContractEvents(this._contract, 'Transfer', { fromBlock: -1000 });
 ```
 
+### ERC-20 tokens
+
+``injectErc20Token(address)`` returns an ``EtherErc20Token``, to read and send an ERC-20 token with the wallet. Call it in an injection context, or pass an ``injector``.
+
+* ``name$``, ``symbol$`` and ``decimals$`` are read once
+* ``balance$`` is the raw balance of the connected account, ``0n`` when disconnected. It is refreshed on account and network change, and on the ``Transfer`` events from or to the account
+* ``balanceOf(owner)`` and ``allowance(owner, spender)`` return a raw amount (``bigint``)
+* ``transfer(to, amount)`` and ``approve(spender, amount)`` take an amount in tokens (``'1.5'``, converted with the decimals of the token) or a raw ``bigint``. They return an ``Observable<TransactionResponse>``, sent on subscription: use them with ``trackTransaction()`` or ``injectTransaction().track()``
+* ``contract`` is the ethers ``Contract`` of the token (``ETHER_ERC20_ABI``), for example for ``fromContractEvent()``
+
+Without wallet, they emit an ``EtherWalletNotInstalledError``.
+
+```ts
+@Component({
+  imports: [AsyncPipe, EtherUnitsPipe],
+  template: `
+    <p>{{ usdc.balance$ | async | etherUnits: 6 }} {{ usdc.symbol$ | async }}</p>
+    <button (click)="send()">Send 1.5 USDC</button>
+  `
+})
+export class UsdcComponent {
+  readonly usdc = injectErc20Token('0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48');
+  readonly transaction = injectTransaction();
+
+  send(): void {
+    this.transaction.track(this.usdc.transfer(to, '1.5'));
+  }
+}
+```
+
 ### Classes
 
 #### AEtherContract
