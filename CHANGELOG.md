@@ -1,3 +1,7 @@
+# 1.6.0
+
+- [x] Release @ashetm/ng-ether@v20.3.0, with the transaction lifecycle
+
 # 1.5.0
 
 - [x] Release @ashetm/ng-ether@v20.2.0, with signal and hook functions
