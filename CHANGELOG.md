@@ -1,3 +1,7 @@
+# 1.8.0
+
+- [x] Release @ashetm/ng-ether@v20.5.0, with contract events and ERC-20 helpers
+
 # 1.7.0
 
 - [x] Release @ashetm/ng-ether@v20.4.0, with pipes and directives
