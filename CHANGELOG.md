@@ -1,3 +1,7 @@
+# 1.7.0
+
+- [x] Release @ashetm/ng-ether@v20.4.0, with pipes and directives
+
 # 1.6.0
 
 - [x] Release @ashetm/ng-ether@v20.3.0, with the transaction lifecycle

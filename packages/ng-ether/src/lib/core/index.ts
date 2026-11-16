@@ -5,4 +5,5 @@ export * from './ether-signer.class';
 export * from './ether.enum';
 export * from './ether.token';
 export * from './ether.type';
+export * from './ether-units.pipe';
 export * from './ether.util';

@@ -62,7 +62,8 @@ export const appConfig: ApplicationConfig = {
       abi: [...], // ABI of your deployed smart contract
       addressContract: '0x...', // Address of your deployed smart contract
       networkId: 'any', // Optional, default value is 'any'
-      priceFeed: { 137: '0x...' } // Optional, Chainlink price feed address per chain ID, used by price$
+      priceFeed: { 137: '0x...' }, // Optional, Chainlink price feed address per chain ID, used by price$
+      explorers: { 137: 'https://polygonscan.com' } // Optional, block explorer per chain ID, used by etherExplorerLink
     })
   ]
 };
@@ -108,6 +109,7 @@ Tokens are ``InjectionToken<T>`` that need to be injected in order to get their 
 5. ``ETHER_TOKEN_IS_WALLET_INSTALLED`` returns boolean, true if the wallet is installed in browser
 6. ``ETHER_TOKEN_NETWORK_ID`` returns the ``networkId`` provided in the configuration, default value is ``any``
 7. ``ETHER_TOKEN_PRICE_FEED`` returns the Chainlink price feed address per chain ID used by ``price$``: the default ones (``ETHER_DEFAULT_PRICE_FEED``, Ethereum mainnet and Sepolia) with the ``priceFeed`` of the configuration
+8. ``ETHER_TOKEN_EXPLORER`` returns the block explorer per chain ID used by ``etherExplorerLink``: the default ones (``ETHER_DEFAULT_EXPLORER``, Etherscan for Ethereum mainnet, Sepolia and Hoodi) with the ``explorers`` of the configuration
 
 ### Enums
 
@@ -209,6 +211,8 @@ Signal functions read the wallet and the network as signals. Call them in an inj
 | ``injectChainId()`` | Chain ID of the current network | ``undefined`` |
 | ``injectGasFee()`` | Gas price, in wei | ``undefined`` |
 | ``injectPrice()`` | Price of the native currency in USD (see ``price$``) | ``undefined`` |
+| ``injectWalletInstalled()`` | ``true`` if a wallet is installed in the browser | ``false`` on the server |
+| ``injectWalletInfo()`` | ``TEtherWalletInfo`` of the installed wallet: ``name`` (MetaMask, Rabby, Coinbase Wallet…) and ``isMetaMask`` | ``null`` |
 
 A signal can not hold an error: without wallet, on the server, or on error, it keeps its default value. ``injectPrice()`` is ``undefined`` on a chain without price feed, and is read again on each network change.
 
@@ -362,6 +366,72 @@ balanceOf(args: any[]): Observable<bigint> {
 The method name, the arguments and the result are typed from your custom contract: type the array parameter as a tuple, like ``args: [owner: string]``, to have the arguments checked in the template.
 
 The method is called again only when the contract, the method name or one of the arguments changes. Arguments are compared by reference, so pass component fields rather than object or array literals written in the template, which would call the method on every change detection.
+
+#### etherShortAddress
+
+``address | etherShortAddress : start? : end?`` shortens an address, keeping ``start`` characters at the start (``0x`` included, 6 by default) and ``end`` at the end (4 by default).
+
+```html
+{{ account() | etherShortAddress }}        <!-- 0x1234…abcd -->
+{{ account() | etherShortAddress: 4 : 2 }} <!-- 0x12…cd -->
+```
+
+#### etherUnits
+
+``value | etherUnits : unit? : maxDecimals?`` formats a wei amount in a unit (``'ether'`` by default, ``'gwei'``, ``'wei'``…) or a number of decimals (for example ``6`` for USDC). ``maxDecimals`` truncates, so a balance is never rounded up, and the trailing zeros are removed.
+
+```html
+{{ balance() | etherUnits }}            <!-- 1.5 -->
+{{ gasFee() | etherUnits: 'gwei' : 2 }} <!-- 12.34 -->
+{{ usdcBalance | etherUnits: 6 }}       <!-- 2.5 -->
+```
+
+#### etherExplorerLink
+
+``value | etherExplorerLink : chainId : type?`` returns the URL of an address, a transaction or a block on the block explorer of the chain. The type is detected from the value: an address (42 characters), a transaction hash (66 characters) or a block number. Pass ``'token'`` (or ``'address'``, ``'tx'``, ``'block'``) as ``type`` to choose it.
+
+Etherscan is used by default for Ethereum mainnet, Sepolia and Hoodi (``ETHER_DEFAULT_EXPLORER``). Add or override explorers per chain ID with the ``explorers`` configuration. On a chain without explorer, it returns ``null``, and an ``[href]`` bound to ``null`` renders no link.
+
+```html
+<a [href]="account() | etherExplorerLink: chainId()">Account</a>
+<a [href]="hash | etherExplorerLink: chainId()">Transaction</a>
+<a [href]="tokenAddress | etherExplorerLink: chainId() : 'token'">Token</a>
+```
+
+#### etherChainName
+
+``chainId | etherChainName`` returns the name of a chain from its ID (number, ``bigint`` or hexadecimal string): Ethereum, Sepolia, Hoodi, Polygon, Base, Arbitrum One… An unknown chain is named ``Chain <chainId>``.
+
+```html
+{{ chainId() | etherChainName }} <!-- Sepolia -->
+```
+
+### Directives
+
+Structural directives show their template on a condition, or the ``else`` template otherwise. They follow the wallet and the network, also with zoneless change detection, and show the ``else`` template on the server.
+
+* ``*etherWallet="let wallet; else noWallet"`` shows its template when a wallet is installed, with its ``TEtherWalletInfo`` (``name``, ``isMetaMask``)
+* ``*etherConnected="let account; else connect"`` shows its template when an account is connected, with the selected account. Changing account updates the template, it is only created again on connection or disconnection
+* ``*etherChain="chainId; else wrongChain"`` shows its template on a chain, or on one of an array of chains, with the current chain ID
+
+```html
+<div *etherWallet="let wallet; else noWallet">
+  <p *etherConnected="let account; else connect">{{ account | etherShortAddress }} with {{ wallet.name }}</p>
+</div>
+<p *etherChain="[1, 11155111]; else wrongChain">Ready</p>
+
+<ng-template #noWallet><a href="https://metamask.io">Install a wallet</a></ng-template>
+<ng-template #connect><button>Connect</button></ng-template>
+<ng-template #wrongChain><p>Switch to Ethereum or Sepolia</p></ng-template>
+```
+
+The ``etherConnect`` directive makes a connect button: on click, it calls ``connectWallet()``, and it is disabled (with ``aria-busy``) while the wallet asks the user. It emits the accounts with ``(etherConnectSuccess)``, or the error with ``(etherConnectError)``, for example ``ACTION_REJECTED`` when the user rejects the connection. Nothing is emitted after the button is destroyed.
+
+```html
+<button etherConnect (etherConnectSuccess)="onConnected($event)" (etherConnectError)="onError($event)">
+  Connect
+</button>
+```
 
 ### Route guards
 

@@ -3,8 +3,9 @@ import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
 import { isBrowser } from "@ashetm/platform";
 
 import { EEtherInstance/*, EEtherNetwork*/ } from "./ether.enum";
+import { ETHER_DEFAULT_EXPLORER } from "../network/ether-explorer.constant";
 import { ETHER_DEFAULT_PRICE_FEED } from "../network/ether-price-feed.constant";
-import { TEtherConfigurationRoot, TEtherPriceFeed } from "./ether.type";
+import { TEtherConfigurationRoot, TEtherExplorer, TEtherPriceFeed } from "./ether.type";
 // import { TEtherSupportedNetwork } from "./ether.type";
 
 
@@ -36,6 +37,12 @@ export const ETHER_TOKEN_NETWORK_ID: InjectionToken<TEtherConfigurationRoot['net
 export const ETHER_TOKEN_PRICE_FEED: InjectionToken<Readonly<TEtherPriceFeed>>
   = new InjectionToken<Readonly<TEtherPriceFeed>>('ETHER_TOKEN_PRICE_FEED', {
     factory: () => ETHER_DEFAULT_PRICE_FEED,
+    providedIn: 'root'
+  });
+
+export const ETHER_TOKEN_EXPLORER: InjectionToken<Readonly<TEtherExplorer>>
+  = new InjectionToken<Readonly<TEtherExplorer>>('ETHER_TOKEN_EXPLORER', {
+    factory: () => ETHER_DEFAULT_EXPLORER,
     providedIn: 'root'
   });
 
