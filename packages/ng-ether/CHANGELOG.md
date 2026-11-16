@@ -1,3 +1,7 @@
+# 20.3.0
+
+- [x] Add `trackTransaction` to follow a transfer or a contract call: `pending`, `submitted`, `confirmed` or `failed`
+
 # 20.2.0
 
 - [x] Add signal functions `injectAccount`, `injectAccounts`, `injectIsConnected`, `injectBalance`, `injectNetwork`, `injectChainId`, `injectGasFee` and `injectPrice`

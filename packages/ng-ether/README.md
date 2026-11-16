@@ -258,6 +258,29 @@ export class WalletComponent {
 }
 ```
 
+### Transactions
+
+``trackTransaction(source, options?)`` follows a transfer or a contract call, and returns an ``Observable<TEtherTransactionState>`` that emits its states, then completes:
+
+| ``status`` | Meaning | Other fields |
+| ---------- | ------- | ------------ |
+| ``'pending'`` | Waiting for the wallet signature | |
+| ``'submitted'`` | Sent, waiting to be mined | ``hash`` |
+| ``'confirmed'`` | Mined, with the given confirmations | ``hash``, ``receipt`` |
+| ``'failed'`` | Rejected by the user or the wallet (without ``hash``), or reverted (with ``hash``) | ``error``, ``hash?`` |
+
+A failure is a state, not an ``Observable`` error. ``source`` is an ``Observable<TransactionResponse>`` (like ``sendEth()``), or a function returning a ``Promise`` or an ``Observable`` of it (like a contract call), called on subscription. ``options.confirmations`` is the number of blocks to wait for before ``'confirmed'``: ``1`` by default, ``0`` completes once ``'submitted'``.
+
+```ts
+// Transfer
+trackTransaction(transactionService.prepareTransaction(to).sendEth(0.1)).subscribe(
+  (state: TEtherTransactionState) => console.log(state.status)
+);
+
+// Contract call
+trackTransaction(() => contract['transfer'](to, amount), { confirmations: 2 });
+```
+
 ### Classes
 
 #### AEtherContract
