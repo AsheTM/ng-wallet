@@ -425,6 +425,14 @@ Structural directives show their template on a condition, or the ``else`` templa
 <ng-template #wrongChain><p>Switch to Ethereum or Sepolia</p></ng-template>
 ```
 
+The ``etherConnect`` directive makes a connect button: on click, it calls ``connectWallet()``, and it is disabled (with ``aria-busy``) while the wallet asks the user. It emits the accounts with ``(etherConnectSuccess)``, or the error with ``(etherConnectError)``, for example ``ACTION_REJECTED`` when the user rejects the connection. Nothing is emitted after the button is destroyed.
+
+```html
+<button etherConnect (etherConnectSuccess)="onConnected($event)" (etherConnectError)="onError($event)">
+  Connect
+</button>
+```
+
 ### Route guards
 
 The guards are in the ``@ashetm/ng-ether/router`` entry point, which needs ``@angular/router``. It is an optional peer dependency: applications that do not import ``@ashetm/ng-ether/router`` do not need it.

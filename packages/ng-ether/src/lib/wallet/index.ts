@@ -1,3 +1,4 @@
+export * from './ether-connect.directive';
 export * from './ether-connected.directive';
 export * from './ether-short-address.pipe';
 export * from './ether-wallet-info';

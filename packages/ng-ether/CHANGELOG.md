@@ -2,6 +2,7 @@
 
 - [x] Add pipes `etherShortAddress`, `etherUnits`, `etherExplorerLink` and `etherChainName`, and the `explorers` configuration
 - [x] Add structural directives `*etherWallet`, `*etherConnected` and `*etherChain`, and signals `injectWalletInstalled` and `injectWalletInfo`
+- [x] Add the `etherConnect` directive for connect buttons
 
 # 20.3.0
 
