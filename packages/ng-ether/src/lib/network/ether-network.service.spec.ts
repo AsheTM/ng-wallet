@@ -8,6 +8,7 @@ import { TEtherNetworkInfo, TEtherNetworkInfoChainId } from './ether-network.typ
 import { ETHER_DEFAULT_PRICE_FEED, ETHER_PRICE_FEED_ABI } from './ether-price-feed.constant';
 import { AEtherProvider } from '../core/ether-provider.class';
 import { EtherTestModule } from '../testing/ether-test.module';
+import { provideEtherTesting } from '../testing/ether-testing';
 import { ETHER_TOKEN, ETHER_TOKEN_PRICE_FEED } from '../core/ether.token';
 import { TEtherPriceFeed } from '../core/ether.type';
 
@@ -154,5 +155,16 @@ describe('EtherNetworkService wallet requests', () => {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: hexChainId }]
     });
+  });
+});
+
+describe('EtherNetworkService gasFee$', () => {
+  it('emits the gas price at once, not after one second', async () => {
+    TestBed.configureTestingModule({ providers: [provideEtherTesting()] });
+    const tooLate = new Promise<'too late'>((resolve) => setTimeout(() => resolve('too late'), 500));
+
+    expect(await Promise.race([firstValueFrom(TestBed.inject(EtherNetworkService).gasFee$), tooLate])).toBe(
+      1_000_000_000n
+    );
   });
 });

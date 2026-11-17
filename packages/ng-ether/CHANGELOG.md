@@ -1,6 +1,7 @@
 # 20.7.0
 
 - [x] Fix the first read of the accounts and the network overwriting newer wallet events
+- [x] Fix `gasFee$` emitting its first value after one second
 
 # 20.6.0
 

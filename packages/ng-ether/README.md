@@ -138,7 +138,7 @@ Deprecated, as these testnets are shut down, and to be removed in the next major
 Those following are ``Observable`` and emits when account or network change
 
 * ``blockNumber$`` is ``Observable<number>`` that emits a ``number`` value of number of block
-* ``gasFee$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns gas price of the current network. It is checked every second, and only emitted when it changes
+* ``gasFee$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns gas price of the current network. It is read at once, then checked every second, and only emitted when it changes
 * ``price$`` is ``Observable<number>``, it emits ``number`` value of price of ETH in USD, read from the [Chainlink price feed](https://docs.chain.link/data-feeds/price-feeds/addresses) of the current network. It is refreshed every minute and when the network changes. Ethereum mainnet and Sepolia feeds are provided by default (``ETHER_DEFAULT_PRICE_FEED``); add or override feeds per chain ID with the ``priceFeed`` configuration. On a network without a feed, it emits an error ``No price feed configured for chain <chainId>``, and the stream completes: resubscribe (for example with ``retry``) to follow the next network
 
 And for methods, there is the following: 
