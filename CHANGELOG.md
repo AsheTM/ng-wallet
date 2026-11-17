@@ -1,3 +1,7 @@
+# 1.9.0
+
+- [x] Release @ashetm/ng-ether@v20.6.0, with provideEtherTesting
+
 # 1.8.0
 
 - [x] Release @ashetm/ng-ether@v20.5.0, with contract events and ERC-20 helpers
