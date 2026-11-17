@@ -1,3 +1,7 @@
+# 20.6.0
+
+- [x] Add `provideEtherTesting` and `EtherTestingWallet`, a fake wallet controlled by the tests
+
 # 20.5.0
 
 - [x] Add `fromContractEvent`, `queryContractEvents` and `onContractEvent` to follow and query contract events

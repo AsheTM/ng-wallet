@@ -584,7 +584,52 @@ readonly account$ = inject(EtherWalletService).account$.pipe(
 
 ### Test
 
-Import ``EtherTestModule`` in your tests: it provides the library with a mock of ``window.ethereum`` through ``ETHER_TOKEN``. Override ``ETHER_TOKEN`` to return the accounts, chain or errors your test needs.
+``provideEtherTesting(options?)`` provides the library with a fake wallet, that your tests control with ``EtherTestingWallet``. The services, signals, hooks, directives and transactions run as with a real wallet.
+
+| Option | Default value |
+| ------ | ------------- |
+| ``accounts``: connected accounts | ``[]`` (disconnected) |
+| ``connectAccounts``: accounts connected by ``connectWallet()`` | ``['0x…0001']`` |
+| ``chainId`` | ``1`` |
+| ``balance``: balance of every account, in wei | ``0n`` |
+| ``wallet``: name of the wallet (MetaMask, Rabby, Coinbase Wallet…), or ``false`` for a browser without wallet | ``'MetaMask'`` |
+| ``abi``, ``addressContract``, ``priceFeed``, ``explorers``: configuration of ``provideEther()`` | A mock ABI and the zero address |
+
+``EtherTestingWallet`` controls the fake wallet:
+
+* ``setAccounts(accounts)`` and ``setChainId(chainId)`` change the accounts (``[]`` disconnects) and the chain, and emit the wallet events
+* ``setBalance(balance)`` changes the balance
+* ``rejectNext(method, error?)`` makes the next request of a method fail, like a user rejecting it by default (``ACTION_REJECTED``, code 4001)
+* ``respond(method, (params) => result)`` answers the requests of a method, for example ``eth_call`` for the reads of a contract
+* ``requests`` lists every request received, to check what was sent
+* ``mine(blocks?)`` mines blocks: sent transactions are mined at once, ``mine()`` reaches more confirmations
+* ``await flush()`` waits until the wallet has answered every request (ethers sends them after a short delay), instead of waiting a fixed time
+
+```ts
+beforeEach(() => {
+  TestBed.configureTestingModule({
+    providers: [provideEtherTesting({ accounts: [me], chainId: 11155111, balance: 10n ** 18n })]
+  });
+});
+
+it('shows the new account', async () => {
+  const fixture = TestBed.createComponent(WalletComponent);
+  const wallet = TestBed.inject(EtherTestingWallet);
+
+  wallet.setAccounts([other]);
+  await wallet.flush();
+  await fixture.whenStable();
+
+  expect(fixture.nativeElement.textContent).toContain(other);
+});
+
+it('handles a rejected connection', async () => {
+  TestBed.inject(EtherTestingWallet).rejectNext('eth_requestAccounts');
+  …
+});
+```
+
+``EtherTestModule`` still provides a fixed mock of ``window.ethereum`` through ``ETHER_TOKEN``, that you can override. Prefer ``provideEtherTesting()`` in new tests.
 
 ## License
 
