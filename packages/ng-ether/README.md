@@ -133,7 +133,7 @@ Deprecated, as these testnets are shut down, and to be removed in the next major
 
 ``EtherNetworkService`` is a service concern all about network.
 
-* ``network$`` is ``Observable<TEtherNetwork>``, it emits ``TEtherNetwork`` value of network information
+* ``network$`` is ``Observable<TEtherNetwork>``, it emits ``TEtherNetwork`` value of network information. It reads the network once, then follows the ``chainChanged`` events of the wallet: a network switched during this first read is kept
 
 Those following are ``Observable`` and emits when account or network change
 
@@ -165,7 +165,7 @@ For methods, there is the following:
 
 ``EtherWalletService`` is a service concern all about wallet.
 
-* ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account
+* ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account. It reads the accounts once, then follows the ``accountsChanged`` events of the wallet: an account connected during this first read (for example right when the page loads) is kept
 * ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet. The balance is checked every 500 ms and only emitted when it changes, or when the account or network changes
 * ``transactionCount$`` is ``Observable<number>``, it emits ``number`` value of transaction count
 

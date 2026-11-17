@@ -1,3 +1,7 @@
+# 20.7.0
+
+- [x] Fix the first read of the accounts and the network overwriting newer wallet events
+
 # 20.6.0
 
 - [x] Add `provideEtherTesting` and `EtherTestingWallet`, a fake wallet controlled by the tests
