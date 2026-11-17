@@ -9,8 +9,9 @@ export type TEtherWalletInfo = {
   isMetaMask: boolean;
 };
 
-// Several wallets also set isMetaMask to be compatible with MetaMask: their own flag is checked first
-const WALLET_FLAGS: readonly (readonly [flag: string, name: string])[] = [
+// Flags set by the wallets on window.ethereum, with their name. Several wallets also set isMetaMask
+// to be compatible with MetaMask: their own flag is checked first
+export const ETHER_WALLET_FLAGS: readonly (readonly [flag: string, name: string])[] = Object.freeze([
   ['isRabby', 'Rabby'],
   ['isBraveWallet', 'Brave Wallet'],
   ['isCoinbaseWallet', 'Coinbase Wallet'],
@@ -18,10 +19,10 @@ const WALLET_FLAGS: readonly (readonly [flag: string, name: string])[] = [
   ['isOkxWallet', 'OKX Wallet'],
   ['isPhantom', 'Phantom'],
   ['isMetaMask', 'MetaMask'],
-];
+] as const);
 
 export function getEtherWalletInfo(ethereum: Record<string, unknown>): TEtherWalletInfo {
-  const [, name] = WALLET_FLAGS.find(([flag]: readonly [string, string]) => !!ethereum[flag]) ?? [
+  const [, name] = ETHER_WALLET_FLAGS.find(([flag]: readonly [string, string]) => !!ethereum[flag]) ?? [
     '',
     'Unknown wallet',
   ];

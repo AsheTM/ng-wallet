@@ -7,8 +7,7 @@ import { ACustomContract } from './contract/ether-contract-custom.class';
 import { EtherContractFnAsyncPipe } from './contract/ether-contract-fn-async.pipe';
 import { AEtherContract } from './contract/ether-contract.class';
 import { ContractInjectable } from './contract/ether-contract.decorator';
-import { ETHER_TOKEN } from './core/ether.token';
-import { provideEther } from './ether.providers';
+import { EtherTestingWallet, provideEtherTesting } from './testing/ether-testing';
 import { EtherWalletService } from './wallet/ether-wallet.service';
 
 const firstAccount = '0x0000000000000000000000000000000000000001';
@@ -34,11 +33,12 @@ class HostComponent {
 }
 
 describe('ng-ether without zone.js (zoneless change detection)', () => {
-  let emitAccountsChanged: (accounts: string[]) => void;
+  let wallet: EtherTestingWallet;
   let fixture: ComponentFixture<HostComponent>;
-  // Lets the wallet requests resolve (ethers sends them after a short delay), then waits for the rendering
+  // Waits until the wallet has answered every request (ethers sends them after a short delay),
+  // then for the rendering, instead of a fixed delay that may be too short under load
   const settle = async (): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await wallet.flush();
     await fixture.whenStable();
   };
   const text = (id: string): string =>
@@ -48,23 +48,11 @@ describe('ng-ether without zone.js (zoneless change detection)', () => {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
-        provideEther(),
+        provideEtherTesting({ accounts: [firstAccount] }),
         { provide: AEtherContract, useValue: { decimals: () => Promise.resolve(18) } },
-        {
-          provide: ETHER_TOKEN,
-          useValue: {
-            on: (event: string, listener: (accounts: string[]) => void) => {
-              if (event === 'accountsChanged') {
-                emitAccountsChanged = listener;
-              }
-            },
-            removeListener: () => void 0,
-            request: ({ method }: { method: string }) =>
-              Promise.resolve(method === 'eth_accounts' ? [firstAccount] : '0x1'),
-          },
-        },
       ],
     });
+    wallet = TestBed.inject(EtherTestingWallet);
     fixture = TestBed.createComponent(HostComponent);
     // No detectChanges(): with zoneless change detection, the view only updates when Angular is notified
     await settle();
@@ -76,7 +64,7 @@ describe('ng-ether without zone.js (zoneless change detection)', () => {
   });
 
   it('updates the view when the wallet changes account', async () => {
-    emitAccountsChanged([secondAccount]);
+    wallet.setAccounts([secondAccount]);
     await settle();
 
     expect(text('account')).toBe(secondAccount);

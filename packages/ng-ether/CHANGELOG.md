@@ -1,3 +1,8 @@
+# 20.6.0
+
+- [x] Add `provideEtherTesting` and `EtherTestingWallet`, a fake wallet controlled by the tests
+- [x] Fix the flaky zoneless test, waiting for the wallet with `flush()` instead of a fixed delay
+
 # 20.5.0
 
 - [x] Add `fromContractEvent`, `queryContractEvents` and `onContractEvent` to follow and query contract events
