@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@ashetm/ng-ether": ["packages/ng-ether/src/index.ts"],
+      "@ashetm/ng-ether/ngrx": ["packages/ng-ether/ngrx/src/index.ts"],
       "@ashetm/ng-ether/router": ["packages/ng-ether/router/src/index.ts"]
     }
   },

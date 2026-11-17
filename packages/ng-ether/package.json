@@ -48,10 +48,14 @@
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",
     "@angular/router": ">=20.0.0",
+    "@ngrx/signals": ">=20.0.0",
     "rxjs": "^7.4.0"
   },
   "peerDependenciesMeta": {
     "@angular/router": {
+      "optional": true
+    },
+    "@ngrx/signals": {
       "optional": true
     }
   },

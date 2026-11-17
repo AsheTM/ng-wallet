@@ -46,7 +46,7 @@ npm install @ashetm/ng-ether@20
 npm install @ashetm/ng-ether@16
 ```
 
-``ethers``, ``@ashetm/platform`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards (see below).
+``ethers``, ``@ashetm/platform`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards, and ``@ngrx/signals`` for the SignalStore features (see below).
 
 ## Import
 
@@ -514,6 +514,33 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard.component')
   }
 ];
+```
+
+### NgRx SignalStore
+
+The SignalStore features are in the ``@ashetm/ng-ether/ngrx`` entry point, which needs ``@ngrx/signals``. It is an optional peer dependency: applications that do not import ``@ashetm/ng-ether/ngrx`` do not need it.
+
+``withEther(options?)`` adds the wallet and the network to a store:
+
+* State, as signals: ``account``, ``accounts``, ``isConnected``, ``chainId``, ``network``, ``walletInstalled``, ``balance``, ``price``, ``gasFee`` (the signals of ``@ashetm/ng-ether``, with the same default values), ``connecting`` and ``connectError``
+* ``connect()`` asks the wallet to connect: ``connecting`` is ``true`` while the wallet asks the user, and ``connectError`` holds the error of a rejected connection (``null`` after a successful one)
+* ``switchNetwork(chainId)`` returns a ``Promise`` resolved once the wallet has switched (``chainId`` then follows), or rejected with the wallet error
+* ``options``: ``balance`` (``true`` by default), ``price`` and ``gasFee`` (``false`` by default, as they are polled). A disabled one stays ``undefined``
+
+```ts
+import { withEther } from '@ashetm/ng-ether/ngrx';
+
+export const WalletStore = signalStore(
+  { providedIn: 'root' },
+  withEther({ price: true }),
+  withComputed(({ account }) => ({
+    shortAccount: computed(() => account()?.slice(0, 6))
+  }))
+);
+
+// In a component
+readonly store = inject(WalletStore);
+// Template: @if (store.isConnected()) { {{ store.shortAccount() }} } @else { <button (click)="store.connect()">Connect</button> }
 ```
 
 ### Utils
