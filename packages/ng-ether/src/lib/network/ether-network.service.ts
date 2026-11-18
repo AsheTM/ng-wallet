@@ -1,7 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import type { Nullable } from '@ashetm/types';
 import { Contract, FeeData, formatUnits } from 'ethers';
-import { from, interval, Observable, Subject, throwError, timer } from 'rxjs';
+import { from, Observable, Subject, throwError, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -39,7 +39,8 @@ export class EtherNetworkService
   readonly gasFee$: Observable<TEtherBigNumber> =
     this._onAccountOrNetworkChange().pipe(
       switchMap(() =>
-        interval(1000).pipe(
+        // At once, then every second
+        timer(0, 1000).pipe(
           switchMap((_: number) => this._aEtherProvider.getFeeData()),
           map(({ gasPrice }: FeeData) => gasPrice),
           filter((gasPrice: Nullable<TEtherBigNumber>): gasPrice is TEtherBigNumber =>

@@ -24,33 +24,44 @@ export abstract class AEtherService {
   protected readonly _accountChange$: Observable<string[]> = this._requireWallet(() => new Observable<
     string[]
   >((subscriber: Subscriber<string[]>) => {
+    // The first read is ignored once a wallet event has arrived: its answer may arrive later, and is older
+    let hasEvent = false;
     const onAccountsChanged = (accounts: string[]) => {
       this._ngZone.run(() => subscriber.next(accounts));
     };
+    const onEvent = (accounts: string[]) => {
+      hasEvent = true;
+      onAccountsChanged(accounts);
+    };
 
-    this._aEtherProvider
-      .send('eth_accounts', [])
-      .then(onAccountsChanged, (error: unknown) => subscriber.error(error));
-    this._ethereum.on('accountsChanged', onAccountsChanged);
+    this._aEtherProvider.send('eth_accounts', []).then(
+      (accounts: string[]) => hasEvent || onAccountsChanged(accounts),
+      (error: unknown) => hasEvent || subscriber.error(error)
+    );
+    this._ethereum.on('accountsChanged', onEvent);
 
     return () =>
-      this._ethereum.removeListener('accountsChanged', onAccountsChanged);
+      this._ethereum.removeListener('accountsChanged', onEvent);
   })).pipe(distinctUntilKeyChanged(0), shareReplay(1));
   protected readonly _networkChange$: Observable<TEtherNetworkChange> =
     this._requireWallet(() => new Observable<TEtherNetworkChange>(
       (subscriber: Subscriber<TEtherNetworkChange>) => {
         let oldNetwork: TEtherNetwork | undefined;
+        // The first read is ignored once a wallet event has arrived, like the accounts
+        let hasEvent = false;
         const onNetwork = (newNetwork: TEtherNetwork) => {
           this._ngZone.run(() => subscriber.next({ newNetwork, oldNetwork }));
           oldNetwork = newNetwork;
         };
         const onChainChanged = (chainId: string) => {
+          hasEvent = true;
           onNetwork(Network.from(BigInt(chainId)));
         };
 
-        this._aEtherProvider
-          .getNetwork()
-          .then(onNetwork, (error: unknown) => subscriber.error(error));
+        this._aEtherProvider.getNetwork().then(
+          (network: TEtherNetwork) => hasEvent || onNetwork(network),
+          (error: unknown) => hasEvent || subscriber.error(error)
+        );
         this._ethereum.on('chainChanged', onChainChanged);
 
         return () =>

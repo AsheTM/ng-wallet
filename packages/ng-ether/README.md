@@ -46,7 +46,7 @@ npm install @ashetm/ng-ether@20
 npm install @ashetm/ng-ether@16
 ```
 
-``ethers``, ``@ashetm/platform`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards (see below).
+``ethers``, ``@ashetm/platform`` and ``@ashetm/types`` (types only, it adds nothing to your bundle) are installed with the library. ``@angular/router`` is only needed for the route guards, and ``@ngrx/signals`` for the SignalStore features (see below).
 
 ## Import
 
@@ -133,12 +133,12 @@ Deprecated, as these testnets are shut down, and to be removed in the next major
 
 ``EtherNetworkService`` is a service concern all about network.
 
-* ``network$`` is ``Observable<TEtherNetwork>``, it emits ``TEtherNetwork`` value of network information
+* ``network$`` is ``Observable<TEtherNetwork>``, it emits ``TEtherNetwork`` value of network information. It reads the network once, then follows the ``chainChanged`` events of the wallet: a network switched during this first read is kept
 
 Those following are ``Observable`` and emits when account or network change
 
 * ``blockNumber$`` is ``Observable<number>`` that emits a ``number`` value of number of block
-* ``gasFee$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns gas price of the current network. It is checked every second, and only emitted when it changes
+* ``gasFee$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns gas price of the current network. It is read at once, then checked every second, and only emitted when it changes
 * ``price$`` is ``Observable<number>``, it emits ``number`` value of price of ETH in USD, read from the [Chainlink price feed](https://docs.chain.link/data-feeds/price-feeds/addresses) of the current network. It is refreshed every minute and when the network changes. Ethereum mainnet and Sepolia feeds are provided by default (``ETHER_DEFAULT_PRICE_FEED``); add or override feeds per chain ID with the ``priceFeed`` configuration. On a network without a feed, it emits an error ``No price feed configured for chain <chainId>``, and the stream completes: resubscribe (for example with ``retry``) to follow the next network
 
 And for methods, there is the following: 
@@ -165,7 +165,7 @@ For methods, there is the following:
 
 ``EtherWalletService`` is a service concern all about wallet.
 
-* ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account
+* ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account. It reads the accounts once, then follows the ``accountsChanged`` events of the wallet: an account connected during this first read (for example right when the page loads) is kept
 * ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet. The balance is checked every 500 ms and only emitted when it changes, or when the account or network changes
 * ``transactionCount$`` is ``Observable<number>``, it emits ``number`` value of transaction count
 
@@ -514,6 +514,57 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard.component')
   }
 ];
+```
+
+### NgRx SignalStore
+
+The SignalStore features are in the ``@ashetm/ng-ether/ngrx`` entry point, which needs ``@ngrx/signals``. It is an optional peer dependency: applications that do not import ``@ashetm/ng-ether/ngrx`` do not need it.
+
+``withEther(options?)`` adds the wallet and the network to a store:
+
+* State, as signals: ``account``, ``accounts``, ``isConnected``, ``chainId``, ``network``, ``walletInstalled``, ``balance``, ``price``, ``gasFee`` (the signals of ``@ashetm/ng-ether``, with the same default values), ``connecting`` and ``connectError``
+* ``connect()`` asks the wallet to connect: ``connecting`` is ``true`` while the wallet asks the user, and ``connectError`` holds the error of a rejected connection (``null`` after a successful one)
+* ``switchNetwork(chainId)`` returns a ``Promise`` resolved once the wallet has switched (``chainId`` then follows), or rejected with the wallet error
+* ``options``: ``balance`` (``true`` by default), ``price`` and ``gasFee`` (``false`` by default, as they are polled). A disabled one stays ``undefined``
+
+```ts
+import { withEther } from '@ashetm/ng-ether/ngrx';
+
+export const WalletStore = signalStore(
+  { providedIn: 'root' },
+  withEther({ price: true }),
+  withComputed(({ account }) => ({
+    shortAccount: computed(() => account()?.slice(0, 6))
+  }))
+);
+
+// In a component
+readonly store = inject(WalletStore);
+// Template: @if (store.isConnected()) { {{ store.shortAccount() }} } @else { <button (click)="store.connect()">Connect</button> }
+```
+
+``withEtherTransaction()`` adds a transaction to a store, like ``injectTransaction()``:
+
+* State, as signal: ``transaction``, ``undefined`` before the first ``trackTransaction()``, then the ``TEtherTransactionState`` (``pending``, ``submitted``, ``confirmed`` or ``failed``)
+* ``trackTransaction(source, options?)`` tracks a transfer or a contract call (same arguments as ``trackTransaction``), and stops tracking the previous one
+* ``resetTransaction()`` stops tracking, and sets ``transaction`` back to ``undefined``
+* The tracking stops with the store. Stopping it never cancels a transaction already sent
+
+```ts
+import { EtherTransactionService } from '@ashetm/ng-ether';
+import { withEther, withEtherTransaction } from '@ashetm/ng-ether/ngrx';
+
+export const TransferStore = signalStore(
+  withEther(),
+  withEtherTransaction(),
+  withMethods((store, transactionService = inject(EtherTransactionService)) => ({
+    send(to: string, amount: number): void {
+      store.trackTransaction(transactionService.prepareTransaction(to).sendEth(amount));
+    }
+  }))
+);
+
+// Template: @if (store.transaction()?.status === 'submitted') { Waiting to be mined... }
 ```
 
 ### Utils
