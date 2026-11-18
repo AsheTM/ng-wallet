@@ -543,6 +543,30 @@ readonly store = inject(WalletStore);
 // Template: @if (store.isConnected()) { {{ store.shortAccount() }} } @else { <button (click)="store.connect()">Connect</button> }
 ```
 
+``withEtherTransaction()`` adds a transaction to a store, like ``injectTransaction()``:
+
+* State, as signal: ``transaction``, ``undefined`` before the first ``trackTransaction()``, then the ``TEtherTransactionState`` (``pending``, ``submitted``, ``confirmed`` or ``failed``)
+* ``trackTransaction(source, options?)`` tracks a transfer or a contract call (same arguments as ``trackTransaction``), and stops tracking the previous one
+* ``resetTransaction()`` stops tracking, and sets ``transaction`` back to ``undefined``
+* The tracking stops with the store. Stopping it never cancels a transaction already sent
+
+```ts
+import { EtherTransactionService } from '@ashetm/ng-ether';
+import { withEther, withEtherTransaction } from '@ashetm/ng-ether/ngrx';
+
+export const TransferStore = signalStore(
+  withEther(),
+  withEtherTransaction(),
+  withMethods((store, transactionService = inject(EtherTransactionService)) => ({
+    send(to: string, amount: number): void {
+      store.trackTransaction(transactionService.prepareTransaction(to).sendEth(amount));
+    }
+  }))
+);
+
+// Template: @if (store.transaction()?.status === 'submitted') { Waiting to be mined... }
+```
+
 ### Utils
 
 Functions to format a ``TEtherBigNumber`` value to a string in the specified unit:

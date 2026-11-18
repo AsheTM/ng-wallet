@@ -1,6 +1,7 @@
 # 20.7.0
 
 - [x] Add the `@ashetm/ng-ether/ngrx` entry point with the `withEther` SignalStore feature (`@ngrx/signals` optional peer dependency)
+- [x] Add the `withEtherTransaction` SignalStore feature, to track a transaction in a store
 - [x] Fix the first read of the accounts and the network overwriting newer wallet events
 - [x] Fix `gasFee$` emitting its first value after one second
 
