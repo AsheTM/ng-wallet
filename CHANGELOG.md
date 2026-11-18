@@ -1,3 +1,7 @@
+# 1.10.0-beta.0
+
+- [x] Release @ashetm/ng-ether@v20.7.0-beta.0, with the @ashetm/ng-ether/ngrx entry point
+
 # 1.9.0
 
 - [x] Release @ashetm/ng-ether@v20.6.0, with provideEtherTesting
