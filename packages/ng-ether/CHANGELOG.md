@@ -1,4 +1,4 @@
-# 20.7.0
+# 20.7.0-beta.0
 
 - [x] Add the `@ashetm/ng-ether/ngrx` entry point with the `withEther` SignalStore feature (`@ngrx/signals` optional peer dependency)
 - [x] Add the `withEtherTransaction` SignalStore feature, to track a transaction in a store
