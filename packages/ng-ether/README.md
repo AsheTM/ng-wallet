@@ -166,8 +166,8 @@ For methods, there is the following:
 ``EtherWalletService`` is a service concern all about wallet.
 
 * ``account$`` is ``Observable<string>`` that emits the address wallet of the connected account. It reads the accounts once, then follows the ``accountsChanged`` events of the wallet: an account connected during this first read (for example right when the page loads) is kept
-* ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet. The balance is checked every 500 ms and only emitted when it changes, or when the account or network changes
-* ``transactionCount$`` is ``Observable<number>``, it emits ``number`` value of transaction count
+* ``balance$`` is ``Observable<TEtherBigNumber>`` that emits a ``TEtherBigNumber`` value, it concerns balance of the connected wallet. The balance is checked every 500 ms and only emitted when it changes, or when the account or network changes. Without connected account, it emits nothing, and the balance follows once connected
+* ``transactionCount$`` is ``Observable<number>``, it emits ``number`` value of transaction count. Without connected account, it emits nothing, like ``balance$``
 
 And for methods, there is the following: 
 

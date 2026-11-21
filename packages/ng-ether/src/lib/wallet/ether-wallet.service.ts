@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { from, Observable, Subject, timer } from 'rxjs';
+import { EMPTY, from, Observable, Subject, timer } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -23,9 +23,10 @@ export class EtherWalletService
   readonly balance$: Observable<TEtherBigNumber> =
     this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),
-      // Compared per account, so switching account always emits its balance
-      switchMap((account: string) =>
-        timer(0, 500).pipe(
+      // Compared per account, so switching account always emits its balance.
+      // Not read without connected account: the balance follows once connected
+      switchMap((account: string | undefined) =>
+        !account ? EMPTY : timer(0, 500).pipe(
           switchMap((_: number) =>
             from(this._aEtherProvider.getBalance(account))
           ),
@@ -36,8 +37,9 @@ export class EtherWalletService
   readonly transactionCount$: Observable<number> =
     this._onAccountOrNetworkChange().pipe(
       this._switchMapToAccount(0),
-      switchMap((account: string) =>
-        this._aEtherProvider.getTransactionCount(account)
+      // Not read without connected account, like the balance
+      switchMap((account: string | undefined) =>
+        !account ? EMPTY : this._aEtherProvider.getTransactionCount(account)
       )
     );
 
