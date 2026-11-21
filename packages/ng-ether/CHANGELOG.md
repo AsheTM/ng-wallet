@@ -4,6 +4,7 @@
 - [x] Add the `withEtherTransaction` SignalStore feature, to track a transaction in a store
 - [x] Fix the first read of the accounts and the network overwriting newer wallet events
 - [x] Fix `gasFee$` emitting its first value after one second
+- [x] Fix `balance$` and `transactionCount$` failing without connected account, and `injectBalance()` staying `undefined` once connected
 
 # 20.6.0
 
