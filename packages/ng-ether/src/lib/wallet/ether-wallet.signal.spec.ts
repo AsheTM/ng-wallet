@@ -1,9 +1,10 @@
 import { Injector, Signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 
 import { ETHER_TOKEN } from '../core/ether.token';
 import { provideEther } from '../ether.providers';
+import { EtherTestingWallet, provideEtherTesting } from '../testing/ether-testing';
 import { EtherWalletNotInstalledError } from './ether-wallet-not-installed.error';
 import { EtherWalletService } from './ether-wallet.service';
 import { injectAccount, injectAccounts, injectBalance, injectIsConnected } from './ether-wallet.signal';
@@ -87,5 +88,25 @@ describe('ng-ether wallet signals without wallet', () => {
       expect(injectIsConnected()()).toBe(false);
       expect(injectBalance()()).toBeUndefined();
     });
+  });
+});
+
+describe('ng-ether wallet signals, connected later', () => {
+  it('reads the balance once connected', async () => {
+    TestBed.configureTestingModule({
+      providers: [provideEtherTesting({ connectAccounts: [account], balance: 5n })]
+    });
+    const wallet = TestBed.inject(EtherTestingWallet);
+    const balance = injectBalance({ injector: TestBed.inject(Injector) });
+
+    await wallet.flush();
+
+    expect(balance()).toBeUndefined();
+    expect(wallet.requests.some(({ method }) => method === 'eth_getBalance')).toBe(false);
+
+    await firstValueFrom(TestBed.inject(EtherWalletService).connectWallet());
+    await wallet.flush();
+
+    expect(balance()).toBe(5n);
   });
 });
