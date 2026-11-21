@@ -1,6 +1,7 @@
-# 1.10.0-beta.0
+# 1.10.0
 
-- [x] Release @ashetm/ng-ether@v20.7.0-beta.0, with the @ashetm/ng-ether/ngrx entry point
+- [x] Release @ashetm/ng-ether@v20.7.0, with the @ashetm/ng-ether/ngrx entry point
+- [x] Make the workspace private, to refuse `npm publish` at the root
 
 # 1.9.0
 
